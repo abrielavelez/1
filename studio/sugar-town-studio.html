@@ -1,0 +1,434 @@
+<title>Sugar Town Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: a craft workbench seen from above — mint cutting mat, an open gift box in the middle holding the collar, trays of materials beside it. One deliberate pastel world, single theme by choice. */
+:root{
+  --mat:#BFE6D6;        /* cutting mat */
+  --mat-line:#A6D7C3;
+  --ink:#3A1C47;        /* deep plum, all text and outlines */
+  --ink-soft:#6E557A;
+  --pink:#FF8FB8;       /* brand candy pink */
+  --pink-deep:#E8508C;
+  --butter:#FFE48A;
+  --lilac:#CDB6FF;
+  --paper:#FFF7FA;
+  --box:#FFC2D8;
+  --silver:#CFD5DD;
+  --display:"Sniglet","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Nunito","Avenir Next","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+body{
+  margin:0;font-family:var(--body);color:var(--ink);font-size:15px;
+  background-color:var(--mat);
+  background-image:
+    linear-gradient(var(--mat-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--mat-line) 1px,transparent 1px);
+  background-size:28px 28px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:20px 140px;
+}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:20px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 20px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,6vw,52px);line-height:.95;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 span{color:var(--pink-deep)}
+.tag{font-size:13px;font-weight:700;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase}
+.lede{margin:6px 0 0;max-width:46ch;font-size:16px;line-height:1.45}
+
+.bench{display:grid;gap:20px;align-items:start}
+@media (min-width:900px){.bench{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}}
+
+/* the gift box */
+.stage{position:relative;background:var(--box);border:3px solid var(--ink);border-radius:22px;padding:14px;box-shadow:0 10px 0 rgba(58,28,71,.18)}
+.ruler{height:22px;margin:0 4px 10px;border-bottom:2px solid var(--ink);
+  background:
+    repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 40px) bottom/100% 14px no-repeat,
+    repeating-linear-gradient(90deg,var(--ink) 0 1px,transparent 1px 8px) bottom/100% 6px no-repeat;
+  display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:var(--ink);line-height:1}
+.inner{position:relative;background:var(--paper);border:3px solid var(--ink);border-radius:14px;overflow:hidden;
+  background-image:radial-gradient(rgba(255,143,184,.28) 2px,transparent 2.5px);background-size:22px 22px}
+.inner.over{outline:4px dashed var(--pink-deep);outline-offset:-10px}
+.inner.pop{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.025,.975)}100%{transform:scale(1)}}
+#art{display:block;width:100%;height:auto;aspect-ratio:600/420;max-width:100%}
+.hint{position:absolute;left:12px;bottom:10px;font-size:12px;font-weight:800;background:var(--butter);border:2px solid var(--ink);border-radius:999px;padding:3px 10px}
+.lid{position:absolute;inset:14px;border-radius:14px;border:3px solid var(--ink);background:var(--pink);display:grid;place-items:center;text-align:center;cursor:pointer;z-index:3;
+  transition:transform .8s cubic-bezier(.6,-0.3,.4,1.2),opacity .5s .4s;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.18) 0 14px,transparent 14px 28px)}
+.lid b{font-family:var(--display);font-size:clamp(28px,6vw,46px);color:var(--paper);-webkit-text-stroke:2px var(--ink);paint-order:stroke;display:block;line-height:1}
+.lid small{display:inline-block;margin-top:10px;font-weight:800;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:5px 14px}
+.lid.open{transform:translateY(-115%) rotate(-8deg);opacity:0;pointer-events:none}
+.spark{position:absolute;width:12px;height:12px;pointer-events:none;z-index:4;
+  background:var(--butter);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);
+  animation:spark .8s ease-out forwards}
+@keyframes spark{from{transform:translate(0,0) scale(.4);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(90deg);opacity:0}}
+
+/* trays */
+.panel{background:var(--paper);border:3px solid var(--ink);border-radius:22px;padding:16px;display:grid;gap:14px;box-shadow:0 10px 0 rgba(58,28,71,.18)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.steps button{font:800 13px var(--body);color:var(--ink);background:transparent;border:2px solid var(--ink);border-radius:12px;padding:8px 4px;cursor:pointer;display:grid;gap:2px;justify-items:center}
+.steps button i{font-style:normal;font-family:var(--display);font-size:18px;line-height:1}
+.steps button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.steps button.done:not([aria-selected="true"]) i::after{content:" ✓";color:var(--pink-deep)}
+.trayhead h2{font-family:var(--display);font-weight:800;font-size:22px;margin:0}
+.trayhead p{margin:2px 0 0;color:var(--ink-soft);font-size:14px}
+.tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:10px}
+.item{touch-action:none;user-select:none;-webkit-user-select:none;font:700 12px var(--body);color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:14px;padding:8px 4px 6px;cursor:grab;display:grid;justify-items:center;gap:4px;transition:transform .15s}
+.item:hover{transform:translateY(-2px) rotate(-1deg)}
+.item:focus-visible,.steps button:focus-visible,.btn:focus-visible,.chip:focus-visible,input:focus-visible{outline:3px solid var(--pink-deep);outline-offset:2px}
+.item svg{width:52px;height:52px;display:block}
+.item.on{background:var(--butter)}
+.item.on::after{content:"en tu caja";font-size:10px;font-weight:800;color:var(--pink-deep)}
+.ghost{position:fixed;z-index:50;pointer-events:none;margin:0;transform:rotate(-6deg) scale(1.08);box-shadow:0 12px 20px rgba(58,28,71,.25);transition:none}
+.ghost.fly{transition:all .35s cubic-bezier(.5,0,.7,1);opacity:0}
+.slots{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;font-weight:700}
+.slot{width:30px;height:30px;border-radius:50%;border:2px solid var(--ink)}
+.field{display:grid;gap:4px;font-weight:800;font-size:13px}
+.field input{font:800 18px var(--display);letter-spacing:.04em;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:9px 12px;width:100%;min-width:0}
+.field small{font-weight:600;color:var(--ink-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:800 13px var(--body);color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--lilac)}
+
+/* order bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--ink);color:var(--paper);
+  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.bar .in{max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.kit b{font-family:var(--display);font-size:22px;display:block;line-height:1.05}
+.kit span{font-size:13px;opacity:.8}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:800 15px var(--body);border:2px solid var(--paper);border-radius:999px;padding:10px 18px;cursor:pointer;background:transparent;color:var(--paper);text-decoration:none;display:inline-block}
+.btn.solid{background:var(--pink);color:var(--ink);border-color:var(--pink)}
+
+/* sheet */
+.sheet{position:fixed;inset:0;z-index:60;background:rgba(58,28,71,.55);display:grid;place-items:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.card{background:var(--paper);border:3px solid var(--ink);border-radius:22px;padding:18px;width:min(440px,100%);max-height:100%;overflow:auto;display:grid;gap:12px}
+.card h3{font-family:var(--display);font-size:24px;margin:0}
+.card img{width:100%;border-radius:14px;border:2px solid var(--ink)}
+.card textarea{width:100%;min-height:190px;font:600 14px/1.45 var(--body);color:var(--ink);border:2px solid var(--ink);border-radius:12px;padding:10px;resize:vertical}
+.card p{margin:0;font-size:14px;line-height:1.45}
+.card .actions .btn{color:var(--ink);border-color:var(--ink)}
+.card .actions .btn.solid{border-color:var(--ink)}
+.note{font-size:12px;color:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="tag">Sugar Doggy Pops · Hecho a mano en Cuenca</div>
+      <h1>Sugar Town <span>Studio</span></h1>
+      <p class="lede">Arma el collar de tu peludito capa por capa: arrastra los hilos, la placa y los charms a la caja. Tu llavero a juego se arma solo.</p>
+    </div>
+  </header>
+
+  <div class="bench">
+    <section class="stage" aria-label="Tu caja Sugar Doggy Pops">
+      <div class="ruler" aria-hidden="true"><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25 cm</span></div>
+      <div class="inner" id="drop">
+        <svg id="art" viewBox="0 0 600 420" role="img" aria-label="Vista previa del collar y llavero"></svg>
+        <span class="hint" id="hint">Arrastra aquí ↓ o toca un material</span>
+      </div>
+      <div class="lid" id="lid" role="button" tabindex="0" aria-label="Abrir la caja">
+        <div><b>Sugar Doggy<br>Pops</b><small>Toca para abrir tu caja</small></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Materiales">
+      <div class="steps" role="tablist" id="steps"></div>
+      <div class="trayhead"><h2 id="tt"></h2><p id="td"></p></div>
+      <div id="extra"></div>
+      <div class="tray" id="tray"></div>
+    </section>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="in">
+    <div class="kit"><b id="kitName">Kit Clásico · $20</b><span id="kitDesc">Collar personalizado + llavero a juego</span></div>
+    <div class="actions">
+      <button class="btn" id="shareBtn" type="button">Crear mi tarjeta</button>
+      <button class="btn solid" id="orderBtn" type="button">Pedir por DM</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="card" id="sheetCard" role="dialog" aria-modal="true"></div>
+</div>
+
+<script>
+const INK='#3A1C47';
+const THREADS=[
+  {id:'rosa',name:'Rosa chicle',c:'#FF8FB8'},{id:'fucsia',name:'Fucsia',c:'#E0459B'},
+  {id:'lila',name:'Lila',c:'#B79CFF'},{id:'celeste',name:'Celeste',c:'#8ED3F5'},
+  {id:'menta',name:'Menta',c:'#7FDDB4'},{id:'pollito',name:'Amarillo pollito',c:'#FFE066'},
+  {id:'durazno',name:'Durazno',c:'#FFB38A'},{id:'cereza',name:'Rojo cereza',c:'#F2545B'},
+  {id:'blanco',name:'Blanco',c:'#FFFFFF'},{id:'negro',name:'Negro',c:'#2E2A33'}
+];
+const PLATES=[{id:'hueso',name:'Hueso'},{id:'corazon',name:'Corazón'},{id:'circulo',name:'Círculo'},{id:'estrella',name:'Estrella'}];
+const CHARMS=[{id:'estrella',name:'Estrellita'},{id:'corazon',name:'Corazón'},{id:'mono',name:'Moño'},{id:'margarita',name:'Margarita'},{id:'cereza',name:'Cerezas'},{id:'brillo',name:'Brillito'},{id:'huesito',name:'Huesito'}];
+const STEPS=[
+  {id:'hilos',n:'1',label:'Hilos',t:'Elige 3 hilos',d:'Cada hilo que sueltes en la caja reemplaza al más antiguo de la trenza.'},
+  {id:'placa',n:'2',label:'Placa',t:'Su placa con nombre',d:'Arrastra una forma y escribe el nombre de tu peludito.'},
+  {id:'charms',n:'3',label:'Charms',t:'Charms decorativos',d:'Hasta 2. Con charms tu pedido pasa a Kit Full ($25). Toca uno puesto para quitarlo.'},
+  {id:'match',n:'4',label:'Match',t:'Tu llavero a juego',d:'Misma trenza, tu palabra. Tú y tu peludito, siempre matchy.'}
+];
+const state={threads:['rosa','lila','menta'],plate:'corazon',name:'LOKI',phone:'',charms:[],word:'DOG MOM',step:'hilos',touched:new Set()};
+const $=s=>document.querySelector(s);
+const thread=id=>THREADS.find(t=>t.id===id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- drawing ---------- */
+function braidRing(cx,cy,r,cols){
+  let s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${INK}" stroke-width="32"/>`;
+  s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${cols[0]}" stroke-width="26"/>`;
+  const N=46;
+  for(let i=0;i<N;i++){
+    const a=i/N*Math.PI*2, t=a*180/Math.PI+90;
+    const ox=cx+(r+6)*Math.cos(a), oy=cy+(r+6)*Math.sin(a);
+    const ix=cx+(r-6)*Math.cos(a), iy=cy+(r-6)*Math.sin(a);
+    s+=`<ellipse cx="${ox.toFixed(1)}" cy="${oy.toFixed(1)}" rx="9.5" ry="5.5" transform="rotate(${(t+38).toFixed(1)} ${ox.toFixed(1)} ${oy.toFixed(1)})" fill="${cols[i%3]}" stroke="rgba(58,28,71,.35)" stroke-width="1.2"/>`;
+    s+=`<ellipse cx="${ix.toFixed(1)}" cy="${iy.toFixed(1)}" rx="9.5" ry="5.5" transform="rotate(${(t-38).toFixed(1)} ${ix.toFixed(1)} ${iy.toFixed(1)})" fill="${cols[(i+1)%3]}" stroke="rgba(58,28,71,.35)" stroke-width="1.2"/>`;
+  }
+  return s;
+}
+function braidLine(x,y1,y2,cols){
+  let s=`<rect x="${x-15}" y="${y1}" width="30" height="${y2-y1}" rx="8" fill="${INK}"/><rect x="${x-12}" y="${y1+2}" width="24" height="${y2-y1-4}" rx="6" fill="${cols[0]}"/>`;
+  for(let i=0,y=y1+7;y<y2-4;i++,y+=10){
+    s+=`<ellipse cx="${x-5}" cy="${y}" rx="8.5" ry="5" transform="rotate(-38 ${x-5} ${y})" fill="${cols[i%3]}" stroke="rgba(58,28,71,.35)" stroke-width="1.2"/>`;
+    s+=`<ellipse cx="${x+5}" cy="${y}" rx="8.5" ry="5" transform="rotate(38 ${x+5} ${y})" fill="${cols[(i+1)%3]}" stroke="rgba(58,28,71,.35)" stroke-width="1.2"/>`;
+  }
+  return s;
+}
+function starPts(R,r){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r:R;p.push((rr*Math.cos(a)).toFixed(1)+','+(rr*Math.sin(a)).toFixed(1))}return p.join(' ')}
+function plateShapes(shape,fill,stroke,sw){
+  const a=`fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"`;
+  if(shape==='hueso') return `<rect x="-58" y="-21" width="116" height="42" rx="6" ${a}/><circle cx="-62" cy="-17" r="20" ${a}/><circle cx="-62" cy="17" r="20" ${a}/><circle cx="62" cy="-17" r="20" ${a}/><circle cx="62" cy="17" r="20" ${a}/>`;
+  if(shape==='corazon') return `<path d="M0,46 C-92,-4 -60,-68 0,-30 C60,-68 92,-4 0,46Z" ${a}/>`;
+  if(shape==='circulo') return `<circle r="44" ${a}/>`;
+  return `<polygon points="${starPts(56,28)}" ${a}/>`;
+}
+const PLATE_W={hueso:150,corazon:96,circulo:78,estrella:58};
+function plate(shape,x,y,text,s=1){
+  const len=Math.max(text.length,1), w=PLATE_W[shape];
+  const fs=Math.min(shape==='hueso'?34:26,w/(len*0.66));
+  const ty=shape==='corazon'?2:shape==='estrella'?6:0;
+  return `<g transform="translate(${x} ${y}) scale(${s})">${plateShapes(shape,INK,INK,8)}${plateShapes(shape,'#fff','none',0)}
+  <text x="0" y="${ty}" text-anchor="middle" dominant-baseline="central" font-family="Sniglet,'Arial Rounded MT Bold',sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="${INK}">${esc(text)}</text></g>`;
+}
+function charm(id,x,y,s=1){
+  const o=`stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"`;
+  let g='';
+  if(id==='estrella') g=`<polygon points="${starPts(17,8)}" fill="#FFE066" ${o}/>`;
+  else if(id==='corazon') g=`<path d="M0,15 C-26,-1 -18,-21 0,-9 C18,-21 26,-1 0,15Z" fill="#FF8FB8" ${o}/>`;
+  else if(id==='mono') g=`<path d="M0,0 L-18,-11 L-18,11Z M0,0 L18,-11 L18,11Z" fill="#CDB6FF" ${o}/><circle r="5.5" fill="#CDB6FF" ${o}/>`;
+  else if(id==='margarita'){for(let i=0;i<6;i++){const a=i*Math.PI/3;g+=`<circle cx="${(10*Math.cos(a)).toFixed(1)}" cy="${(10*Math.sin(a)).toFixed(1)}" r="7" fill="#fff" ${o}/>`}g+=`<circle r="6" fill="#FFE066" ${o}/>`}
+  else if(id==='cereza') g=`<path d="M-7,4 Q-4,-14 4,-18 Q4,-6 9,6" fill="none" stroke="#3E9C6B" stroke-width="3" stroke-linecap="round"/><circle cx="-8" cy="8" r="8" fill="#F2545B" ${o}/><circle cx="9" cy="9" r="8" fill="#F2545B" ${o}/>`;
+  else if(id==='brillo') g=`<path d="M0,-19 Q3,-3 19,0 Q3,3 0,19 Q-3,3 -19,0 Q-3,-3 0,-19Z" fill="#FFE48A" ${o}/>`;
+  else g=`<g transform="scale(.26)">${plateShapes('hueso',INK,INK,14)}${plateShapes('hueso','#fff','none',0)}</g>`;
+  return `<g transform="translate(${x} ${y}) scale(${s})">${g}</g>`;
+}
+
+function drawArt(){
+  const cols=state.threads.map(id=>thread(id).c);
+  const cx=215,cy=178,r=116;
+  let s=`<g>`;
+  // collar
+  s+=braidRing(cx,cy,r,cols);
+  // buckle
+  s+=`<rect x="${cx-22}" y="${cy-r-24}" width="44" height="48" rx="9" fill="${'#CFD5DD'}" stroke="${INK}" stroke-width="3"/><rect x="${cx-12}" y="${cy-r-12}" width="24" height="24" rx="5" fill="#F4F6F9" stroke="${INK}" stroke-width="2.5"/>`;
+  // charms hang beside the plate
+  const ang=[42,138];
+  state.charms.forEach((c,i)=>{
+    const a=ang[i]*Math.PI/180, hx=cx+(r+10)*Math.cos(a), hy=cy+(r+10)*Math.sin(a);
+    s+=`<line x1="${hx.toFixed(1)}" y1="${hy.toFixed(1)}" x2="${hx.toFixed(1)}" y2="${(hy+16).toFixed(1)}" stroke="${INK}" stroke-width="2.5"/>`;
+    s+=`<circle cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="5" fill="none" stroke="#B9C0CA" stroke-width="3"/>`;
+    s+=charm(c,hx,hy+34,1.25);
+  });
+  // plate
+  const py=cy+r+64;
+  s+=`<circle cx="${cx}" cy="${cy+r+14}" r="9" fill="none" stroke="${INK}" stroke-width="7"/><circle cx="${cx}" cy="${cy+r+14}" r="9" fill="none" stroke="#CFD5DD" stroke-width="4"/>`;
+  s+=plate(state.plate,cx,py,state.name||'NOMBRE',0.95);
+  if(state.phone.trim()) s+=`<text x="${cx}" y="${py+60}" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="12" fill="${INK}">atrás: ${esc(state.phone.trim())}</text>`;
+  // keychain
+  const kx=478;
+  s+=`<circle cx="${kx}" cy="64" r="25" fill="none" stroke="${INK}" stroke-width="10"/><circle cx="${kx}" cy="64" r="25" fill="none" stroke="#CFD5DD" stroke-width="6"/>`;
+  s+=braidLine(kx,86,228,cols);
+  const word=(state.word||'DOG MOM').trim(), ww=Math.min(178,Math.max(90,word.length*17+28));
+  s+=`<rect x="${kx-ww/2}" y="236" width="${ww}" height="48" rx="14" fill="#fff" stroke="${INK}" stroke-width="4"/>`;
+  s+=`<text x="${kx}" y="261" text-anchor="middle" dominant-baseline="central" font-family="Sniglet,'Arial Rounded MT Bold',sans-serif" font-weight="800" font-size="${Math.min(24,(ww-20)/(word.length*.62)).toFixed(1)}" fill="${INK}">${esc(word)}</text>`;
+  s+=`<text x="${kx}" y="312" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="13" fill="${INK}" opacity=".6">llavero a juego</text>`;
+  s+=`</g>`;
+  $('#art').innerHTML=s;
+}
+
+/* ---------- trays ---------- */
+function mini(inner,vb='-40 -40 80 80'){return `<svg viewBox="${vb}" aria-hidden="true">${inner}</svg>`}
+function spool(c){return `<rect x="-24" y="-30" width="48" height="10" rx="3" fill="#E9C9A5" stroke="${INK}" stroke-width="2.5"/><rect x="-24" y="20" width="48" height="10" rx="3" fill="#E9C9A5" stroke="${INK}" stroke-width="2.5"/><rect x="-19" y="-20" width="38" height="40" fill="${c}" stroke="${INK}" stroke-width="2.5"/>`+[-12,-4,4,12].map(y=>`<line x1="-19" y1="${y}" x2="19" y2="${y+3}" stroke="rgba(58,28,71,.25)" stroke-width="1.5"/>`).join('')}
+
+function renderSteps(){
+  $('#steps').innerHTML=STEPS.map(st=>`<button type="button" role="tab" id="tab-${st.id}" aria-selected="${state.step===st.id}" class="${state.touched.has(st.id)?'done':''}" data-step="${st.id}"><i>${st.n}</i>${st.label}</button>`).join('');
+}
+function renderTray(){
+  const st=STEPS.find(s=>s.id===state.step);
+  $('#tt').textContent=st.t; $('#td').textContent=st.d;
+  let extra='',items='';
+  if(st.id==='hilos'){
+    extra=`<div class="slots"><span>Tu trenza:</span>${state.threads.map(id=>`<span class="slot" title="${thread(id).name}" style="background:${thread(id).c}"></span>`).join('')}<span>${state.threads.map(id=>thread(id).name).join(' · ')}</span></div>`;
+    items=THREADS.map(t=>`<button type="button" class="item ${state.threads.includes(t.id)?'on':''}" data-kind="hilo" data-v="${t.id}">${mini(spool(t.c))}${t.name}</button>`).join('');
+  }else if(st.id==='placa'){
+    extra=`<label class="field" for="nameIn">Nombre de tu peludito<input id="nameIn" maxlength="10" autocomplete="off" value="${esc(state.name)}"><small>Hasta 10 letras. Ejemplo cargado: LOKI.</small></label>
+    <label class="field" for="phoneIn">Número atrás de la placa (opcional)<input id="phoneIn" inputmode="tel" maxlength="14" autocomplete="off" value="${esc(state.phone)}" placeholder="099 123 4567"><small>Incluido en el Kit Full ($25).</small></label>`;
+    items=PLATES.map(p=>`<button type="button" class="item ${state.plate===p.id?'on':''}" data-kind="placa" data-v="${p.id}">${mini(`<g transform="scale(.42)">${plateShapes(p.id,INK,INK,8)}${plateShapes(p.id,'#fff','none',0)}</g>`)}${p.name}</button>`).join('');
+  }else if(st.id==='charms'){
+    items=CHARMS.map(c=>`<button type="button" class="item ${state.charms.includes(c.id)?'on':''}" data-kind="charm" data-v="${c.id}">${mini(charm(c.id,0,0,1.5))}${c.name}</button>`).join('');
+  }else{
+    const opts=['DOG MOM','CAT MOM','DOG DAD','BESTIE'];
+    extra=`<label class="field" for="wordIn">Palabra de tu llavero<input id="wordIn" maxlength="10" autocomplete="off" value="${esc(state.word)}"><small>Tu nombre, DOG MOM, CAT MOM… tú eliges.</small></label>
+    <div class="chips">${opts.map(o=>`<button type="button" class="chip" data-word="${o}" aria-pressed="${state.word===o}">${o}</button>`).join('')}</div>`;
+  }
+  $('#extra').innerHTML=extra; $('#tray').innerHTML=items; $('#tray').hidden=!items;
+  const ni=$('#nameIn'); if(ni) ni.oninput=e=>{state.name=e.target.value.toUpperCase().slice(0,10);e.target.value=state.name;state.touched.add('placa');update(false)};
+  const pi=$('#phoneIn'); if(pi) pi.oninput=e=>{state.phone=e.target.value;update(false)};
+  const wi=$('#wordIn'); if(wi) wi.oninput=e=>{state.word=e.target.value.toUpperCase().slice(0,10);e.target.value=state.word;state.touched.add('match');update(false);document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.word===state.word))};
+}
+function kit(){const full=state.charms.length>0||state.phone.trim()!=='';return full?{name:'Kit Full',price:25,desc:'Collar + 2 charms + número atrás + llavero a juego'}:{name:'Kit Clásico',price:20,desc:'Collar personalizado + llavero a juego'}}
+function update(trays=true){
+  drawArt();
+  const k=kit(); $('#kitName').textContent=`${k.name} · $${k.price}`; $('#kitDesc').textContent=k.desc;
+  if(trays){renderSteps();renderTray()} else renderSteps();
+}
+
+function apply(kind,v){
+  if(kind==='hilo'){ if(state.threads.includes(v)) return; state.threads=[...state.threads.slice(1),v]; state.touched.add('hilos'); }
+  if(kind==='placa'){ state.plate=v; state.touched.add('placa'); }
+  if(kind==='charm'){
+    if(state.charms.includes(v)) state.charms=state.charms.filter(c=>c!==v);
+    else state.charms=[...state.charms,v].slice(-2);
+    state.touched.add('charms');
+  }
+  update(); celebrate();
+}
+function celebrate(){
+  const box=$('#drop'); box.classList.remove('pop'); void box.offsetWidth; box.classList.add('pop');
+  $('#hint').hidden=true;
+  const stage=$('.stage'), r=stage.getBoundingClientRect();
+  for(let i=0;i<10;i++){
+    const sp=document.createElement('span'); sp.className='spark';
+    sp.style.left=(r.width*.37)+'px'; sp.style.top=(r.height*.5)+'px';
+    const a=Math.random()*Math.PI*2, d=60+Math.random()*90;
+    sp.style.setProperty('--dx',Math.cos(a)*d+'px'); sp.style.setProperty('--dy',Math.sin(a)*d+'px');
+    stage.appendChild(sp); setTimeout(()=>sp.remove(),850);
+  }
+}
+
+/* ---------- drag & drop (pointer) ---------- */
+let drag=null;
+function overDrop(x,y){const r=$('#drop').getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom}
+$('#tray').addEventListener('pointerdown',e=>{
+  const it=e.target.closest('.item'); if(!it) return;
+  drag={it,x0:e.clientX,y0:e.clientY,ghost:null,id:e.pointerId}; it.setPointerCapture(e.pointerId);
+});
+$('#tray').addEventListener('pointermove',e=>{
+  if(!drag||e.pointerId!==drag.id) return;
+  if(!drag.ghost&&Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)>6){
+    const r=drag.it.getBoundingClientRect(), g=drag.it.cloneNode(true);
+    g.classList.add('ghost'); g.style.width=r.width+'px'; g.style.left=r.left+'px'; g.style.top=r.top+'px';
+    drag.dx=e.clientX-r.left; drag.dy=e.clientY-r.top; document.body.appendChild(g); drag.ghost=g;
+  }
+  if(drag.ghost){drag.ghost.style.left=(e.clientX-drag.dx)+'px';drag.ghost.style.top=(e.clientY-drag.dy)+'px';$('#drop').classList.toggle('over',overDrop(e.clientX,e.clientY))}
+});
+function endDrag(e,cancel){
+  if(!drag||e.pointerId!==drag.id) return;
+  const {it,ghost}=drag; drag=null; $('#drop').classList.remove('over');
+  if(!ghost){ if(!cancel) apply(it.dataset.kind,it.dataset.v); return; }
+  if(!cancel&&overDrop(e.clientX,e.clientY)){
+    const r=$('#drop').getBoundingClientRect();
+    ghost.classList.add('fly'); ghost.style.left=(r.left+r.width*.33)+'px'; ghost.style.top=(r.top+r.height*.4)+'px';
+    setTimeout(()=>{ghost.remove();apply(it.dataset.kind,it.dataset.v)},300);
+  } else ghost.remove();
+}
+$('#tray').addEventListener('pointerup',e=>endDrag(e,false));
+$('#tray').addEventListener('pointercancel',e=>endDrag(e,true));
+$('#tray').addEventListener('keydown',e=>{const it=e.target.closest('.item');if(it&&(e.key==='Enter'||e.key===' ')){e.preventDefault();apply(it.dataset.kind,it.dataset.v)}});
+$('#tray').addEventListener('click',e=>{if(e.detail===0){const it=e.target.closest('.item');if(it)apply(it.dataset.kind,it.dataset.v)}});
+
+$('#steps').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;state.step=b.dataset.step;if(b.dataset.step==='match')state.touched.add('match');update()});
+$('#extra').addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;state.word=c.dataset.word;state.touched.add('match');update()});
+
+/* ---------- lid ---------- */
+const lid=$('#lid');
+const openLid=()=>{if(!lid.classList.contains('open')){lid.classList.add('open');setTimeout(celebrate,450)}};
+lid.addEventListener('click',openLid);
+lid.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLid()}});
+setTimeout(openLid,matchMedia('(prefers-reduced-motion:reduce)').matches?0:1600);
+
+/* ---------- order + share ---------- */
+function orderText(){
+  const k=kit();
+  return [
+    '¡Hola Sugar Doggy Pops! Quiero mi Kit Dúo Matchy 💖',
+    `Kit: ${k.name} ($${k.price})`,
+    `Nombre en la placa: ${state.name||'—'} (forma: ${PLATES.find(p=>p.id===state.plate).name})`,
+    `Hilos: ${state.threads.map(id=>thread(id).name).join(', ')}`,
+    `Charms: ${state.charms.length?state.charms.map(id=>CHARMS.find(c=>c.id===id).name).join(', '):'sin charms'}`,
+    state.phone.trim()?`Número atrás de la placa: ${state.phone.trim()}`:null,
+    `Llavero: ${state.word||'DOG MOM'}`,
+    'Diseñado en Sugar Town Studio ✨'
+  ].filter(Boolean).join('\n');
+}
+const sheet=$('#sheet'), card=$('#sheetCard');
+function openSheet(html){card.innerHTML=html;sheet.hidden=false;card.querySelector('[data-close]')?.addEventListener('click',()=>sheet.hidden=true)}
+sheet.addEventListener('click',e=>{if(e.target===sheet)sheet.hidden=true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')sheet.hidden=true});
+
+$('#orderBtn').addEventListener('click',()=>{
+  const txt=orderText();
+  openSheet(`<h3>Tu pedido está listo</h3>
+  <p>Copia el mensaje y pégalo en el DM de <b>@sugardoggypops.ec</b>. Te respondemos con la confirmación y el envío a todo Ecuador.</p>
+  <textarea id="orderTxt" aria-label="Mensaje del pedido" readonly>${esc(txt)}</textarea>
+  <div class="actions"><button class="btn solid" id="copyBtn" type="button">Copiar pedido</button><a class="btn" href="https://ig.me/m/sugardoggypops.ec" target="_blank" rel="noopener">Abrir DM</a><button class="btn" data-close type="button">Seguir diseñando</button></div>
+  <span class="note" id="copyNote"></span>`);
+  $('#copyBtn').addEventListener('click',()=>{
+    const ta=$('#orderTxt');
+    navigator.clipboard?.writeText(txt).then(()=>{$('#copyNote').textContent='Copiado. Ahora ábrelo en el DM y pega.'}).catch(()=>{ta.focus();ta.select();$('#copyNote').textContent='Selecciona el texto y cópialo manualmente.'}) ?? (ta.select(),$('#copyNote').textContent='Selecciona el texto y cópialo manualmente.');
+  });
+});
+
+$('#shareBtn').addEventListener('click',async()=>{
+  openSheet(`<h3>Preparando tu tarjeta…</h3>`);
+  try{
+    const W=1080,H=1920,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+    x.fillStyle='#BFE6D6';x.fillRect(0,0,W,H);
+    x.strokeStyle='#A6D7C3';x.lineWidth=2;for(let i=0;i<W;i+=54){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke()}for(let j=0;j<H;j+=54){x.beginPath();x.moveTo(0,j);x.lineTo(W,j);x.stroke()}
+    const rr=(X,Y,w,h,r,f,s)=>{x.beginPath();x.roundRect(X,Y,w,h,r);x.fillStyle=f;x.fill();if(s){x.lineWidth=8;x.strokeStyle=s;x.stroke()}};
+    rr(70,330,940,1010,48,'#FFC2D8',INK); rr(110,370,860,930,32,'#FFF7FA',INK);
+    const svg=new XMLSerializer().serializeToString($('#art')).replace('<svg','<svg width="1200" height="840"');
+    const img=new Image(); img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+    await img.decode();
+    x.drawImage(img,120,520,840,588);
+    x.fillStyle=INK;x.textAlign='center';
+    x.font='800 92px Sniglet, "Arial Rounded MT Bold", sans-serif';x.fillText(`${state.name||'Mi peludito'}`,W/2,200);
+    x.font='800 44px Nunito, sans-serif';x.fillText('ya tiene su collar Sugar ✨',W/2,270);
+    x.font='800 40px Nunito, sans-serif';x.fillText(state.threads.map(id=>thread(id).name).join(' · '),W/2,460);
+    const k=kit(); x.font='800 56px Sniglet, sans-serif';x.fillText(`${k.name} · $${k.price}`,W/2,1460);
+    x.font='700 40px Nunito, sans-serif';x.fillText('Diseña el tuyo en Sugar Town Studio',W/2,1540);
+    rr(290,1620,500,96,48,'#3A1C47');x.fillStyle='#FFF7FA';x.font='800 42px Nunito, sans-serif';x.fillText('@sugardoggypops.ec',W/2,1683);
+    const url=cv.toDataURL('image/png');
+    openSheet(`<h3>Tu tarjeta para historias</h3><img src="${url}" alt="Tarjeta con el diseño del collar de ${esc(state.name)}"><p>Mantén presionada la imagen para guardarla y súbela a tus historias etiquetando a <b>@sugardoggypops.ec</b>.</p><div class="actions"><button class="btn" data-close type="button">Cerrar</button></div>`);
+  }catch(err){
+    openSheet(`<h3>No se pudo crear la tarjeta</h3><p>Tu navegador bloqueó el dibujo de la imagen. Haz una captura de pantalla de la caja; se ve igual de bonita.</p><div class="actions"><button class="btn" data-close type="button">Cerrar</button></div>`);
+  }
+});
+
+document.fonts?.ready.then(()=>drawArt());
+update();
+</script>
