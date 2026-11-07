@@ -1,0 +1,460 @@
+<title>Sugar Town Studio Foto</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: the same craft workbench, now photographic — real product cut-outs on a pink box, braided cord rendered from a yarn photo. Single pastel world by choice. */
+:root{
+  --mat:#BFE6D6; --mat-line:#A6D7C3;
+  --ink:#3A1C47; --ink-soft:#6E557A;
+  --pink:#FF8FB8; --pink-deep:#E8508C;
+  --butter:#FFE48A; --lilac:#CDB6FF;
+  --paper:#FFF7FA; --box:#F7B7CE; --box-in:#FBD3E1;
+  --display:"Sniglet","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Nunito","Avenir Next","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+body{margin:0;font-family:var(--body);color:var(--ink);font-size:15px;background-color:var(--mat);
+  background-image:linear-gradient(var(--mat-line) 1px,transparent 1px),linear-gradient(90deg,var(--mat-line) 1px,transparent 1px);
+  background-size:28px 28px;background-attachment:fixed;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 150px}
+body.bgphoto{background:var(--mat) var(--bg-url) center/cover fixed}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:20px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,6vw,52px);line-height:.95;margin:0;text-wrap:balance}
+h1 span{color:var(--pink-deep)}
+.tag{font-size:13px;font-weight:700;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase}
+.lede{margin:6px 0 0;max-width:48ch;font-size:16px;line-height:1.45}
+.badge{display:inline-block;margin-top:8px;font-size:12px;font-weight:800;background:var(--butter);border:2px solid var(--ink);border-radius:999px;padding:3px 10px}
+.bench{display:grid;gap:20px;align-items:start}
+@media (min-width:900px){.bench{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}}
+
+.stage{position:relative;background:var(--box);border-radius:20px;padding:16px;
+  box-shadow:0 18px 30px rgba(58,28,71,.25),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -6px 0 rgba(0,0,0,.08)}
+.inner{position:relative;border-radius:12px;overflow:hidden;background:var(--box-in);
+  background-image:radial-gradient(ellipse at 50% 40%,rgba(255,255,255,.55),transparent 65%);
+  box-shadow:inset 0 10px 22px rgba(120,30,70,.28),inset 0 -4px 12px rgba(120,30,70,.12)}
+.inner.over{outline:4px dashed var(--pink-deep);outline-offset:-10px}
+.inner.pop{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.02,.98)}100%{transform:scale(1)}}
+#art{display:block;width:100%;height:auto;aspect-ratio:600/420;max-width:100%}
+.hint{position:absolute;left:12px;bottom:10px;font-size:12px;font-weight:800;background:var(--butter);border:2px solid var(--ink);border-radius:999px;padding:3px 10px}
+.lid{position:absolute;inset:0;border-radius:20px;background:var(--pink);display:grid;place-items:center;text-align:center;cursor:pointer;z-index:3;
+  box-shadow:inset 0 3px 0 rgba(255,255,255,.5),inset 0 -8px 0 rgba(0,0,0,.1);
+  background-image:linear-gradient(90deg,transparent 46%,rgba(255,255,255,.85) 46% 54%,transparent 54%),linear-gradient(transparent 44%,rgba(255,255,255,.85) 44% 56%,transparent 56%);
+  transition:transform .8s cubic-bezier(.6,-0.3,.4,1.2),opacity .5s .4s}
+.lid b{font-family:var(--display);font-size:clamp(26px,5.5vw,42px);color:var(--paper);-webkit-text-stroke:2px var(--ink);paint-order:stroke;display:block;line-height:1;background:var(--pink);padding:10px 16px;border-radius:14px}
+.lid small{display:inline-block;margin-top:10px;font-weight:800;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:5px 14px}
+.lid.open{transform:translateY(-115%) rotate(-8deg);opacity:0;pointer-events:none}
+.spark{position:absolute;width:12px;height:12px;pointer-events:none;z-index:4;background:#fff;
+  clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:spark .8s ease-out forwards}
+@keyframes spark{from{transform:translate(0,0) scale(.4);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(90deg);opacity:0}}
+
+.panel,.editor{background:var(--paper);border:3px solid var(--ink);border-radius:22px;padding:16px;display:grid;gap:14px;box-shadow:0 10px 0 rgba(58,28,71,.18)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.steps button{font:800 13px var(--body);color:var(--ink);background:transparent;border:2px solid var(--ink);border-radius:12px;padding:8px 4px;cursor:pointer;display:grid;gap:2px;justify-items:center}
+.steps button i{font-style:normal;font-family:var(--display);font-size:18px;line-height:1}
+.steps button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.steps button.done:not([aria-selected="true"]) i::after{content:" ✓";color:var(--pink-deep)}
+.trayhead h2,.editor h2{font-family:var(--display);font-weight:800;font-size:22px;margin:0}
+.trayhead p,.editor>p{margin:2px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.45}
+.tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:10px}
+.item{touch-action:none;user-select:none;-webkit-user-select:none;font:700 12px var(--body);color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:14px;padding:8px 4px 6px;cursor:grab;display:grid;justify-items:center;gap:4px;transition:transform .15s}
+.item:hover{transform:translateY(-2px) rotate(-1deg)}
+.item img{width:56px;height:56px;object-fit:contain;display:block;pointer-events:none;-webkit-user-drag:none}
+.item .ball{width:52px;height:52px;border-radius:50%;background-size:cover;box-shadow:inset -6px -8px 12px rgba(0,0,0,.28),inset 5px 6px 10px rgba(255,255,255,.45),0 3px 5px rgba(58,28,71,.25)}
+.item.on{background:var(--butter)}
+.item.on::after{content:"en tu caja";font-size:10px;font-weight:800;color:var(--pink-deep)}
+.item:focus-visible,.steps button:focus-visible,.btn:focus-visible,.chip:focus-visible,input:focus-visible,.lid:focus-visible{outline:3px solid var(--pink-deep);outline-offset:2px}
+.ghost{position:fixed;z-index:50;pointer-events:none;margin:0;transform:rotate(-6deg) scale(1.08);box-shadow:0 12px 20px rgba(58,28,71,.25);transition:none}
+.ghost.fly{transition:all .35s cubic-bezier(.5,0,.7,1);opacity:0}
+.slots{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;font-weight:700}
+.slot{width:30px;height:30px;border-radius:50%;border:2px solid var(--ink);background-size:cover}
+.field{display:grid;gap:4px;font-weight:800;font-size:13px}
+.field input{font:800 18px var(--display);letter-spacing:.04em;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:12px;padding:9px 12px;width:100%;min-width:0}
+.field small{font-weight:600;color:var(--ink-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:800 13px var(--body);color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--lilac)}
+
+/* editor */
+.edgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ed{border:2px solid var(--ink);border-radius:14px;background:#fff;padding:10px;display:grid;gap:6px;align-content:start}
+.ed .pv{height:76px;border-radius:10px;background:repeating-conic-gradient(#f3e6ec 0 25%,#fff 0 50%) 0 0/14px 14px;display:grid;place-items:center;overflow:hidden}
+.ed .pv img{max-width:100%;max-height:76px;object-fit:contain}
+.ed b{font-size:13px}
+.ed small{font-size:11.5px;color:var(--ink-soft);line-height:1.35}
+.ed .st{font-size:11px;font-weight:800;color:var(--pink-deep)}
+.ed .row{display:flex;gap:6px;flex-wrap:wrap}
+.ed .mini{font:800 12px var(--body);border:2px solid var(--ink);border-radius:999px;padding:4px 10px;background:var(--pink);color:var(--ink);cursor:pointer}
+.ed .mini.ghostbtn{background:transparent}
+.ed input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.edstatus{font-weight:800;font-size:13px;min-height:1.2em}
+
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--ink);color:var(--paper);
+  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.bar .in{max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.kit b{font-family:var(--display);font-size:22px;display:block;line-height:1.05}
+.kit span{font-size:13px;opacity:.8}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:800 15px var(--body);border:2px solid var(--paper);border-radius:999px;padding:10px 18px;cursor:pointer;background:transparent;color:var(--paper);text-decoration:none;display:inline-block}
+.btn.solid{background:var(--pink);color:var(--ink);border-color:var(--pink)}
+.sheet{position:fixed;inset:0;z-index:60;background:rgba(58,28,71,.55);display:grid;place-items:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.card{background:var(--paper);border:3px solid var(--ink);border-radius:22px;padding:18px;width:min(440px,100%);max-height:100%;overflow:auto;display:grid;gap:12px}
+.card h3{font-family:var(--display);font-size:24px;margin:0}
+.card img{width:100%;border-radius:14px;border:2px solid var(--ink)}
+.card textarea{width:100%;min-height:190px;font:600 14px/1.45 var(--body);color:var(--ink);border:2px solid var(--ink);border-radius:12px;padding:10px;resize:vertical}
+.card p{margin:0;font-size:14px;line-height:1.45}
+.card .actions .btn{color:var(--ink);border-color:var(--ink)}
+.note{font-size:12px;color:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="tag">Sugar Doggy Pops · Hecho a mano en Cuenca</div>
+    <h1>Sugar Town <span>Studio</span></h1>
+    <p class="lede">Arma el collar de tu peludito capa por capa: arrastra los hilos, la placa y los charms a la caja. Tu llavero a juego se arma solo.</p>
+    <span class="badge" id="photoBadge">Versión de prueba con fotos generadas por IA</span>
+  </header>
+
+  <div class="bench">
+    <section class="stage" aria-label="Tu caja Sugar Doggy Pops">
+      <div class="inner" id="drop">
+        <svg id="art" viewBox="0 0 600 420" role="img" aria-label="Vista previa del collar y llavero"></svg>
+        <span class="hint" id="hint">Arrastra aquí o toca un material</span>
+      </div>
+      <div class="lid" id="lid" role="button" tabindex="0" aria-label="Abrir la caja">
+        <div><b>Sugar Doggy Pops</b><small>Toca para abrir tu caja</small></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Materiales">
+      <div class="steps" role="tablist" id="steps"></div>
+      <div class="trayhead"><h2 id="tt"></h2><p id="td"></p></div>
+      <div id="extra"></div>
+      <div class="tray" id="tray"></div>
+    </section>
+  </div>
+
+  <section class="editor" id="editor" hidden aria-label="Tus fotos">
+    <h2>Tus fotos</h2>
+    <p>Solo tú ves esta sección. Cambia cada foto de prueba por la tuya; quien abra la página verá tus fotos al instante. Usa PNG con fondo transparente (el removedor de fondo de Canva sirve) y fotos tomadas desde arriba.</p>
+    <div class="edgrid" id="edgrid"></div>
+    <div class="edstatus" id="edstatus" role="status"></div>
+  </section>
+</div>
+
+<div class="bar">
+  <div class="in">
+    <div class="kit"><b id="kitName">Kit Clásico · $20</b><span id="kitDesc">Collar personalizado + llavero a juego</span></div>
+    <div class="actions">
+      <button class="btn" id="shareBtn" type="button">Crear mi tarjeta</button>
+      <button class="btn solid" id="orderBtn" type="button">Pedir por DM</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden><div class="card" id="sheetCard" role="dialog" aria-modal="true"></div></div>
+
+<script>
+const INK='#3A1C47';
+const THREADS=[
+  {id:'rosa',name:'Rosa chicle',c:'#FF8FB8'},{id:'fucsia',name:'Fucsia',c:'#E0459B'},
+  {id:'lila',name:'Lila',c:'#B79CFF'},{id:'celeste',name:'Celeste',c:'#8ED3F5'},
+  {id:'menta',name:'Menta',c:'#7FDDB4'},{id:'pollito',name:'Amarillo pollito',c:'#FFE066'},
+  {id:'durazno',name:'Durazno',c:'#FFB38A'},{id:'cereza',name:'Rojo cereza',c:'#F2545B'},
+  {id:'blanco',name:'Blanco',c:'#FAFAF7'},{id:'negro',name:'Negro',c:'#3A3640'}
+];
+const PLATES=[{id:'hueso',name:'Hueso'},{id:'corazon',name:'Corazón'},{id:'circulo',name:'Círculo'},{id:'estrella',name:'Estrella'}];
+const CHARMS=[{id:'estrella',name:'Estrellita'},{id:'corazon',name:'Corazón'},{id:'mono',name:'Moño'},{id:'margarita',name:'Margarita'},{id:'cereza',name:'Cerezas'},{id:'brillo',name:'Brillito'},{id:'huesito',name:'Huesito'}];
+/* Every photo the page uses. def = test image shipped with the page; the owner can replace any of them. */
+const SLOTS=[
+  ...PLATES.map(p=>({k:'placa-'+p.id,label:'Placa '+p.name.toLowerCase(),def:'img/placa-'+p.id+'.png',hint:'Placa en blanco, sin nombre, con el agujero arriba.'})),
+  ...CHARMS.map(c=>({k:'charm-'+c.id,label:'Charm '+c.name.toLowerCase(),def:'img/charm-'+c.id+'.png',hint:'Con su argollita arriba.'})),
+  {k:'hebilla',label:'Hebilla del collar',def:'img/hebilla.png',hint:'Vista de frente, horizontal.'},
+  {k:'argolla',label:'Argolla de la placa',def:'img/argolla.png',hint:'La argollita que une la placa al collar.'},
+  {k:'aro-llavero',label:'Aro del llavero',def:'img/aro-llavero.png',hint:'El aro metálico del llavero.'},
+  {k:'textura-hilo',label:'Textura del hilo',def:'img/textura-hilo.png',hint:'Foto macro de tu cordón en blanco o gris claro, llenando todo el cuadro. La web le pone el color.'},
+  {k:'fondo',label:'Fondo de la mesa',def:'',hint:'Opcional: foto cenital de tu mesa de trabajo.'}
+];
+const STEPS=[
+  {id:'hilos',n:'1',label:'Hilos',t:'Elige 3 hilos',d:'Cada hilo que sueltes en la caja reemplaza al más antiguo de la trenza.'},
+  {id:'placa',n:'2',label:'Placa',t:'Su placa con nombre',d:'Arrastra una forma y escribe el nombre de tu peludito.'},
+  {id:'charms',n:'3',label:'Charms',t:'Charms decorativos',d:'Hasta 2. Con charms tu pedido pasa a Kit Full ($25). Toca uno puesto para quitarlo.'},
+  {id:'match',n:'4',label:'Match',t:'Tu llavero a juego',d:'Misma trenza, tu palabra. Tú y tu peludito, siempre matchy.'}
+];
+const state={threads:['rosa','lila','menta'],plate:'corazon',name:'LOKI',phone:'',charms:[],word:'DOG MOM',step:'hilos',touched:new Set()};
+let overrides={};           // slot key -> asset id (from the shared db doc)
+const tints={};             // thread id -> tinted yarn data URL
+const $=s=>document.querySelector(s);
+const thread=id=>THREADS.find(t=>t.id===id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const src=k=>overrides[k]?'/_blob/'+overrides[k]:(SLOTS.find(s=>s.k===k)||{}).def||'';
+
+/* ---------- yarn tinting: the real cord photo, recolored per thread ---------- */
+function loadImg(u){return new Promise((ok,ko)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=ko;i.src=u})}
+async function buildTints(){
+  let tex=null; try{tex=await loadImg(src('textura-hilo'))}catch(e){}
+  for(const t of THREADS){
+    const c=document.createElement('canvas');c.width=c.height=160;const x=c.getContext('2d');
+    x.fillStyle=t.c;x.fillRect(0,0,160,160);
+    if(tex){
+      x.globalCompositeOperation='multiply';x.drawImage(tex,0,0,160,160);
+      x.globalCompositeOperation='screen';x.globalAlpha=t.id==='negro'?.28:.12;x.drawImage(tex,0,0,160,160);
+    }
+    tints[t.id]=c.toDataURL('image/png');
+  }
+}
+
+/* ---------- drawing ---------- */
+function defs(){
+  let d=`<defs>
+  <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#5a1838" flood-opacity=".32"/></filter>
+  <filter id="shs" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="2.2" flood-color="#5a1838" flood-opacity=".35"/></filter>
+  <radialGradient id="strand" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></radialGradient>
+  <linearGradient id="acr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#f4f1f3"/><stop offset="1" stop-color="#e2dde2"/></linearGradient>`;
+  for(const t of THREADS) d+=`<pattern id="p-${t.id}" width="34" height="34" patternUnits="userSpaceOnUse"><image href="${tints[t.id]||''}" width="34" height="34"/></pattern>`;
+  return d+`</defs>`;
+}
+function strand(x,y,rot,id,rx,ry){
+  const tr=`transform="rotate(${rot.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})"`;
+  return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${rx}" ry="${ry}" ${tr} fill="url(#p-${id})"/><ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${rx}" ry="${ry}" ${tr} fill="url(#strand)"/>`;
+}
+function braidRing(cx,cy,r,ids){
+  let s=`<g filter="url(#sh)"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="url(#p-${ids[0]})" stroke-width="26"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="26"/>`;
+  const N=42;
+  for(let i=0;i<N;i++){
+    const a=i/N*Math.PI*2,t=a*180/Math.PI+90;
+    s+=strand(cx+(r+6)*Math.cos(a),cy+(r+6)*Math.sin(a),t+38,ids[i%3],11,6.5);
+    s+=strand(cx+(r-6)*Math.cos(a),cy+(r-6)*Math.sin(a),t-38,ids[(i+1)%3],11,6.5);
+  }
+  return s+`</g>`;
+}
+function braidLine(x,y1,y2,ids){
+  let s=`<g filter="url(#sh)"><rect x="${x-12}" y="${y1}" width="24" height="${y2-y1}" rx="8" fill="url(#p-${ids[0]})"/><rect x="${x-12}" y="${y1}" width="24" height="${y2-y1}" rx="8" fill="rgba(0,0,0,.25)"/>`;
+  for(let i=0,y=y1+7;y<y2-4;i++,y+=10){s+=strand(x-5,y,-38,ids[i%3],10,6);s+=strand(x+5,y,38,ids[(i+1)%3],10,6)}
+  return s+`</g>`;
+}
+const PLATE_BOX={hueso:[150,104,4,96],corazon:[118,110,8,70],circulo:[106,112,6,60],estrella:[118,116,10,46]}; // w,h,text dy,text width
+function plate(shape,x,y,text){
+  const [w,h,dy,tw]=PLATE_BOX[shape], len=Math.max(text.length,1), fs=Math.min(30,tw/(len*.64));
+  const t=esc(text);
+  return `<g transform="translate(${x} ${y})"><image href="${src('placa-'+shape)}" x="${-w/2}" y="0" width="${w}" height="${h}" preserveAspectRatio="xMidYMin meet" filter="url(#shs)"/>
+  <text x="0" y="${h/2+dy+1}" text-anchor="middle" dominant-baseline="central" font-family="Sniglet,'Arial Rounded MT Bold',sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="#fff" opacity=".9">${t}</text>
+  <text x="0" y="${h/2+dy}" text-anchor="middle" dominant-baseline="central" font-family="Sniglet,'Arial Rounded MT Bold',sans-serif" font-weight="800" font-size="${fs.toFixed(1)}" fill="#4B3550">${t}</text></g>`;
+}
+function drawArt(){
+  const ids=state.threads, cx=215, cy=172, r=112;
+  let s=defs();
+  s+=braidRing(cx,cy,r,ids);
+  s+=`<image href="${src('hebilla')}" x="${cx-38}" y="${cy-r-28}" width="76" height="56" preserveAspectRatio="xMidYMid meet" filter="url(#shs)"/>`;
+  [42,138].forEach((deg,i)=>{
+    const c=state.charms[i]; if(!c) return;
+    const a=deg*Math.PI/180, hx=cx+(r+8)*Math.cos(a), hy=cy+(r+8)*Math.sin(a);
+    s+=`<image href="${src('charm-'+c)}" x="${(hx-26).toFixed(1)}" y="${(hy-6).toFixed(1)}" width="52" height="64" preserveAspectRatio="xMidYMin meet" filter="url(#shs)"/>`;
+  });
+  s+=plate(state.plate,cx,cy+r+22,state.name||'NOMBRE');
+  s+=`<image href="${src('argolla')}" x="${cx-15}" y="${cy+r+2}" width="30" height="30" filter="url(#shs)"/>`;
+  if(state.phone.trim()) s+=`<text x="${cx+90}" y="${cy+r+80}" font-family="Nunito,sans-serif" font-weight="800" font-size="12" fill="${INK}">atrás: ${esc(state.phone.trim())}</text>`;
+  const kx=478;
+  s+=braidLine(kx,92,226,ids);
+  s+=`<image href="${src('aro-llavero')}" x="${kx-36}" y="28" width="72" height="72" filter="url(#shs)"/>`;
+  const word=(state.word||'DOG MOM').trim(), ww=Math.min(178,Math.max(90,word.length*17+28));
+  s+=`<g filter="url(#sh)"><rect x="${kx-ww/2}" y="232" width="${ww}" height="48" rx="12" fill="url(#acr)" stroke="#d9d2d8" stroke-width="1.5"/><rect x="${kx-ww/2+5}" y="236" width="${ww-10}" height="10" rx="5" fill="#fff" opacity=".8"/></g>`;
+  s+=`<text x="${kx}" y="257" text-anchor="middle" dominant-baseline="central" font-family="Sniglet,'Arial Rounded MT Bold',sans-serif" font-weight="800" font-size="${Math.min(24,(ww-20)/(word.length*.62)).toFixed(1)}" fill="#4B3550">${esc(word)}</text>`;
+  $('#art').innerHTML=s;
+}
+
+/* ---------- trays ---------- */
+function renderSteps(){
+  $('#steps').innerHTML=STEPS.map(st=>`<button type="button" role="tab" id="tab-${st.id}" aria-selected="${state.step===st.id}" class="${state.touched.has(st.id)?'done':''}" data-step="${st.id}"><i>${st.n}</i>${st.label}</button>`).join('');
+}
+function renderTray(){
+  const st=STEPS.find(s=>s.id===state.step);
+  $('#tt').textContent=st.t;$('#td').textContent=st.d;
+  let extra='',items='';
+  if(st.id==='hilos'){
+    extra=`<div class="slots"><span>Tu trenza:</span>${state.threads.map(id=>`<span class="slot" title="${thread(id).name}" style="background-image:url(${tints[id]})"></span>`).join('')}<span>${state.threads.map(id=>thread(id).name).join(' · ')}</span></div>`;
+    items=THREADS.map(t=>`<button type="button" class="item ${state.threads.includes(t.id)?'on':''}" data-kind="hilo" data-v="${t.id}"><span class="ball" style="background-image:url(${tints[t.id]})"></span>${t.name}</button>`).join('');
+  }else if(st.id==='placa'){
+    extra=`<label class="field" for="nameIn">Nombre de tu peludito<input id="nameIn" maxlength="10" autocomplete="off" value="${esc(state.name)}"><small>Hasta 10 letras. Ejemplo cargado: LOKI.</small></label>
+    <label class="field" for="phoneIn">Número atrás de la placa (opcional)<input id="phoneIn" inputmode="tel" maxlength="14" autocomplete="off" value="${esc(state.phone)}" placeholder="099 123 4567"><small>Incluido en el Kit Full ($25).</small></label>`;
+    items=PLATES.map(p=>`<button type="button" class="item ${state.plate===p.id?'on':''}" data-kind="placa" data-v="${p.id}"><img src="${src('placa-'+p.id)}" alt="">${p.name}</button>`).join('');
+  }else if(st.id==='charms'){
+    items=CHARMS.map(c=>`<button type="button" class="item ${state.charms.includes(c.id)?'on':''}" data-kind="charm" data-v="${c.id}"><img src="${src('charm-'+c.id)}" alt="">${c.name}</button>`).join('');
+  }else{
+    const opts=['DOG MOM','CAT MOM','DOG DAD','BESTIE'];
+    extra=`<label class="field" for="wordIn">Palabra de tu llavero<input id="wordIn" maxlength="10" autocomplete="off" value="${esc(state.word)}"><small>Tu nombre, DOG MOM, CAT MOM… tú eliges.</small></label>
+    <div class="chips">${opts.map(o=>`<button type="button" class="chip" data-word="${o}" aria-pressed="${state.word===o}">${o}</button>`).join('')}</div>`;
+  }
+  $('#extra').innerHTML=extra;$('#tray').innerHTML=items;$('#tray').hidden=!items;
+  const ni=$('#nameIn'); if(ni) ni.oninput=e=>{state.name=e.target.value.toUpperCase().slice(0,10);e.target.value=state.name;state.touched.add('placa');update(false)};
+  const pi=$('#phoneIn'); if(pi) pi.oninput=e=>{state.phone=e.target.value;update(false)};
+  const wi=$('#wordIn'); if(wi) wi.oninput=e=>{state.word=e.target.value.toUpperCase().slice(0,10);e.target.value=state.word;state.touched.add('match');update(false);document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.word===state.word))};
+}
+function kit(){const full=state.charms.length>0||state.phone.trim()!=='';return full?{name:'Kit Full',price:25,desc:'Collar + 2 charms + número atrás + llavero a juego'}:{name:'Kit Clásico',price:20,desc:'Collar personalizado + llavero a juego'}}
+function update(trays=true){
+  drawArt();
+  const k=kit();$('#kitName').textContent=`${k.name} · $${k.price}`;$('#kitDesc').textContent=k.desc;
+  renderSteps(); if(trays) renderTray();
+}
+function apply(kind,v){
+  if(kind==='hilo'){if(state.threads.includes(v))return;state.threads=[...state.threads.slice(1),v];state.touched.add('hilos')}
+  if(kind==='placa'){state.plate=v;state.touched.add('placa')}
+  if(kind==='charm'){state.charms=state.charms.includes(v)?state.charms.filter(c=>c!==v):[...state.charms,v].slice(-2);state.touched.add('charms')}
+  update();celebrate();
+}
+function celebrate(){
+  const box=$('#drop');box.classList.remove('pop');void box.offsetWidth;box.classList.add('pop');$('#hint').hidden=true;
+  const stage=$('.stage'),r=stage.getBoundingClientRect();
+  for(let i=0;i<10;i++){const sp=document.createElement('span');sp.className='spark';sp.style.left=(r.width*.37)+'px';sp.style.top=(r.height*.5)+'px';
+    const a=Math.random()*Math.PI*2,d=60+Math.random()*90;sp.style.setProperty('--dx',Math.cos(a)*d+'px');sp.style.setProperty('--dy',Math.sin(a)*d+'px');stage.appendChild(sp);setTimeout(()=>sp.remove(),850)}
+}
+
+/* ---------- drag & drop ---------- */
+let drag=null;
+const overDrop=(x,y)=>{const r=$('#drop').getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom};
+const tray=$('#tray');
+tray.addEventListener('pointerdown',e=>{const it=e.target.closest('.item');if(!it)return;drag={it,x0:e.clientX,y0:e.clientY,ghost:null,id:e.pointerId};it.setPointerCapture(e.pointerId)});
+tray.addEventListener('pointermove',e=>{
+  if(!drag||e.pointerId!==drag.id)return;
+  if(!drag.ghost&&Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)>6){
+    const r=drag.it.getBoundingClientRect(),g=drag.it.cloneNode(true);g.classList.add('ghost');g.style.width=r.width+'px';g.style.left=r.left+'px';g.style.top=r.top+'px';
+    drag.dx=e.clientX-r.left;drag.dy=e.clientY-r.top;document.body.appendChild(g);drag.ghost=g}
+  if(drag.ghost){drag.ghost.style.left=(e.clientX-drag.dx)+'px';drag.ghost.style.top=(e.clientY-drag.dy)+'px';$('#drop').classList.toggle('over',overDrop(e.clientX,e.clientY))}
+});
+function endDrag(e,cancel){
+  if(!drag||e.pointerId!==drag.id)return;const{it,ghost}=drag;drag=null;$('#drop').classList.remove('over');
+  if(!ghost){if(!cancel)apply(it.dataset.kind,it.dataset.v);return}
+  if(!cancel&&overDrop(e.clientX,e.clientY)){const r=$('#drop').getBoundingClientRect();ghost.classList.add('fly');ghost.style.left=(r.left+r.width*.33)+'px';ghost.style.top=(r.top+r.height*.4)+'px';setTimeout(()=>{ghost.remove();apply(it.dataset.kind,it.dataset.v)},300)}
+  else ghost.remove();
+}
+tray.addEventListener('pointerup',e=>endDrag(e,false));
+tray.addEventListener('pointercancel',e=>endDrag(e,true));
+tray.addEventListener('keydown',e=>{const it=e.target.closest('.item');if(it&&(e.key==='Enter'||e.key===' ')){e.preventDefault();apply(it.dataset.kind,it.dataset.v)}});
+tray.addEventListener('click',e=>{if(e.detail===0){const it=e.target.closest('.item');if(it)apply(it.dataset.kind,it.dataset.v)}});
+$('#steps').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;state.step=b.dataset.step;if(b.dataset.step==='match')state.touched.add('match');update()});
+$('#extra').addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;state.word=c.dataset.word;state.touched.add('match');update()});
+
+/* ---------- lid ---------- */
+const lid=$('#lid');
+const openLid=()=>{if(!lid.classList.contains('open')){lid.classList.add('open');setTimeout(celebrate,450)}};
+lid.addEventListener('click',openLid);
+lid.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLid()}});
+setTimeout(openLid,matchMedia('(prefers-reduced-motion:reduce)').matches?0:1600);
+
+/* ---------- photos: apply overrides everywhere ---------- */
+async function applyPhotos(){
+  await buildTints();
+  const bg=src('fondo');
+  document.body.classList.toggle('bgphoto',!!bg);
+  if(bg) document.body.style.setProperty('--bg-url',`url("${bg}")`);
+  const own=Object.keys(overrides).length;
+  $('#photoBadge').textContent=own?`${own} de ${SLOTS.length} fotos son tuyas · el resto son de prueba (IA)`:'Versión de prueba con fotos generadas por IA';
+  update(); renderEditor();
+}
+
+/* ---------- editor (owner/editors only) ---------- */
+let assets=null, cfgRef=null, busy=false;
+function renderEditor(){
+  if(!assets) return;
+  $('#edgrid').innerHTML=SLOTS.map(s=>{
+    const mine=!!overrides[s.k], u=src(s.k);
+    return `<div class="ed"><div class="pv">${u?`<img src="${u}" alt="">`:'<small>sin foto</small>'}</div>
+    <b>${s.label}</b><span class="st">${mine?'Tu foto':'Foto de prueba'}</span><small>${s.hint}</small>
+    <div class="row"><label class="mini" for="up-${s.k}">${mine?'Cambiar':'Subir mi foto'}</label><input type="file" id="up-${s.k}" data-k="${s.k}" accept="image/png,image/jpeg,image/webp">
+    ${mine?`<button type="button" class="mini ghostbtn" data-restore="${s.k}">Volver a la de prueba</button>`:''}</div></div>`;
+  }).join('');
+}
+const ERR={too_large:'La foto pesa más de 20 MB. Redúcela e inténtalo de nuevo.',unsupported_type:'Ese formato no sirve. Usa PNG, JPG o WebP.',quota_exceeded:'Se llenó el espacio de fotos. Borra alguna que ya no uses.',not_granted:'No tienes permiso para cambiar fotos en esta página.'};
+const say=t=>{$('#edstatus').textContent=t};
+async function saveOverrides(next){await cfgRef.set({images:next,updatedAt:Date.now()})}
+$('#edgrid').addEventListener('change',async e=>{
+  const inp=e.target.closest('input[type=file]'); if(!inp||!inp.files[0]||busy) return;
+  const k=inp.dataset.k, f=inp.files[0]; busy=true; say('Subiendo '+f.name+'…');
+  try{
+    const res=await assets.upload(f);
+    const old=overrides[k]; const next={...overrides,[k]:res.id};
+    await saveOverrides(next);
+    if(old) assets.delete(old).catch(()=>{});
+    say('Listo: '+SLOTS.find(s=>s.k===k).label+' ya usa tu foto.');
+  }catch(err){say(ERR[err?.code]||'No se pudo subir la foto. Inténtalo otra vez.')}
+  finally{busy=false;inp.value=''}
+});
+$('#edgrid').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-restore]'); if(!b||busy) return;
+  const k=b.dataset.restore, old=overrides[k], next={...overrides}; delete next[k]; busy=true;
+  try{await saveOverrides(next); if(old) assets.delete(old).catch(()=>{}); say('Volvió la foto de prueba.')}
+  catch(err){say(ERR[err?.code]||'No se pudo restaurar. Inténtalo otra vez.')}
+  finally{busy=false}
+});
+(async()=>{
+  const db=await window.claude?.use?.('db');
+  if(db){
+    cfgRef=db.doc('config/images');
+    cfgRef.onSnapshot(snap=>{const d=snap.exists?snap.data():null;overrides={...(d?.images||{})};applyPhotos()},()=>{});
+  }
+  assets=await window.claude?.use?.('assets');
+  if(assets&&cfgRef){$('#editor').hidden=false;renderEditor()}
+})();
+
+/* ---------- order + share ---------- */
+function orderText(){
+  const k=kit();
+  return ['¡Hola Sugar Doggy Pops! Quiero mi Kit Dúo Matchy 💖',`Kit: ${k.name} ($${k.price})`,
+    `Nombre en la placa: ${state.name||'—'} (forma: ${PLATES.find(p=>p.id===state.plate).name})`,
+    `Hilos: ${state.threads.map(id=>thread(id).name).join(', ')}`,
+    `Charms: ${state.charms.length?state.charms.map(id=>CHARMS.find(c=>c.id===id).name).join(', '):'sin charms'}`,
+    state.phone.trim()?`Número atrás de la placa: ${state.phone.trim()}`:null,
+    `Llavero: ${state.word||'DOG MOM'}`,'Diseñado en Sugar Town Studio ✨'].filter(Boolean).join('\n');
+}
+const sheet=$('#sheet'),card=$('#sheetCard');
+function openSheet(html){card.innerHTML=html;sheet.hidden=false;card.querySelector('[data-close]')?.addEventListener('click',()=>sheet.hidden=true)}
+sheet.addEventListener('click',e=>{if(e.target===sheet)sheet.hidden=true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')sheet.hidden=true});
+$('#orderBtn').addEventListener('click',()=>{
+  const txt=orderText();
+  openSheet(`<h3>Tu pedido está listo</h3><p>Copia el mensaje y pégalo en el DM de <b>@sugardoggypops.ec</b>. Te respondemos con la confirmación y el envío a todo Ecuador.</p>
+  <textarea id="orderTxt" aria-label="Mensaje del pedido" readonly>${esc(txt)}</textarea>
+  <div class="actions"><button class="btn solid" id="copyBtn" type="button">Copiar pedido</button><a class="btn" href="https://ig.me/m/sugardoggypops.ec" target="_blank" rel="noopener">Abrir DM</a><button class="btn" data-close type="button">Seguir diseñando</button></div><span class="note" id="copyNote"></span>`);
+  $('#copyBtn').addEventListener('click',()=>{const ta=$('#orderTxt');const fb=()=>{ta.focus();ta.select();$('#copyNote').textContent='Selecciona el texto y cópialo manualmente.'};
+    if(navigator.clipboard) navigator.clipboard.writeText(txt).then(()=>{$('#copyNote').textContent='Copiado. Ahora ábrelo en el DM y pega.'}).catch(fb); else fb()});
+});
+const dataCache={};
+async function asData(u){
+  if(!u||u.startsWith('data:')) return u;
+  if(dataCache[u]) return dataCache[u];
+  const b=await (await fetch(u)).blob();
+  return dataCache[u]=await new Promise(ok=>{const r=new FileReader();r.onload=()=>ok(r.result);r.readAsDataURL(b)});
+}
+$('#shareBtn').addEventListener('click',async()=>{
+  openSheet(`<h3>Preparando tu tarjeta…</h3>`);
+  try{
+    const clone=$('#art').cloneNode(true);
+    for(const im of clone.querySelectorAll('image')) im.setAttribute('href',await asData(im.getAttribute('href')));
+    const svg=new XMLSerializer().serializeToString(clone).replace('<svg','<svg width="1200" height="840"');
+    const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);await img.decode();
+    const W=1080,H=1920,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+    x.fillStyle='#BFE6D6';x.fillRect(0,0,W,H);x.strokeStyle='#A6D7C3';x.lineWidth=2;
+    for(let i=0;i<W;i+=54){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke()}for(let j=0;j<H;j+=54){x.beginPath();x.moveTo(0,j);x.lineTo(W,j);x.stroke()}
+    x.save();x.shadowColor='rgba(58,28,71,.3)';x.shadowBlur=40;x.shadowOffsetY=20;x.fillStyle='#F7B7CE';x.beginPath();x.roundRect(70,340,940,1000,44);x.fill();x.restore();
+    x.fillStyle='#FBD3E1';x.beginPath();x.roundRect(100,370,880,940,26);x.fill();
+    x.drawImage(img,110,560,860,602);
+    x.fillStyle=INK;x.textAlign='center';
+    x.font='800 92px Sniglet, "Arial Rounded MT Bold", sans-serif';x.fillText(state.name||'Mi peludito',W/2,200);
+    x.font='800 44px Nunito, sans-serif';x.fillText('ya tiene su collar Sugar ✨',W/2,270);
+    x.font='800 40px Nunito, sans-serif';x.fillText(state.threads.map(id=>thread(id).name).join(' · '),W/2,470);
+    const k=kit();x.font='800 56px Sniglet, sans-serif';x.fillText(`${k.name} · $${k.price}`,W/2,1450);
+    x.font='700 40px Nunito, sans-serif';x.fillText('Diseña el tuyo en Sugar Town Studio',W/2,1530);
+    x.fillStyle=INK;x.beginPath();x.roundRect(290,1620,500,96,48);x.fill();x.fillStyle='#FFF7FA';x.font='800 42px Nunito, sans-serif';x.fillText('@sugardoggypops.ec',W/2,1683);
+    openSheet(`<h3>Tu tarjeta para historias</h3><img src="${cv.toDataURL('image/png')}" alt="Tarjeta con el diseño del collar de ${esc(state.name)}"><p>Mantén presionada la imagen para guardarla y súbela a tus historias etiquetando a <b>@sugardoggypops.ec</b>.</p><div class="actions"><button class="btn" data-close type="button">Cerrar</button></div>`);
+  }catch(err){openSheet(`<h3>No se pudo crear la tarjeta</h3><p>Haz una captura de pantalla de la caja; se ve igual de bonita.</p><div class="actions"><button class="btn" data-close type="button">Cerrar</button></div>`)}
+});
+
+applyPhotos();
+document.fonts?.ready.then(()=>drawArt());
+</script>
