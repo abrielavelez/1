@@ -115,9 +115,11 @@ h1 span{color:var(--pink)}
 
 /* ---------- home preview: the Sugar desktop ---------- */
 .hp{position:fixed;inset:0;z-index:80;overflow:auto;background:#5FA8E8 var(--hp-bg,url("img/fondo-pasto.jpg")) center/cover;
-  padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  padding:calc(14px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
   display:grid;grid-template-rows:auto 1fr auto;gap:6px;--mono:"IBM Plex Mono","Courier New",monospace}
 .hp-close{position:fixed;right:max(12px,env(safe-area-inset-right,0px));top:calc(10px + env(safe-area-inset-top,0px));border:2px solid var(--ink);border-radius:8px;background:#fff;padding:6px 12px;font:600 13px var(--mono);cursor:pointer;z-index:84}
+.hp-title{margin:0;text-align:center;font:400 clamp(58px,10vw,128px)/.9 "Abril Fatface","Didot","Bodoni 72",Georgia,serif;color:#FFF8EE;letter-spacing:-.005em;
+  text-shadow:4px 5px 0 #FF5FA2,8px 10px 0 rgba(42,22,56,.18);text-wrap:balance}
 .hp-head{margin:0 calc(-1 * max(16px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
 .hp-head h2{margin:0;line-height:0}
 .hp-head img{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 10px rgba(20,40,90,.25))}
@@ -150,15 +152,15 @@ h1 span{color:var(--pink)}
 .hp-right{display:grid;gap:10px;justify-items:center;align-content:center}
 .dog{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;background:none;border:0;padding:0;display:grid;justify-items:center;animation:bob 3.6s ease-in-out infinite;animation-delay:.6s}
 .dog .pup{height:clamp(170px,36vh,360px);width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 12px 14px rgba(0,0,0,.3));pointer-events:none}
-.dog .dlogo{width:clamp(150px,15vw,240px);height:auto;margin-top:-18px;transform:rotate(-4deg);pointer-events:none;filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 6px 8px rgba(0,0,0,.25))}
+.dog .dlogo{width:clamp(170px,19vw,300px);height:auto;transform:rotate(-4deg);pointer-events:none;filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 6px 8px rgba(0,0,0,.25))}
 .dog.nudge{animation:nudge .9s ease-in-out;--nx:-14px}
 @keyframes ring{0%,88%,100%{transform:rotate(0)}90%{transform:rotate(-5deg)}92%{transform:rotate(5deg)}94%{transform:rotate(-4deg)}96%{transform:rotate(3deg)}}
-.hp-foot{text-align:center;margin:0;font:700 clamp(19px,2.6vw,26px)/1 var(--hand);color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.35)}
+.hp-foot{text-align:center;margin:0;font:600 clamp(13px,1.4vw,16px)/1.2 var(--mono);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
 .hp-ghost{position:fixed;z-index:85;pointer-events:none;transform:translate(-50%,-50%) rotate(-5deg);animation:none}
 @media (max-width:760px){
   .hp-board{grid-template-columns:1fr 1fr;grid-template-areas:"c c" "i i" "r r";row-gap:18px}
   .hp-c{grid-area:c} .hp-icons{grid-area:i;flex-direction:row;justify-content:flex-start;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;gap:6px} .hp-icons .ico{flex:none} .hp-right{grid-area:r}
-  .dog .pup{height:170px} .dog .dlogo{width:170px}
+  .dog .dlogo{width:200px}
 }
 /* the shop window */
 .win{position:fixed;inset:max(10px,4vh) max(10px,4vw);z-index:86;display:grid;grid-template-rows:auto auto 1fr;background:#ECE9D8;border:3px solid #0A246A;border-radius:10px 10px 6px 6px;box-shadow:0 20px 50px rgba(0,0,0,.45);overflow:hidden;font-family:var(--body)}
@@ -407,10 +409,8 @@ function renderAjustes(m) {
     <div class="grid3" style="grid-template-columns:1fr 1fr"><label class="field">Instagram Sugar Club<input id="igClub" value="${esc(ig.club || "")}"></label><label class="field">Instagram Doggy Pops<input id="igDoggy" value="${esc(ig.doggy || "")}"></label></div>
     <h2>Home (escritorio)</h2><p>Lo que se ve en “Ver home”. Los íconos se editan en la pestaña Categorías.</p>
     <div class="field">Fondo<div class="seg"><button type="button" class="btn" data-hbg="pasto" aria-pressed="${(h.fondo || "pasto") === "pasto"}">Cielo y pasto</button><button type="button" class="btn" data-hbg="cuadros" aria-pressed="${h.fondo === "cuadros"}">Cuadros</button></div></div>
-    ${ajPhoto("Header (franja de arriba con el nombre)", "header", h.headerId, "img/header-club.png")}
     <label class="field">Texto de abajo<input id="hPie" value="${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}"></label>
-    <h2>🐶 Botón de Doggy Pops</h2>
-    ${ajPhoto("Foto del perrito (cualquier foto; PNG sin fondo se ve mejor)", "dogFoto", h.doggyFotoId, "img/doggy-miel.png")}
+    <h2>🐶 Logo de Doggy Pops</h2>
     ${ajPhoto("Logo de Doggy Pops (va encima de la foto)", "dogLogo", h.doggyLogoId, "img/logo-doggy.png")}
     <button type="submit" class="btn pri">Guardar ajustes</button></form>`;
   let fondo = h.fondo || "pasto";
@@ -579,7 +579,7 @@ document.addEventListener("click", e => {
 });
 
 /* ---------- home preview: the Sugar desktop (built from Categorías + Productos + Ajustes) ---------- */
-const TRAY_SLOTS = [[78, 33, 26], [17, 63, 13], [41, 31, 13], [61, 79, 30], [17, 17, 11]];
+const TRAY_SLOTS = [[78, 34, 30, 42], [41, 33, 13, 40], [17, 63, 12, 44], [61, 79, 34, 18], [17, 18, 11, 12]];
 let hpFilled = 0, hpDrag = null, nudgeTimer = null, winBrand = "club";
 const homeCfg = () => S.ajustes?.home || {};
 function openHome() {
@@ -589,17 +589,18 @@ function openHome() {
   const hp = $("#hp");
   hp.style.setProperty("--hp-bg", `url("img/fondo-${h.fondo === "cuadros" ? "cuadros" : "pasto"}.jpg")`);
   hp.innerHTML = `<button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>
-    <div class="hp-head"><h2>${h.headerId ? `<img src="${esc(blob(h.headerId))}" alt="Sugar Club">` : `<picture><source media="(max-width:760px)" srcset="img/header-club-m.png"><img src="img/header-club.png" alt="Sugar Club"></picture>`}</h2></header>
+    <h2 class="hp-title">Sugar Club</h2>
     <div class="hp-board">
       <nav class="hp-icons" aria-label="Categorías">${cats.map(icon).join("")}</nav>
       <div class="hp-c"><div class="hp-tray" id="hpTray"><img src="img/bandeja.png" alt="Bandeja"></div></div>
       <div class="hp-right">
-        <button type="button" class="dog" id="hpDog" aria-label="Sugar Doggy Pops"><img class="pup" src="${esc(dogSrc)}" alt=""><img class="dlogo" src="${esc(h.doggyLogoId ? blob(h.doggyLogoId) : "img/logo-doggy.png")}" alt="Sugar Doggy Pops"></button>
+        <button type="button" class="dog" id="hpDog" aria-label="Sugar Doggy Pops"><img class="dlogo" src="${esc(h.doggyLogoId ? blob(h.doggyLogoId) : "img/logo-doggy.png")}" alt="Sugar Doggy Pops"></button>
       </div>
     </div>
     <p class="hp-foot">${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}</p>
     <div id="hpWin"></div>`;
   hp.hidden = false; document.body.style.overflow = "hidden"; hpFilled = 0;
+  cats.filter(c => !c.bloqueada && catTray(c)).slice(0, TRAY_SLOTS.length).forEach(c => toTray(catTray(c), c.nombre, true));
   $("#hpClose").onclick = closeHome;
   clearInterval(nudgeTimer);
   nudgeTimer = setInterval(() => {
@@ -609,13 +610,13 @@ function openHome() {
   }, 1800);
 }
 function closeHome() { $("#hp").hidden = true; document.body.style.overflow = ""; clearInterval(nudgeTimer); }
-function toTray(src, label) {
-  const k = hpFilled++ % TRAY_SLOTS.length, [x, y, w] = TRAY_SLOTS[k], tray = $("#hpTray");
+function toTray(src, label, quiet) {
+  const k = hpFilled++ % TRAY_SLOTS.length, [x, y, w, hh] = TRAY_SLOTS[k], tray = $("#hpTray");
   tray.querySelector(`.hp-slot[data-k="${k}"]`)?.remove();
   const el = document.createElement("div"); el.className = "hp-slot"; el.dataset.k = k;
-  el.style.cssText = `left:${x}%;top:${y}%;width:${w}%;height:${w * 1.25}%`;
+  el.style.cssText = `left:${x}%;top:${y}%;width:${w}%;height:${hh}%`;
   el.innerHTML = src ? `<img src="${esc(src)}" alt="">` : `<span>${esc(label)}</span>`;
-  tray.appendChild(el); tray.classList.remove("shake"); void tray.offsetWidth; tray.classList.add("shake");
+  tray.appendChild(el); if (quiet) return; tray.classList.remove("shake"); void tray.offsetWidth; tray.classList.add("shake");
 }
 function openWin(brand, catName) {
   winBrand = brand;
@@ -632,7 +633,7 @@ function openWin(brand, catName) {
   $("#hpWin").querySelectorAll("[data-wtab]").forEach(b => b.onclick = () => openWin(winBrand, b.dataset.wtab));
 }
 function activate(el) {
-  if (el.id === "hpDog") { toTray(el.querySelector(".pup").src, "Doggy Pops"); return setTimeout(() => openWin("doggy"), 350); }
+  if (el.id === "hpDog") { toTray(el.querySelector(".dlogo").src, "Doggy Pops"); return setTimeout(() => openWin("doggy"), 350); }
   const c = S.data.categorias.find(x => x.id === el.dataset.cat); if (!c) return;
   if (c.bloqueada) return toast(`${c.nombre} llega muy pronto ✨`);
   toTray(catTray(c), c.nombre); setTimeout(() => openWin("club", c.nombre), 350);
