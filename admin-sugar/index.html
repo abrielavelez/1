@@ -182,13 +182,11 @@ h1 span{color:var(--pink)}
 .sold{position:absolute;top:12px;left:12px;background:#D92D20;color:#fff;font:700 12px var(--mono);padding:4px 10px;border-radius:999px;z-index:2}
 .arr{font-size:26px;cursor:pointer;display:grid;place-items:center;color:var(--ink)}
 /* footer + search */
-.foot{position:relative;z-index:1;display:grid;justify-items:center;gap:10px;padding:28px 16px 80px;text-align:center}
-.hero + .foot{background:linear-gradient(#5aa6e6,#2E8BE0)}
-.foot .fls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
-.fl{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 16px;color:#fff;text-decoration:none;font:700 14px var(--body);text-shadow:0 1px 3px rgba(0,30,80,.5)}
-.fl small{font:500 12px var(--mono);opacity:.9}
-.fl svg{width:20px;height:20px}
-.foot p{margin:0;color:#fff;font:400 18px var(--sign, "Abril Fatface"),serif;text-shadow:0 1px 4px rgba(0,30,80,.5)}
+.foot{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 20px;padding:14px 16px 64px}
+.hero + .foot{background:#2E8BE0}
+.fl{display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;font:600 13px var(--body);text-shadow:0 1px 3px rgba(0,30,80,.5)}
+.fl:hover{text-decoration:underline}
+.fl svg{width:16px;height:16px}
 .srch{position:fixed;inset:0;z-index:95;background:rgba(20,50,100,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:grid;align-items:start;justify-items:center;padding:clamp(14px,6vh,70px) 14px}
 .srch .box{width:min(860px,100%);max-height:85svh;overflow:auto;border-radius:24px;padding:16px;display:grid;gap:12px;background:rgba(255,255,255,.82)}
 .srch .bar{display:flex;gap:8px}
@@ -336,9 +334,9 @@ const SCHEMAS = {
     fields: [
       { k: "nombre", t: "text", label: "Nombre", req: true },
       { k: "marca", t: "select", label: "Marca", opts: () => Object.entries(MARCAS) },
-      { k: "categoria", t: "select", label: "Categoría", opts: d => catsDe(d.marca).map(c => [c.nombre, c.nombre]), when: d => d.marca !== "match", help: "Las categorías, con su ícono y texto, se editan en la pestaña Categorías." },
+      { k: "categoria", t: "select", label: "Categoría *", opts: d => [["", "— elegir —"], ...catsDe(d.marca).map(c => [c.nombre, c.nombre])].map(c => [c.nombre, c.nombre]), when: d => d.marca !== "match", help: "Las categorías, con su ícono y texto, se editan en la pestaña Categorías." },
       { k: "descripcion", t: "textarea", label: "Descripción" },
-      { k: "precio", t: "number", label: "Precio ($)", help: "Vacío = “Consultar precio”." },
+      { k: "precio", t: "number", label: "Precio ($) *", help: "Obligatorio: sin precio el producto no sale en la tienda." },
       { k: "precioTexto", t: "text", label: "Cómo se muestra el precio (opcional)", help: "Ej.: $6 + $1 por letra" },
       { k: "opciones", t: "list", label: "Set: pares u opciones a elegir (opcional)", help: "Separa con comas, en orden de izquierda a derecha como en la foto. La clienta elige cuáles quiere y paga el Precio por cada uno. Ej.: Gota café, Carey, Negro" },
       { k: "incluye", t: "list", label: "Incluye", help: "Separa con comas. Ej.: Lazo humano, Lazo perrito", when: d => d.marca === "match" },
@@ -349,7 +347,6 @@ const SCHEMAS = {
       { k: "matchy", t: "toggle", label: "Matchy: incluye collar humano a juego", when: d => d.marca === "doggy" && d.configurable },
       { k: "precioHumano", t: "number", label: "Precio del collar humano ($)", help: "Se suma al collar del perro. Vacío = se confirma por WhatsApp.", when: d => d.marca === "doggy" && d.configurable && d.matchy },
       { k: "estilo", t: "select", label: "Tipo de collar que abre", opts: () => [["", "— elegir —"], ...S.data.estilos.map(e => [e.id, e.nombre])], when: d => d.marca === "doggy" && d.configurable, help: "Al tocarlo en la tienda, se abre el armador con este tipo ya elegido." },
-      { k: "ejemplo", t: "toggle", label: "Es un producto de ejemplo" }
     ],
     nuevo: (tab, preset) => ({ nombre: "", marca: preset?.marca || (["club", "doggy", "match"].includes(tab) ? tab : "club"), categoria: preset?.categoria || "", descripcion: "", precio: null, stock: 1, disponible: true, ejemplo: false })
   },
@@ -461,9 +458,11 @@ function thumb(it, col) {
   if (col === "charms") return `<div class="thumb">${iconSvg(it.icono)}</div>`;
   return `<div class="thumb" aria-hidden="true">${{ club: "🍒", doggy: "🐶", match: "💞" }[it.marca] || "🦴"}</div>`;
 }
+const listo = p => !!(String(p.nombre || "").trim() && p.categoria && (p.configurable || (p.precio != null && p.precio !== "" && !isNaN(+p.precio))));
 function prodInfo(p) {
   const t = [];
-  t.push(p.precio == null || p.precio === "" ? `<span class="warn">Sin precio</span>` : `<span class="pr">${esc(p.precioTexto || money(p.precio))}</span>`);
+  if (!listo(p)) t.push(`<span class="warn" style="background:#FDECEC;color:#B42318;border-color:#F5C2C0;font-weight:600">No se publica: falta ${!p.categoria ? "categoría" : "precio"}</span>`);
+  if (p.precio != null && p.precio !== "") t.push( `<span class="pr">${esc(p.precioTexto || money(p.precio))}</span>`);
   t.push(`<span>Stock: ${typeof p.stock === "number" ? p.stock : "a pedido"}</span>`);
   if (p.opciones?.length) t.push(`<span>Set · ${p.opciones.length} opciones a ${money(p.precio)} c/u</span>`);
   if (p.configurable) t.push(`<span>Personalizable${p.estilo ? " · " + esc(S.data.estilos.find(e => e.id === p.estilo)?.nombre || p.estilo) : ""}</span>`);
@@ -487,7 +486,7 @@ function row(it, col) {
   return `<div class="row ${it.disponible === false ? "off" : ""}" data-col="${col}" data-id="${esc(it.id)}">
     ${thumb(it, col)}
     <div class="info"><b>${esc(it.nombre || "Sin nombre")}</b><div class="meta">${esc(metaTxt)}${priceTxt ? ` · <span class="price">${esc(priceTxt)}</span>` : ""}</div>
-      ${col === "productos" ? prodInfo(it) : ""}<div class="badges">${stockBadge(it)}${it.ejemplo ? '<span class="badge ex">Ejemplo</span>' : ""}</div></div>
+      ${col === "productos" ? prodInfo(it) : ""}<div class="badges">${stockBadge(it)}</div></div>
     ${col === "promos" || col === "estilos" ? "" : `<div class="stock" data-stock>${st === null ? `<button type="button" class="btn" data-setstock style="width:auto;height:auto;font-size:12px;padding:6px 8px">+ stock</button>` :
       `<button type="button" data-step="-1" aria-label="Restar 1">−</button><output>${st}</output><button type="button" data-step="1" aria-label="Sumar 1">+</button>`}</div>`}
   </div>`;
@@ -574,7 +573,7 @@ function renderAjustes(m) {
     <label class="field">Envíos, tiempos de espera y pagos<textarea id="infoCompra" rows="7" placeholder="Envíos: …&#10;Tiempo de espera: …&#10;Pagos: …">${esc(A.infoCompra || "")}</textarea><small>Escríbelo como quieras que lo lea la clienta. Los saltos de línea se respetan.</small></label>
     <label class="field" style="display:flex;flex-direction:row;align-items:center;gap:8px;font-weight:600"><input type="checkbox" id="creaActivo" ${A.creaActivo ? "checked" : ""} style="width:auto"> “Crea el tuyo” abierto al público <small>(apagado = dice “Próximamente”)</small></label>
     <label class="field">“Crea el tuyo”: precio del gancho y cadena ($)<input id="creaBase" type="number" step="0.5" min="0" value="${A.creaBase ?? ""}"><small>Se suma a los charms que elija. Vacío = “se confirma por WhatsApp”.</small></label><label hidden></label>
-    <h2>Pie de página</h2><label class="field">Texto del pie de página<input id="hPie" value="${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}"></label>
+    
     <h2>🐶 Logo de Doggy Pops</h2>
     ${ajPhoto("Logo de Doggy Pops (va encima de la foto)", "dogLogo", h.doggyLogoId, "img/logo-doggy.png")}
     <button type="submit" class="btn pri">Guardar ajustes</button></form>`;
@@ -588,7 +587,7 @@ function renderAjustes(m) {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, heroId: up.hero, headerId: up.header, pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, heroId: up.hero, headerId: up.header, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 function ajPhoto(label, k, id, fallback) {
@@ -692,6 +691,9 @@ function closeEditor() {
 async function save() {
   const d = ed.data, col = ed.col;
   if (!String(d.nombre || "").trim()) return toast("Ponle un nombre");
+  if (col === "productos" && d.marca !== "match" && !d.categoria) return toast("Elige la categoría");
+  if (col === "productos" && !d.configurable && (d.precio == null || d.precio === "" || isNaN(+d.precio))) return toast("Ponle un precio: es obligatorio");
+  if (col === "productos") delete d.ejemplo;
   d.nombre = d.nombre.trim();
   for (const [k, v] of Object.entries(ed.newPhotos)) d[k] = v || null;
   if (col === "categorias" && S.data.categorias.some(c => c.id !== ed.id && c.marca === d.marca && c.nombre.toLowerCase() === d.nombre.toLowerCase())) return toast("Ya existe una categoría con ese nombre");
@@ -753,15 +755,18 @@ function cartCount() { return cart.reduce((a, c) => a + c.q, 0); }
 const homeCfgX = () => S.ajustes?.home || {};
 const heroBg = () => homeCfgX().heroId ? `style="background-image:url('${blob(homeCfgX().heroId)}')"` : "";
 function footer() {
-  const ig = S.ajustes?.instagram || {}, wa = (S.ajustes?.whatsapp || "").replace(/\D/g, ""), pie = homeCfgX().pie ?? "Hecho con todo el amor del mundo 💖";
-  const igA = (u, t) => u ? `<a class="fl gl" href="https://instagram.com/${esc(u)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>${t} <small>@${esc(u)}</small></a>` : "";
-  return `<footer class="foot"><div class="fls">${igA(ig.club, "Sugar Club")}${igA(ig.doggy, "Doggy Pops")}${wa ? `<a class="fl gl" href="https://wa.me/${wa}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19l-4 1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>WhatsApp</a>` : ""}</div><p>${esc(pie)}</p></footer>`;
+  const ig = S.ajustes?.instagram || {}, wa = (S.ajustes?.whatsapp || "").replace(/\D/g, "");
+  const IG = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>`;
+  const WA = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19l-4 1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`;
+  const a = (href, icon, t) => `<a class="fl" href="${esc(href)}" target="_blank" rel="noopener">${icon}${t}</a>`;
+  return `<footer class="foot">${ig.club ? a("https://instagram.com/" + ig.club, IG, "@" + esc(ig.club)) : ""}${ig.doggy ? a("https://instagram.com/" + ig.doggy, IG, "@" + esc(ig.doggy)) : ""}${wa ? a("https://wa.me/" + wa, WA, "WhatsApp") : ""}</footer>`;
 }
 const doggyLogo = () => homeCfgX().doggyLogoId ? blob(homeCfgX().doggyLogoId) : "img/logo-doggy.png";
 const cartBtn = () => `<button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button>`;
-const closeBtn = `<button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>`;
+let isEditor = false;
+const closeBtn = { toString: () => isEditor ? `<button type="button" class="hp-close" id="hpClose">⚙ Admin</button>` : "" };
 const topBar = (brand, title, back = "hero") => `<div class="top"><button type="button" class="back gl" data-go="${back}" aria-label="Volver">‹ ${back === "hero" ? "Inicio" : "Tienda"}</button><img class="lg" src="${esc(brand === "doggy" ? doggyLogo() : "img/logo-club.png")}" alt="Inicio" data-go="hero"><span class="tt">${esc(title)}</span><span style="display:flex;gap:8px"><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</span></div>`;
-const live = arr => arr.filter(x => x.disponible !== false);
+const live = arr => arr.filter(x => x.disponible !== false && (!("marca" in x) || listo(x)));
 const inStock = x => x.disponible !== false && x.stock !== 0;
 
 function renderHero() {
@@ -822,7 +827,7 @@ const norm = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u030
 function searchProds(q) {
   const words = norm(q).split(/\s+/).filter(Boolean); if (!words.length) return [];
   const visibleCat = p => S.data.categorias.some(c => c.marca === p.marca && c.nombre === p.categoria && c.disponible !== false && !c.bloqueada);
-  return S.data.productos.filter(p => p.disponible !== false && visibleCat(p)).map(p => {
+  return S.data.productos.filter(p => p.disponible !== false && listo(p) && visibleCat(p)).map(p => {
     const hay = norm([p.nombre, p.categoria, p.descripcion, MARCAS[p.marca], ...(p.opciones || [])].join(" "));
     const name = norm(p.nombre); let sc = 0;
     for (const w of words) { if (!hay.includes(w)) return null; sc += name.includes(w) ? 3 : 1; }
@@ -858,7 +863,7 @@ function sendWa(lines, brand = shopBrand) {
 
 /* ---------- “Crea el tuyo”: build a bag charm from the individual charms ---------- */
 const crea = { sel: [] };
-const creaCharms = () => S.data.productos.filter(p => p.marca === "club" && p.categoria === CHARM_CAT && p.disponible !== false);
+const creaCharms = () => S.data.productos.filter(p => p.marca === "club" && p.categoria === CHARM_CAT && p.disponible !== false && listo(p));
 const creaMax = () => S.ajustes?.maxCharmsCrea || 6;
 function creaTotal() { const ch = creaCharms(); return (S.ajustes?.creaBase || 0) + crea.sel.reduce((a, id) => a + (+ch.find(c => c.id === id)?.precio || 0), 0); }
 function renderCrea() {
@@ -1039,6 +1044,9 @@ $("#hp").addEventListener("click", e => {
   clearTimeout(timer);
   if (!db) { $("#main").innerHTML = `<div class="gate"><b>Abre este panel con tu cuenta de Claude.</b><p class="note">Desde aquí no se pueden ver ni guardar los productos.</p></div>`; status("err", "Sin acceso"); return; }
   status("", "Conectado");
+  const who = await window.claude?.use?.("user");
+  isEditor = (await who?.canEdit?.()) ?? false;
+  if (!isEditor) { document.querySelector("body > .wrap")?.setAttribute("hidden", ""); openHome(); }
   for (const col of ["productos", "categorias", "cordones", "charms", "placas", "estilos", "promos"]) {
     db.collection(col).onSnapshot(snap => {
       S.data[col] = snap.docs.map(d => ({ id: d.id, ...d.data() }));
