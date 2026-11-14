@@ -121,14 +121,14 @@ h1 span{color:var(--pink)}
 .hp-logo{justify-self:center;text-align:center;margin:0;position:relative;padding-bottom:clamp(14px,2.4vw,30px);
   font:400 clamp(48px,9vw,104px)/0.9 "Abril Fatface","Didot","Bodoni 72",Georgia,serif;color:#FFF8EE;letter-spacing:-.01em;text-shadow:0 4px 14px rgba(20,40,90,.28)}
 .hp-logo em{position:absolute;right:-4%;bottom:-6px;font:400 clamp(26px,4.4vw,50px)/1 "Great Vibes","Snell Roundhand",cursive;font-style:normal;letter-spacing:0;white-space:nowrap;color:#FFF8EE}
-.hp-board{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,2.2fr) minmax(0,1.2fr);align-items:center;gap:clamp(8px,2vw,32px);min-height:0}
-.hp-icons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,3vh,30px) 10px;align-content:center;justify-items:center}
+.hp-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.6fr) minmax(0,1.2fr);align-items:center;gap:clamp(8px,2vw,32px);min-height:0}
+.hp-icons{display:flex;flex-direction:column;gap:clamp(4px,1.4vh,14px);align-items:center;justify-content:center}
 .ico{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;display:grid;justify-items:center;gap:6px;background:none;border:0;padding:6px;border-radius:8px;
   animation:bob 3.2s ease-in-out infinite;animation-delay:var(--d,0s)}
 .ico:hover,.ico:focus-visible{background:rgba(255,255,255,.25)}
-.ico img{height:clamp(54px,8vh,84px);width:auto;max-width:110px;object-fit:contain;image-rendering:auto;pointer-events:none;filter:drop-shadow(0 4px 4px rgba(0,0,0,.25))}
+.ico img{height:clamp(40px,6.4vh,72px);width:auto;max-width:110px;object-fit:contain;image-rendering:auto;pointer-events:none;filter:drop-shadow(0 4px 4px rgba(0,0,0,.25))}
 .ico img.px{image-rendering:pixelated}
-.ico .noimg{width:clamp(54px,8vh,84px);aspect-ratio:1;border-radius:12px;background:var(--c);display:grid;place-items:center;font:400 30px var(--sign);color:#fff;border:3px solid #fff}
+.ico .noimg{width:clamp(40px,6.4vh,72px);aspect-ratio:1;border-radius:12px;background:var(--c);display:grid;place-items:center;font:400 30px var(--sign);color:#fff;border:3px solid #fff}
 .ico b{font:600 clamp(13px,1.5vw,17px)/1.1 var(--mono);color:#111;text-shadow:0 0 3px #fff,0 0 6px #fff;letter-spacing:.02em;text-align:center}
 .ico.locked{opacity:.6;cursor:not-allowed}
 .ico.nudge{animation:nudge .9s ease-in-out}
@@ -146,27 +146,17 @@ h1 span{color:var(--pink)}
 .hp-slot span{font:600 clamp(11px,1.6vw,16px)/1 var(--mono);background:#fff;padding:4px 6px;border-radius:4px;white-space:nowrap}
 .hp-right{display:grid;gap:10px;justify-items:center;align-content:center}
 .dog{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;background:none;border:0;padding:0;display:grid;justify-items:center;animation:bob 3.6s ease-in-out infinite;animation-delay:.6s}
-.dog img{height:clamp(190px,36vh,380px);width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 12px 14px rgba(0,0,0,.3));pointer-events:none}
+.dog img{height:clamp(220px,52vh,520px);width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 12px 14px rgba(0,0,0,.3));pointer-events:none}
 .dog b{margin-top:-14px;background:#FFE14D;border:3px solid var(--ink);border-radius:999px;padding:6px 16px;font:700 clamp(15px,1.8vw,20px)/1 var(--display);box-shadow:0 4px 0 var(--ink);transform:rotate(-3deg)}
 .dog.nudge{animation:nudge .9s ease-in-out;--nx:-14px}
-.phone{position:relative;width:clamp(104px,10.5vw,148px);aspect-ratio:9/17;background:#1b1b22;border-radius:22px;padding:10px 7px 14px;box-shadow:0 10px 18px rgba(0,0,0,.35),inset 0 0 0 2px #444;cursor:pointer;border:0;display:block}
-.phone::before{content:"";position:absolute;top:4px;left:50%;width:30%;height:4px;margin-left:-15%;border-radius:4px;background:#333}
-.phone .scr{width:100%;height:100%;border-radius:14px;overflow:hidden;background:linear-gradient(#FFD1E6,#FF8DC0);display:grid;grid-template-rows:auto 1fr auto;text-align:center;color:var(--ink)}
-.phone .scr .new{font:700 11px var(--mono);background:#E63B2E;color:#fff;padding:4px}
-.phone .scr .im{display:grid;place-items:center;overflow:hidden}
-.phone .scr .im img{width:100%;height:100%;object-fit:cover}
-.phone .scr .im i{font-style:normal;font:700 12px var(--mono);padding:6px;opacity:.7}
-.phone .scr p{margin:0;padding:6px 6px 8px;font:700 clamp(15px,1.6vw,19px)/1.05 var(--hand);background:#fff}
-.phone{animation:ring 6s ease-in-out infinite}
 @keyframes ring{0%,88%,100%{transform:rotate(0)}90%{transform:rotate(-5deg)}92%{transform:rotate(5deg)}94%{transform:rotate(-4deg)}96%{transform:rotate(3deg)}}
 .hp-foot{text-align:center;margin:0;font:700 clamp(19px,2.6vw,26px)/1 var(--hand);color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.35)}
 .hp-ghost{position:fixed;z-index:85;pointer-events:none;transform:translate(-50%,-50%) rotate(-5deg);animation:none}
 @media (max-width:760px){
   .hp-board{grid-template-columns:1fr 1fr;grid-template-areas:"c c" "i i" "r r";row-gap:18px}
-  .hp-c{grid-area:c} .hp-icons{grid-area:i;grid-template-columns:repeat(3,minmax(0,1fr))} .hp-right{grid-area:r;grid-template-columns:auto auto;align-items:end;justify-content:center;gap:16px}
+  .hp-c{grid-area:c} .hp-icons{grid-area:i;flex-direction:row;justify-content:flex-start;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;gap:6px} .hp-icons .ico{flex:none} .hp-right{grid-area:r}
   .dog img{height:190px}
   .hp-logo{margin-top:40px}
-  .phone{width:118px}
 }
 /* the shop window */
 .win{position:fixed;inset:max(10px,4vh) max(10px,4vw);z-index:86;display:grid;grid-template-rows:auto auto 1fr;background:#ECE9D8;border:3px solid #0A246A;border-radius:10px 10px 6px 6px;box-shadow:0 20px 50px rgba(0,0,0,.45);overflow:hidden;font-family:var(--body)}
@@ -179,7 +169,7 @@ h1 span{color:var(--pink)}
 .win .tabsw button[aria-selected="true"]{background:#fff;position:relative;top:2px}
 .win .body{overflow:auto;background:#fff;padding:14px}
 .win .body .note{margin:0 0 10px}
-@media (prefers-reduced-motion:reduce){.ico,.dog,.phone{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.ico,.dog{animation:none!important}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -415,10 +405,6 @@ function renderAjustes(m) {
     <div class="field">Fondo<div class="seg"><button type="button" class="btn" data-hbg="pasto" aria-pressed="${(h.fondo || "pasto") === "pasto"}">Cielo y pasto</button><button type="button" class="btn" data-hbg="cuadros" aria-pressed="${h.fondo === "cuadros"}">Cuadros</button></div></div>
     <label class="field">Frase en cursiva debajo del nombre<input id="hEslogan" maxlength="40" value="${esc(h.eslogan ?? "accesorios hechos a mano")}"><small>Déjala vacía para que no aparezca.</small></label>
     <label class="field">Texto de abajo<input id="hPie" value="${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}"></label>
-    <h2>📱 Novedades (el celular)</h2><p>Lo nuevo que quieres mostrar. Al tocar el celular se abre esa categoría.</p>
-    ${ajPhoto("Foto en la pantalla del celular", "novFoto", (h.novedad || {}).fotoId)}
-    <label class="field">Texto<input id="novTexto" maxlength="40" value="${esc((h.novedad || {}).texto ?? "¡Llegaron las minifiguras!")}"></label>
-    <label class="field">Lleva a la categoría<select id="novCat">${catsDe("club").map(c => `<option ${c.nombre === ((h.novedad || {}).categoria || "Minifiguras") ? "selected" : ""}>${esc(c.nombre)}</option>`).join("")}</select></label>
     <h2>🐶 Botón de Doggy Pops</h2>
     ${ajPhoto("Foto del perrito (PNG sin fondo)", "dogFoto", h.doggyFotoId, "img/doggy-miel.png")}
     <button type="submit" class="btn pri">Guardar ajustes</button></form>`;
@@ -434,7 +420,7 @@ function renderAjustes(m) {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, eslogan: $("#hEslogan").value.trim(), pie: $("#hPie").value, doggyFotoId: up.dogFoto, novedad: { texto: $("#novTexto").value, categoria: $("#novCat").value, fotoId: up.novFoto } } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, eslogan: $("#hEslogan").value.trim(), pie: $("#hPie").value, doggyFotoId: up.dogFoto, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 function ajPhoto(label, k, id, fallback) {
@@ -593,9 +579,8 @@ let hpFilled = 0, hpDrag = null, nudgeTimer = null, winBrand = "club";
 const homeCfg = () => S.ajustes?.home || {};
 function openHome() {
   const h = homeCfg(), cats = catsDe("club").filter(c => c.disponible !== false);
-  const nov = h.novedad || {}, dogSrc = h.doggyFotoId ? blob(h.doggyFotoId) : "img/doggy-miel.png";
+  const dogSrc = h.doggyFotoId ? blob(h.doggyFotoId) : "img/doggy-miel.png";
   const icon = (c, i) => { const src = catIcon(c); return `<button type="button" class="ico ${c.bloqueada ? "locked" : ""}" data-cat="${esc(c.id)}" style="--d:${(i * .37).toFixed(2)}s;--c:${esc(c.color || "#E63B2E")}" aria-label="${esc(c.nombre)}">${src ? `<img class="${/icon-(carpeta|cd|sobre|disquete)/.test(src) ? "px" : ""}" src="${esc(src)}" alt="">` : `<span class="noimg">${esc(c.nombre.charAt(0))}</span>`}<b>${esc(c.nombre)}</b></button>`; };
-  const novSrc = nov.fotoId ? blob(nov.fotoId) : "";
   const hp = $("#hp");
   hp.style.setProperty("--hp-bg", `url("img/fondo-${h.fondo === "cuadros" ? "cuadros" : "pasto"}.jpg")`);
   hp.innerHTML = `<button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>
@@ -605,7 +590,6 @@ function openHome() {
       <div class="hp-c"><div class="hp-tray" id="hpTray"><img src="img/bandeja.png" alt="Bandeja"></div></div>
       <div class="hp-right">
         <button type="button" class="dog" id="hpDog" aria-label="Sugar Doggy Pops"><img src="${esc(dogSrc)}" alt=""><b>Sugar Doggy Pops 🐶</b></button>
-        <button type="button" class="phone" id="hpPhone" aria-label="Novedades: ${esc(nov.texto || "")}"><div class="scr"><div class="new">✨ NUEVO</div><div class="im">${novSrc ? `<img src="${esc(novSrc)}" alt="">` : `<i>foto pronto</i>`}</div><p>${esc(nov.texto || "¡Llegaron las minifiguras!")}</p></div></button>
       </div>
     </div>
     <p class="hp-foot">${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}</p>
@@ -644,7 +628,6 @@ function openWin(brand, catName) {
 }
 function activate(el) {
   if (el.id === "hpDog") { toTray(el.querySelector("img").src, "Doggy Pops"); return setTimeout(() => openWin("doggy"), 350); }
-  if (el.id === "hpPhone") { const n = homeCfg().novedad || {}; return openWin("club", n.categoria || "Minifiguras"); }
   const c = S.data.categorias.find(x => x.id === el.dataset.cat); if (!c) return;
   if (c.bloqueada) return toast(`${c.nombre} llega muy pronto ✨`);
   toTray(catIcon(c), c.nombre); setTimeout(() => openWin("club", c.nombre), 350);
@@ -666,7 +649,7 @@ function hpEnd(e, cancel) {
 }
 hpEl.addEventListener("pointerup", e => hpEnd(e, false));
 hpEl.addEventListener("pointercancel", e => hpEnd(e, true));
-hpEl.addEventListener("click", e => { const p = e.target.closest("#hpPhone"); if (p) activate(p); });
+
 
 /* ---------- boot ---------- */
 (async () => {
