@@ -325,6 +325,8 @@ const SCHEMAS = {
       { k: "fotoId", t: "photo", label: "Foto (PNG sin fondo se ve mejor en la tienda)", fallback: "fotoSrc" },
       { k: "disponible", t: "toggle", label: "Visible en la web" },
       { k: "configurable", t: "toggle", label: "Es personalizable (abre “Arma su collar”)", when: d => d.marca === "doggy" },
+      { k: "matchy", t: "toggle", label: "Matchy: incluye collar humano a juego", when: d => d.marca === "doggy" && d.configurable },
+      { k: "precioHumano", t: "number", label: "Precio del collar humano ($)", help: "Se suma al collar del perro. Vacío = se confirma por WhatsApp.", when: d => d.marca === "doggy" && d.configurable && d.matchy },
       { k: "estilo", t: "select", label: "Tipo de collar que abre", opts: () => [["", "— elegir —"], ...S.data.estilos.map(e => [e.id, e.nombre])], when: d => d.marca === "doggy" && d.configurable, help: "Al tocarlo en la tienda, se abre el armador con este tipo ya elegido." },
       { k: "ejemplo", t: "toggle", label: "Es un producto de ejemplo" }
     ],
@@ -385,16 +387,15 @@ const SCHEMAS = {
     nuevo: () => ({ nombre: "", detalle: "", base: 10, porLetra: 0, tallaL: null, maxLetras: 10, orden: 9, disponible: true })
   },
   promos: {
-    title: "promo", empty: "Aún no hay promos. Ej.: Sparkle Kit gratis, Combo Matchy.",
+    title: "promo", empty: "Aún no hay promos. Al terminar el collar, la clienta elige UN regalo gratis entre las promos activas.",
     fields: [
       { k: "nombre", t: "text", label: "Nombre", req: true },
-      { k: "tipo", t: "select", label: "Tipo de promo", opts: () => [["regalo", "🎁 Regalo gratis con el collar"], ["matchy", "💞 Combo Matchy (collar + llavero)"]] },
+      { k: "cat", t: "select", label: "¿Qué regalo es?", opts: () => [["", "Este mismo (ej. Sparkle Kit)"], ...catsDe("doggy").map(c => [c.nombre, "Uno a elegir de: " + c.nombre])], help: "Si eliges una categoría (ej. Bandanas), la clienta escoge cuál de esos productos quiere gratis." },
       { k: "descripcion", t: "textarea", label: "Descripción" },
       { k: "fotoId", t: "photo", label: "Foto (opcional)" },
-      { k: "descuento", t: "number", label: "Descuento del combo ($)", help: "Se resta cuando agregan el llavero al collar. 0 = sin descuento, solo se muestra el combo.", when: d => d.tipo === "matchy" },
       { k: "disponible", t: "toggle", label: "Promo activa" }
     ],
-    nuevo: () => ({ nombre: "", tipo: "regalo", descripcion: "", descuento: 0, disponible: true })
+    nuevo: () => ({ nombre: "", tipo: "regalo", cat: "", descripcion: "", disponible: true })
   },
   placas: {
     title: "placa", empty: "Aún no hay placas.",
@@ -447,7 +448,7 @@ function row(it, col) {
       <div class="badges">${it.disponible === false ? '<span class="badge hid">Oculta</span>' : ""}${it.bloqueada ? '<span class="badge low">Próximamente</span>' : ""}${!catIcon(it) ? '<span class="badge ex">Falta ícono</span>' : ""}</div></div>
       <div class="count"><b>${n}</b>producto${n === 1 ? "" : "s"}</div></div>`;
   }
-  const metaTxt = col === "productos" ? `${MARCAS[it.marca] || ""}${it.categoria ? " · " + it.categoria : ""}` : col === "cordones" || col === "charms" ? it.tipo : col === "promos" ? (it.tipo === "matchy" ? "💞 Combo Matchy" + (+it.descuento ? " · −" + money(it.descuento) : "") : "🎁 Regalo con el collar") + (it.disponible === false ? " · apagada" : "") : col === "estilos" ? `desde ${money(it.base)}` : "";
+  const metaTxt = col === "productos" ? `${MARCAS[it.marca] || ""}${it.categoria ? " · " + it.categoria : ""}` : col === "cordones" || col === "charms" ? it.tipo : col === "promos" ? (it.cat ? "🎁 Regalo a elegir de " + it.cat : "🎁 Regalo con el collar") + (it.disponible === false ? " · apagada" : "") : col === "estilos" ? `desde ${money(it.base)}` : "";
   const priceTxt = col === "productos" ? (it.precioTexto || money(it.precio)) : col === "charms" ? money(it.precio) : "";
   const st = typeof it.stock === "number" ? it.stock : null;
   return `<div class="row ${it.disponible === false ? "off" : ""}" data-col="${col}" data-id="${esc(it.id)}">
@@ -759,7 +760,7 @@ function renderShop(brand = shopBrand) {
       <div class="info gl">${p ? `<h1>${esc(p.nombre)}</h1><div class="pr">${esc(p.precioTexto || money(p.precio))}</div>
         ${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}
         ${p.configurable ? `<div class="stk">Hecho a mano a su medida</div>` : `<div class="stk">${out ? "Agotado" : typeof p.stock === "number" ? `Quedan ${p.stock}` : "Hecho a pedido"}</div>`}
-        ${p.configurable ? `<div class="row2"><button type="button" class="btnp" data-perso="${esc(p.estilo || "")}">Personalizar 🎨</button></div>` : `<div class="row2"><button type="button" class="btnp" data-add="${esc(p.id)}" ${out ? "disabled" : ""}>Agregar a la canasta</button><button type="button" class="btnp wa" data-wa1="${esc(p.id)}" ${out ? "disabled" : ""}>Pedir por WhatsApp</button></div>`}` : `<div class="emptyg">Esta sección todavía no tiene productos.</div>`}
+        ${p.configurable ? `<div class="row2"><button type="button" class="btnp" data-perso="${esc(p.id)}">${p.matchy ? "Armar mi Matchy 💞" : "Personalizar 🎨"}</button></div>` : `<div class="row2"><button type="button" class="btnp" data-add="${esc(p.id)}" ${out ? "disabled" : ""}>Agregar a la canasta</button><button type="button" class="btnp wa" data-wa1="${esc(p.id)}" ${out ? "disabled" : ""}>Pedir por WhatsApp</button></div>`}` : `<div class="emptyg">Esta sección todavía no tiene productos.</div>`}
         ${ps.length > 1 ? `<div class="thumbs">${ps.map(x => `<button type="button" class="th ${x.stock === 0 ? "out" : ""}" data-prod="${esc(x.id)}" aria-pressed="${x === p}"><span class="im">${prodImg(x) ? `<img src="${esc(prodImg(x))}" alt="" loading="lazy">` : "🍒"}</span><b>${esc(x.nombre)}</b><span>${esc(x.precioTexto || money(x.precio))}</span></button>`).join("")}</div>` : ""}
       </div>
     </div></section>${closeBtn}`;
@@ -813,7 +814,7 @@ function renderCrea() {
 function creaSummary() { const ch = creaCharms(); return crea.sel.map(id => ch.find(c => c.id === id)?.nombre).filter(Boolean).join(" + "); }
 
 /* ---------- Doggy “Arma su collar”: step by step, all options from the Arma collar tab ---------- */
-const col = { step: 1, estilo: null, talla: "M", cordones: [], nombre: "", charms: [], placa: null, numero: "", llavero: false, palabra: "DOG MOM" };
+const col = { step: 1, estilo: null, talla: "M", cordones: [], nombre: "", charms: [], placa: null, numero: "", llavero: false, palabra: "DOG MOM", regalo: null, matchy: null, humano: "" };
 const COL_STEPS = ["Collar y cuerda", "Nombre", "Charms", "Extras y promos", "Resumen"];
 const cEstilos = () => live(S.data.estilos).sort((a, b) => (a.orden || 0) - (b.orden || 0));
 const cEstilo = () => cEstilos().find(e => e.id === col.estilo) || cEstilos()[0];
@@ -832,11 +833,13 @@ function colLines() {
   if (e.porLetra) L.push({ t: `${nLetras(nombreUsado())} letras (${nombreUsado() || "—"})`, v: e.porLetra * nLetras(nombreUsado()) });
   col.charms.forEach(id => { const c = S.data.charms.find(x => x.id === id); if (c) L.push({ t: `Charm ${c.nombre}`, v: +c.precio || 0 }); });
   if (kindOf(e) === "placa" && col.numero.trim()) L.push({ t: "Número atrás de la placa", v: A.numeroAtras?.precio || 0 });
-  promosDe("regalo").forEach(p => L.push({ t: `🎁 ${p.nombre}`, v: 0, gratis: true }));
-  const mx = promosDe("matchy")[0]; if (col.llavero && mx && +mx.descuento) L.push({ t: `💞 ${mx.nombre}`, v: -mx.descuento });
+  if (col.matchy) L.push({ t: `💞 Collar humano a juego${col.humano.trim() ? ` “${col.humano.trim().toUpperCase()}”` : ""}`, v: +col.matchy.precioHumano || 0, conf: col.matchy.precioHumano == null || col.matchy.precioHumano === "" });
+  const rg = regaloSel(); if (rg) L.push({ t: `🎁 ${rg.nombre} (promo)`, v: 0, gratis: true });
   if (col.llavero) { const ll = A.llavero || {}; L.push({ t: `Llavero match “${col.palabra.trim() || "—"}”`, v: kindOf(e) === "placa" ? (ll.conPlaca || 0) : (ll.base || 0) + (ll.porLetra || 0) * nLetras(col.palabra.trim()) }); }
   return L;
 }
+const giftOpts = () => promosDe("regalo").flatMap(p => p.cat ? S.data.productos.filter(x => x.marca === "doggy" && x.categoria === p.cat && inStock(x)).map(x => ({ key: "p:" + x.id, nombre: x.nombre, img: prodImg(x), desc: p.nombre })) : [{ key: "r:" + p.id, nombre: p.nombre, img: itemImg(p), desc: p.descripcion }]);
+const regaloSel = () => giftOpts().find(o => o.key === col.regalo) || null;
 const promosDe = t => S.data.promos.filter(p => p.disponible !== false && p.tipo === t);
 const colTotal = () => colLines().reduce((a, l) => a + l.v, 0);
 const cordBg = ids => { const cs = ids.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []); const c = cs.length ? cs : ["#F5A3C7"]; return `conic-gradient(${c.map((x, i) => `${x} ${i * 100 / c.length}% ${(i + 1) * 100 / c.length}%`).join(",")})`; };
@@ -854,7 +857,7 @@ function colPreview() {
       ${k === "placa" ? `<div class="tag" ${pl && itemImg(pl) ? `style="background:url('${esc(itemImg(pl))}') center/cover;color:#fff;text-shadow:0 1px 3px #000"` : ""}>${esc(name || "NOMBRE")}</div>`
         : `<div class="beads">${(name || (k === "dije" ? "R" : "NOMBRE")).replace(/\s/g, "").split("").map((ch, i) => `<span class="bead" style="background:${BEADS[i % BEADS.length]}">${esc(ch)}</span>`).join("")}</div>`}
     </div>
-    <ul class="lines">${colLines().map(l => `<li><span>${esc(l.t)}</span><span>${l.gratis ? "Gratis" : l.v < 0 ? "−" + money(-l.v) : l.v ? money(l.v) : "Incluido"}</span></li>`).join("")}</ul>
+    <ul class="lines">${colLines().map(l => `<li><span>${esc(l.t)}</span><span>${l.gratis ? "Gratis" : l.conf ? "por confirmar" : l.v < 0 ? "−" + money(-l.v) : l.v ? money(l.v) : "Incluido"}</span></li>`).join("")}</ul>
     <div class="tot">Total ${money(colTotal())}</div>`;
 }
 function colPanel() {
@@ -866,13 +869,14 @@ function colPanel() {
   if (col.step === 2) return `<h3>${k === "dije" ? "Su inicial" : "Nombre de tu peludito"}</h3><input class="inpt" id="colName" maxlength="${k === "dije" ? 1 : e?.maxLetras || 10}" autocomplete="off" value="${esc(col.nombre)}" aria-label="Nombre">
     <p class="hint" style="text-align:left">${k === "letras" && e?.porLetra ? `Cada letra suma ${money(e.porLetra)}. Hasta ${e.maxLetras || 10} letras.` : k === "placa" ? "Va grabado en la placa." : "El dije lleva una letra."}</p>`;
   if (col.step === 3) { const ch = cCharms(); return `<h3>Charms · ${col.charms.length}/${A.maxCharms || 4}</h3>${ch.length ? `<div class="opts">${ch.map(c => `<button type="button" class="opt2" data-ctog="charms" data-v="${esc(c.id)}" aria-pressed="${col.charms.includes(c.id)}"><span class="ph">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy">` : iconSvg(c.icono)}</span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)}</span></button>`).join("")}</div>` : `<div class="emptyg">Pronto ✨</div>`}<p class="hint" style="text-align:left">Toca de nuevo para quitarlo. Los charms son opcionales.</p>`; }
-  if (col.step === 4) { const ll = A.llavero || {}, mx = promosDe("matchy")[0], gifts = promosDe("regalo"); return `${gifts.length ? `<h3>🎁 Gratis con su collar</h3><div class="opts">${gifts.map(g => `<div class="opt2" aria-pressed="true">${itemImg(g) ? `<span class="ph"><img src="${esc(itemImg(g))}" alt="" loading="lazy"></span>` : ""}<b>${esc(g.nombre)}</b>${g.descripcion ? `<small>${esc(g.descripcion)}</small>` : ""}<span class="p">Gratis</span></div>`).join("")}</div>` : ""}${k === "placa" ? `<h3>Placa</h3><div class="opts">${cPlacas().map(x => `<button type="button" class="opt2" data-cset="placa" data-v="${esc(x.id)}" aria-pressed="${x.id === col.placa}">${itemImg(x) ? `<span class="ph"><img src="${esc(itemImg(x))}" alt="" loading="lazy"></span>` : ""}<b>${esc(x.nombre)}</b></button>`).join("")}</div>
+  if (col.step === 4) { const ll = A.llavero || {}; return `${col.matchy ? `<h3>💞 Tu collar a juego (Matchy)</h3><p class="hint" style="text-align:left">Hacemos el tuyo con los mismos colores${col.matchy.precioHumano != null && col.matchy.precioHumano !== "" ? ` · ${money(col.matchy.precioHumano)}` : ""}. ¿Qué palabra o nombre lleva? (opcional)</p><input class="inpt" id="colHum" maxlength="12" placeholder="Ej. tu nombre o DOG MOM" value="${esc(col.humano)}" aria-label="Palabra del collar humano">` : ""}${k === "placa" ? `<h3>Placa</h3><div class="opts">${cPlacas().map(x => `<button type="button" class="opt2" data-cset="placa" data-v="${esc(x.id)}" aria-pressed="${x.id === col.placa}">${itemImg(x) ? `<span class="ph"><img src="${esc(itemImg(x))}" alt="" loading="lazy"></span>` : ""}<b>${esc(x.nombre)}</b></button>`).join("")}</div>
     <h3>Número atrás (opcional${A.numeroAtras?.precio ? ` · ${money(A.numeroAtras.precio)}` : ""})</h3><input class="inpt" id="colNum" inputmode="tel" maxlength="14" placeholder="099 123 4567" value="${esc(col.numero)}" aria-label="Número atrás de la placa">` : ""}
-    ${mx ? `<h3>💞 ${esc(mx.nombre)}${+mx.descuento ? ` · ahorras ${money(mx.descuento)}` : ""}</h3>${mx.descripcion ? `<p class="hint" style="text-align:left">${esc(mx.descripcion)}</p>` : ""}` : ""}<h3>Llavero match para ti · ${k === "placa" ? money(ll.conPlaca) : `${money(ll.base)} + ${money(ll.porLetra)}/letra`}</h3>
+    <h3>Llavero match para ti · ${k === "placa" ? money(ll.conPlaca) : `${money(ll.base)} + ${money(ll.porLetra)}/letra`}</h3>
     <div class="opts"><button type="button" class="opt2" data-go="colLlv" aria-pressed="${col.llavero}"><b>${col.llavero ? "✓ Llavero agregado" : "Agregar llavero"}</b></button></div>
     ${col.llavero ? `<input class="inpt" id="colPal" maxlength="10" value="${esc(col.palabra)}" aria-label="Palabra del llavero"><div class="steps2">${["DOG MOM", "CAT MOM", "DOG DAD", nombreUsado()].filter(Boolean).map(w => `<button type="button" data-cset="palabra" data-v="${esc(w)}">${esc(w)}</button>`).join("")}</div>` : ""}
     <p class="hint" style="text-align:left">El cierre lo elegimos nosotras para que combine con tus colores.</p>`; }
-  return `<h3>Tu pedido</h3><ul class="lines" style="font-size:14px">${colLines().map(l => `<li><span>${esc(l.t)}</span><b>${l.gratis ? "Gratis" : l.v < 0 ? "−" + money(-l.v) : l.v ? money(l.v) : "Incluido"}</b></li>`).join("")}<li style="font-size:18px"><span>Total</span><b>${money(colTotal())}</b></li></ul>
+  const gifts = giftOpts();
+  return `${gifts.length ? `<h3>🎁 Elige tu regalo de promo</h3><p class="hint" style="text-align:left">Con tu collar te llevas uno de estos gratis:</p><div class="opts">${gifts.map(o => `<button type="button" class="opt2" data-gift="${esc(o.key)}" aria-pressed="${o.key === col.regalo}">${o.img ? `<span class="ph"><img src="${esc(o.img)}" alt="" loading="lazy"></span>` : `<span class="ph" style="font-size:34px">🎁</span>`}<b>${esc(o.nombre)}</b>${o.desc ? `<small>${esc(o.desc)}</small>` : ""}<span class="p">$0 · Gratis</span></button>`).join("")}</div>` : ""}<h3>Tu pedido</h3><ul class="lines" style="font-size:14px">${colLines().map(l => `<li><span>${esc(l.t)}</span><b>${l.gratis ? "Gratis" : l.conf ? "por confirmar" : l.v < 0 ? "−" + money(-l.v) : l.v ? money(l.v) : "Incluido"}</b></li>`).join("")}<li style="font-size:18px"><span>Total</span><b>${money(colTotal())}</b></li></ul>
     <p class="hint" style="text-align:left">Cuerda: ${esc(col.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—")}</p>
     <div class="row2"><button type="button" class="btnp" data-go="colAdd">Agregar a la canasta</button><button type="button" class="btnp wa" data-go="colWa">Enviar pedido por WhatsApp</button></div>`;
 }
@@ -880,7 +884,7 @@ function colOrder() {
   const e = cEstilo(), k = kindOf(e), pl = S.data.placas.find(x => x.id === col.placa);
   return [`• Tipo: ${e?.nombre || "—"}`, `• Talla: ${col.talla}`, `• Cuerda: ${col.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—"}`,
     `• ${k === "dije" ? "Inicial" : "Nombre"}: ${nombreUsado() || "—"}`, k === "placa" && pl ? `• Placa: ${pl.nombre}` : null, k === "placa" && col.numero.trim() ? `• Número atrás: ${col.numero.trim()}` : null,
-    `• Charms: ${col.charms.map(id => S.data.charms.find(c => c.id === id)?.nombre).filter(Boolean).join(", ") || "sin charms"}`, col.llavero ? `• Llavero match: ${col.palabra.trim()}` : null, ...promosDe("regalo").map(p => `• 🎁 ${p.nombre} (gratis)`), col.llavero && promosDe("matchy")[0] ? `• 💞 ${promosDe("matchy")[0].nombre}` : null].filter(Boolean);
+    `• Charms: ${col.charms.map(id => S.data.charms.find(c => c.id === id)?.nombre).filter(Boolean).join(", ") || "sin charms"}`, col.llavero ? `• Llavero match: ${col.palabra.trim()}` : null, col.matchy ? `• 💞 Matchy: collar humano a juego${col.humano.trim() ? ` “${col.humano.trim().toUpperCase()}”` : ""}` : null, regaloSel() ? `• 🎁 Regalo de promo: ${regaloSel().nombre} ($0)` : null].filter(Boolean);
 }
 function renderCollar() {
   view = "collar"; shopBrand = "doggy";
@@ -888,7 +892,7 @@ function renderCollar() {
   if (!col.estilo || !E.some(e => e.id === col.estilo)) col.estilo = E[0]?.id || null;
   const cords = cCords(); col.cordones = col.cordones.filter(id => cords.some(c => c.id === id)); if (!col.cordones.length && cords[0]) col.cordones = [cords[0].id];
   const pls = cPlacas(); if (!pls.some(p => p.id === col.placa)) col.placa = pls[0]?.id || null;
-  $("#hp").innerHTML = `<section class="shop">${topBar("doggy", "Arma su collar", "doggy")}${bubbles("doggy", "make")}
+  $("#hp").innerHTML = `<section class="shop">${topBar("doggy", col.matchy ? "Arma tu Matchy 💞" : "Arma su collar", "doggy")}${bubbles("doggy", "make")}
     <div class="bld">
       <div class="prev gl" id="colPrev" aria-live="polite">${colPreview()}</div>
       <div class="pick gl"><div class="steps2" role="tablist">${COL_STEPS.map((t, i) => `<button type="button" role="tab" data-cst="${i + 1}" aria-selected="${col.step === i + 1}">${i + 1} · ${t}</button>`).join("")}</div>
@@ -904,10 +908,11 @@ $("#hp").addEventListener("input", e => {
   const t = e.target;
   if (t.id === "colName") { t.value = t.value.toUpperCase().replace(/[^A-ZÁÉÍÓÚÑÜ0-9 ]/g, ""); col.nombre = t.value; colRefresh(); }
   if (t.id === "colNum") { col.numero = t.value; colRefresh(); }
+  if (t.id === "colHum") { col.humano = t.value; colRefresh(); }
   if (t.id === "colPal") { t.value = t.value.toUpperCase(); col.palabra = t.value; colRefresh(); }
 });
 $("#hp").addEventListener("click", e => {
-  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-perso],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
+  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-perso],[data-gift],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
   if (t.id === "hpClose") return closeHome();
   if (t.dataset.step) { const ps = live(prodsDe(shopCat)), i = ps.findIndex(p => p.id === shopProd?.id); shopProd = ps[(i + +t.dataset.step + ps.length) % ps.length]; return renderShop(); }
   if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return sendWa([`• 1 × ${p.nombre} – ${p.precioTexto || money(p.precio)}`], p.marca); }
@@ -915,7 +920,8 @@ $("#hp").addEventListener("click", e => {
   if (t.dataset.prod) { shopProd = S.data.productos.find(p => p.id === t.dataset.prod); renderShop(shopCat?.marca); $("#hp").scrollTo({ top: 0, behavior: "smooth" }); return; }
   if (t.dataset.add) { addToCart(prodLine(S.data.productos.find(p => p.id === t.dataset.add))); return renderShop(); }
   if (t.dataset.q) { const l = cart[+t.dataset.q]; if (l) { l.q += +t.dataset.d; if (l.q <= 0) cart.splice(+t.dataset.q, 1); } return renderCart(); }
-  if (t.dataset.perso !== undefined) { if (t.dataset.perso) col.estilo = t.dataset.perso; col.step = 1; renderCollar(); $("#hp").scrollTo({ top: 0 }); return; }
+  if (t.dataset.perso) { const pp = S.data.productos.find(x => x.id === t.dataset.perso); if (pp?.estilo) col.estilo = pp.estilo; col.matchy = pp?.matchy ? { nombre: pp.nombre, precioHumano: pp.precioHumano } : null; col.step = 1; renderCollar(); $("#hp").scrollTo({ top: 0 }); return; }
+  if (t.dataset.gift) { col.regalo = col.regalo === t.dataset.gift ? null : t.dataset.gift; return renderCollar(); }
   if (t.dataset.ch) { const y = $("#hp").scrollTop; setTimeout(() => $("#hp").scrollTop = y); const i = crea.sel.indexOf(t.dataset.ch); if (i >= 0) crea.sel.splice(i, 1); else if (crea.sel.length < creaMax()) crea.sel.push(t.dataset.ch); else toast(`Máximo ${creaMax()} charms`); return renderCrea(); }
   if (t.dataset.rm) { crea.sel.splice(+t.dataset.rm, 1); return renderCrea(); }
   if (t.dataset.cst) { col.step = +t.dataset.cst; renderCollar(); $("#hp").scrollTo({ top: 0, behavior: "smooth" }); return; }
@@ -933,11 +939,11 @@ $("#hp").addEventListener("click", e => {
   if (g === "hero") return renderHero();
   if (g === "top") return $("#hp").scrollTo({ top: 0, behavior: "smooth" });
   if (g === "crea") return renderCrea();
-  if (g === "collar") return renderCollar();
+  if (g === "collar") { col.matchy = null; return renderCollar(); }
   if (g === "creaAdd") { addToCart({ key: "crea-" + crea.sel.join("+"), nombre: "Bag charm armado", detalle: creaSummary(), precio: creaTotal(), precioTexto: money(creaTotal()) + (S.ajustes?.creaBase == null ? " + gancho" : ""), img: prodImg(creaCharms().find(c => c.id === crea.sel[0])), marca: "club" }); crea.sel = []; return renderCrea(); }
   if (g === "creaWa") return sendWa([`• Bag charm armado: ${creaSummary()}`, `Total: ${money(creaTotal())}${S.ajustes?.creaBase == null ? " + gancho y cadena (me confirmas)" : ""}`], "club");
   if (g === "colLlv") { col.llavero = !col.llavero; return renderCollar(); }
-  if (g === "colAdd") { addToCart({ key: "col-" + Date.now(), nombre: `Collar ${cEstilo()?.nombre || ""} · ${nombreUsado() || "sin nombre"}`, detalle: colOrder().map(x => x.slice(2)).join(" · "), precio: colTotal(), precioTexto: money(colTotal()), img: itemImg(cEstilo()), marca: "doggy" }); return renderCollar(); }
+  if (g === "colAdd") { addToCart({ key: "col-" + Date.now(), nombre: `${col.matchy ? "Matchy" : "Collar"} ${cEstilo()?.nombre || ""} · ${nombreUsado() || "sin nombre"}`, detalle: colOrder().map(x => x.slice(2)).join(" · "), precio: colTotal(), precioTexto: money(colTotal()), img: itemImg(cEstilo()), marca: "doggy" }); return renderCollar(); }
   if (g === "colWa") return sendWa(["Este collar 🐾", ...colOrder(), `Total: ${money(colTotal())}`], "doggy");
   if (g === "cart") return renderCart();
   if (g === "closecart") return $("#hpCart")?.remove();
