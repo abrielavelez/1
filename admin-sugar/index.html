@@ -2,15 +2,16 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800;900&family=Bagel+Fat+One&family=Caveat:wght@700&display=swap">
 <style>
-/* Layout: a back-office for one person on a phone — sticky header, three tabs, long scannable lists, full-screen editor sheet. Sugar pastel world, single theme by choice. */
+/* Layout: a back-office for one person on a phone — sticky header, four tabs, long scannable lists, full-screen editor sheet, plus a full-screen home preview built from the same data. Sugar pastel world, single theme by choice. */
 :root{
   --bg:#FFF8E4; --card:#FFFFFF; --ink:#2A1638; --soft:#6B5A78; --line:#E9DFF3;
-  --pink:#E66A92; --cherry:#E63B2E; --yellow:#F5D738; --blue:#3E9AD6; --green:#34A96A; --purple:#7B3AF5;
-  --ok:#1F8A4C; --warn:#C2410C;
+  --pink:#E66A92; --cherry:#E63B2E; --yellow:#F5D738; --blue:#3E9AD6; --green:#34A96A; --purple:#7B3AF5; --paper:#FFFDF6;
   --display:"Fredoka","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
   --body:"Nunito","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --sign:"Bagel Fat One","Cooper Black","Arial Black",sans-serif;
+  --hand:"Caveat","Bradley Hand","Segoe Print",cursive;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -26,29 +27,34 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var
 .hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
 h1{margin:0;font:700 26px/1 var(--display)}
 h1 span{color:var(--pink)}
+.hright{display:flex;gap:8px;align-items:center}
 .status{font-size:12px;font-weight:900;padding:4px 10px;border-radius:999px;background:#fff;border:2px solid var(--line);white-space:nowrap}
 .status.saving{border-color:var(--yellow)} .status.err{border-color:var(--cherry);color:var(--cherry)}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:4px}
-.tabs button{border:0;background:transparent;border-radius:12px;padding:9px 4px;font-weight:900;cursor:pointer}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:4px}
+.tabs button{border:0;background:transparent;border-radius:12px;padding:9px 2px;font-weight:900;font-size:13px;cursor:pointer}
 .tabs button[aria-selected="true"]{background:var(--ink);color:#fff}
 .sub{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .chip{flex:none;border:2px solid var(--ink);background:#fff;border-radius:999px;padding:6px 13px;font-weight:900;font-size:13px;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--yellow)}
 .tools{display:flex;gap:8px}
 .tools input{flex:1;min-width:0;border:2px solid var(--line);border-radius:12px;padding:9px 12px;background:#fff}
-.btn{border:2px solid var(--ink);border-radius:12px;padding:9px 14px;font-weight:900;cursor:pointer;background:#fff;white-space:nowrap}
+.btn{border:2px solid var(--ink);border-radius:12px;padding:9px 14px;font-weight:900;cursor:pointer;background:#fff;white-space:nowrap;text-decoration:none}
 .btn.pri{background:var(--ink);color:#fff}
+.btn.home{background:#7BC86C;border-color:var(--ink)}
 .btn.danger{border-color:var(--cherry);color:var(--cherry)}
 .btn.danger.sure{background:var(--cherry);color:#fff}
 .summary{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;font-weight:900;color:var(--soft)}
 .summary b{color:var(--ink)}
 .list{display:grid;gap:8px;margin-top:6px}
+.group{font:700 15px var(--display);margin:10px 0 0;color:var(--soft)}
 .row{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:8px;cursor:pointer}
 .row:hover{border-color:var(--ink)}
 .row.off{opacity:.55}
 .thumb{width:56px;height:56px;border-radius:12px;background:#F4ECFA;display:grid;place-items:center;overflow:hidden;font-size:24px}
+.thumb.round{border-radius:50%;border:2px solid var(--ink)}
 .thumb img{width:100%;height:100%;object-fit:cover}
 .thumb svg{width:44px;height:44px}
+.thumb .mono{font:400 24px var(--sign);color:#fff}
 .info{min-width:0}
 .info b{display:block;font:700 16px/1.15 var(--display);overflow-wrap:anywhere}
 .meta{font-size:12px;color:var(--soft);font-weight:800}
@@ -56,6 +62,8 @@ h1 span{color:var(--pink)}
 .badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
 .badge{font-size:10.5px;font-weight:900;border-radius:999px;padding:2px 7px;background:#F4ECFA}
 .badge.out{background:#FDE2E0;color:var(--cherry)} .badge.low{background:#FFF0C2;color:#8A5A00} .badge.hid{background:#E8E8EE} .badge.ex{background:#E0EEFF}
+.count{font-weight:900;font-size:13px;text-align:right;color:var(--soft)}
+.count b{display:block;font:700 20px var(--display);color:var(--ink)}
 .stock{display:flex;align-items:center;gap:4px}
 .stock button{width:34px;height:34px;border-radius:10px;border:2px solid var(--ink);background:#fff;font-weight:900;font-size:18px;cursor:pointer;line-height:1}
 .stock output{min-width:30px;text-align:center;font-weight:900;font-variant-numeric:tabular-nums}
@@ -65,15 +73,18 @@ h1 span{color:var(--pink)}
 .panel p{margin:0;color:var(--soft);font-size:13px}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .grid3 .h{font-size:11px;font-weight:900;color:var(--soft);text-transform:uppercase;letter-spacing:.04em}
+.grid3 input{border:2px solid var(--line);border-radius:10px;padding:8px;min-width:0;width:100%}
 .field{display:grid;gap:4px;font-size:13px;font-weight:900}
 .field small{font-weight:700;color:var(--soft)}
 .field input,.field select,.field textarea{width:100%;min-width:0;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;font-weight:700}
+.field input[type=color]{width:64px;height:44px;padding:3px;border-color:var(--ink)}
 .field textarea{min-height:70px;resize:vertical}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink);outline:none}
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:900;cursor:pointer;background:#fff;width:100%;text-align:left}
 .toggle i{width:44px;height:26px;border-radius:999px;background:#DDD3E8;position:relative;flex:none;transition:background .15s}
 .toggle i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}
 .toggle[aria-pressed="true"] i{background:var(--green)} .toggle[aria-pressed="true"] i::after{left:21px}
+.seg{display:flex;gap:6px}.seg .btn{flex:1}.seg .btn[aria-pressed="true"]{background:var(--yellow)}
 .colors{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .colors label{position:relative}
 .colors input[type=color]{width:46px;height:46px;border:2px solid var(--ink);border-radius:50%;padding:0;background:none;cursor:pointer}
@@ -81,8 +92,11 @@ h1 span{color:var(--pink)}
 .colors .x{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);background:#fff;font-size:11px;font-weight:900;cursor:pointer;padding:0;line-height:1}
 .photo{display:flex;gap:12px;align-items:center}
 .photo .pv{width:88px;height:88px;border-radius:14px;background:#F4ECFA;overflow:hidden;display:grid;place-items:center;flex:none;color:var(--soft);font-size:12px;font-weight:800;text-align:center}
+.photo .pv.round{border-radius:50%;border:2px solid var(--ink)}
 .photo .pv img{width:100%;height:100%;object-fit:cover}
 .photo input[type=file]{position:absolute;width:1px;height:1px;opacity:0}
+.inlist{display:grid;gap:6px}
+.inlist .it{display:flex;justify-content:space-between;gap:8px;font-weight:800;font-size:13px;background:#fff;border:2px solid var(--line);border-radius:10px;padding:7px 10px;cursor:pointer}
 .sheet{position:fixed;inset:0;z-index:50;background:rgba(42,22,56,.5);display:flex;align-items:flex-end;justify-content:center}
 .sheet .card{background:var(--bg);width:min(620px,100%);max-height:100%;overflow:auto;border-radius:22px 22px 0 0;
   padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;gap:12px}
@@ -90,17 +104,65 @@ h1 span{color:var(--pink)}
 .sheet h2{margin:0;font:700 22px var(--display)}
 .sheet .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;position:sticky;bottom:calc(-16px - env(safe-area-inset-bottom,0px));background:var(--bg);padding-block:10px}
 .note{font-size:12.5px;color:var(--soft);font-weight:700}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;font-weight:900;padding:10px 16px;border-radius:12px;max-width:calc(100vw - 32px);text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;font-weight:900;padding:10px 16px;border-radius:12px;max-width:calc(100vw - 32px);text-align:center}
 .gate{max-width:420px;margin:60px auto;text-align:center;background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- home preview (same look as the public home) ---------- */
+.hp{position:fixed;inset:0;z-index:80;overflow:auto;background:#7BC86C var(--hp-bg,url("img/fondo-pasto.jpg")) center/cover;
+  padding:calc(12px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:grid;grid-template-rows:auto 1fr;gap:10px}
+.hp-top{text-align:center;position:relative}
+.hp-close{position:absolute;right:0;top:0;border:3px solid var(--ink);border-radius:999px;background:#fff;padding:7px 14px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 var(--ink);z-index:2}
+.hp-logo{display:inline-block;background:#fff;border-radius:999px;padding:6px 22px 10px;box-shadow:0 6px 0 rgba(42,22,56,.25)}
+.hp-logo b{font:400 clamp(28px,6vw,54px)/1 var(--sign);color:var(--cherry)}
+.hp-logo img{max-height:clamp(54px,9vw,96px);display:block}
+.hp-logo.img{background:none;box-shadow:none;padding:0}
+.hp-top p{margin:8px auto 0;display:table;background:var(--paper);padding:4px 14px 6px;border-radius:10px;font:700 clamp(19px,3.4vw,26px)/1 var(--hand);transform:rotate(-1.5deg)}
+.hp-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) minmax(0,1fr);align-items:center;gap:clamp(8px,2.5vw,40px)}
+.hp-col{display:flex;flex-direction:column;gap:clamp(10px,2vh,20px)}
+.hp-col.l{align-items:flex-start} .hp-col.r{align-items:flex-end}
+.hsec{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;display:flex;align-items:center;gap:10px;background:#fff;border:3px solid var(--ink);border-radius:999px;
+  padding:6px 16px 6px 6px;box-shadow:0 5px 0 var(--ink);font:900 clamp(13px,1.6vw,18px)/1.05 var(--body);text-align:left;max-width:100%}
+.hp-col.r .hsec{flex-direction:row-reverse;padding:6px 6px 6px 16px;text-align:right}
+.hsec .pic{width:clamp(44px,6vw,74px);aspect-ratio:1;border-radius:50%;flex:none;overflow:hidden;background:var(--c);display:grid;place-items:center;border:2px solid var(--ink)}
+.hsec .pic img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.hsec .pic .mono{font:400 clamp(20px,3vw,32px)/1 var(--sign);color:#fff}
+.hsec small{display:block;font:700 clamp(14px,1.6vw,19px)/1 var(--hand);color:var(--cherry)}
+.hsec.locked{background:#F3EDF6;border-style:dashed;cursor:not-allowed}
+.hp-tray{position:relative;width:100%;max-width:760px;margin:0 auto;filter:drop-shadow(0 18px 22px rgba(20,60,10,.35))}
+.hp-tray>img{width:100%;display:block;pointer-events:none}
+.hp-tray.over{filter:drop-shadow(0 0 18px #fff) drop-shadow(0 0 8px var(--yellow))}
+.hp-slot{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;pointer-events:none}
+.hp-slot img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(0,0,0,.35))}
+.hp-slot span{font:700 clamp(14px,2.4vw,24px)/1 var(--hand);background:var(--paper);padding:4px 8px;border-radius:6px;white-space:nowrap}
+.hp-ghost{position:fixed;z-index:85;pointer-events:none;transform:translate(-50%,-50%) rotate(-5deg)}
+@media (max-width:620px){
+  .hp-board{grid-template-columns:1fr 1fr;grid-template-areas:"c c" "l r";align-items:start;row-gap:30px}
+  .hp-c{grid-area:c} .hp-col.l{grid-area:l} .hp-col.r{grid-area:r}
+  .hp-col.l,.hp-col.r{align-items:stretch}
+  .hsec,.hp-col.r .hsec{width:100%;padding:5px 10px 5px 5px;gap:8px;font-size:13px}
+  .hp-col.r .hsec{padding:5px 5px 5px 10px}
+  .hsec .pic{width:42px}
+}
+.hp-sheet{position:fixed;left:0;right:0;bottom:0;z-index:86;max-height:78%;overflow:auto;background:var(--paper);border-radius:22px 22px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.25);
+  padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;gap:10px}
+.hp-sheet h3{margin:0;font:400 26px var(--sign);color:var(--cherry)}
+.hp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.hp-card{background:#fff;border:2px solid var(--ink);border-radius:14px;overflow:hidden;display:grid}
+.hp-card .im{aspect-ratio:1;background:#F4ECFA;display:grid;place-items:center;font-size:30px}
+.hp-card .im img{width:100%;height:100%;object-fit:cover}
+.hp-card div.t{padding:8px;font-weight:900;font-size:13px}
+.hp-card div.t span{display:block;color:var(--cherry)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
 <div class="wrap">
   <header>
-    <div class="hrow"><h1>Sugar <span>Admin</span></h1><span class="status" id="status" role="status">Conectando…</span></div>
+    <div class="hrow"><h1>Sugar <span>Admin</span></h1><div class="hright"><button type="button" class="btn home" id="homeBtn">🏡 Ver home</button><span class="status" id="status" role="status">Conectando…</span></div></div>
     <nav class="tabs" role="tablist" aria-label="Secciones">
       <button type="button" role="tab" data-tab="productos" aria-selected="true">Productos</button>
-      <button type="button" role="tab" data-tab="collar" aria-selected="false">Arma tu collar</button>
+      <button type="button" role="tab" data-tab="categorias" aria-selected="false">Categorías</button>
+      <button type="button" role="tab" data-tab="collar" aria-selected="false">Arma collar</button>
       <button type="button" role="tab" data-tab="ajustes" aria-selected="false">Ajustes</button>
     </nav>
     <div class="sub" id="subnav"></div>
@@ -109,6 +171,7 @@ h1 span{color:var(--pink)}
   <main id="main"><div class="empty">Cargando tu tienda…</div></main>
 </div>
 <div class="sheet" id="sheet" hidden><div class="card" id="sheetCard" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
+<div class="hp" id="hp" hidden></div>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -130,8 +193,9 @@ const ICON = {
   brillo:`<path d="M0,-17 Q3,-3 17,0 Q3,3 0,17 Q-3,3 -17,0 Q-3,-3 0,-17Z" fill="#FFE48A" stroke="${INK}" stroke-width="2.5"/>`
 };
 const iconSvg = id => `<svg viewBox="-20 -20 40 40" aria-hidden="true">${ICON[id] || ICON.estrella}</svg>`;
-const photoUrl = id => id ? "/_blob/" + id : "";
+const blob = id => "/_blob/" + id;
 const slug = s => (s || "item").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "item";
+const catIcon = c => c?.iconoId ? blob(c.iconoId) : (c?.iconoSrc || "");
 
 /* ---------- what each list holds ---------- */
 const SCHEMAS = {
@@ -140,7 +204,7 @@ const SCHEMAS = {
     fields: [
       { k: "nombre", t: "text", label: "Nombre", req: true },
       { k: "marca", t: "select", label: "Marca", opts: () => Object.entries(MARCAS) },
-      { k: "categoria", t: "select", label: "Categoría", opts: d => categoriasDe(d.marca).map(c => [c, c]), when: d => d.marca !== "match", help: "Las categorías se editan en Ajustes." },
+      { k: "categoria", t: "select", label: "Categoría", opts: d => catsDe(d.marca).map(c => [c.nombre, c.nombre]), when: d => d.marca !== "match", help: "Las categorías, con su ícono y texto, se editan en la pestaña Categorías." },
       { k: "descripcion", t: "textarea", label: "Descripción" },
       { k: "precio", t: "number", label: "Precio ($)", help: "Vacío = “Consultar precio”." },
       { k: "precioTexto", t: "text", label: "Cómo se muestra el precio (opcional)", help: "Ej.: $6 + $1 por letra" },
@@ -151,7 +215,22 @@ const SCHEMAS = {
       { k: "configurable", t: "toggle", label: "Mostrar botón “Arma el tuyo”", when: d => d.marca === "doggy" },
       { k: "ejemplo", t: "toggle", label: "Es un producto de ejemplo" }
     ],
-    nuevo: tab => ({ nombre: "", marca: tab === "todo" ? "doggy" : tab, categoria: "", descripcion: "", precio: null, stock: null, disponible: true, ejemplo: false })
+    nuevo: (tab, preset) => ({ nombre: "", marca: preset?.marca || (["club", "doggy", "match"].includes(tab) ? tab : "club"), categoria: preset?.categoria || "", descripcion: "", precio: null, stock: null, disponible: true, ejemplo: false })
+  },
+  categorias: {
+    title: "categoría", empty: "Aún no hay categorías.",
+    fields: [
+      { k: "nombre", t: "text", label: "Texto del botón", req: true },
+      { k: "iconoId", t: "photo", label: "Ícono (foto del círculo)", round: true, fallback: "iconoSrc" },
+      { k: "sub", t: "text", label: "Texto pequeño debajo (opcional)", help: "Ej.: nuevo, próximamente, marca hermana" },
+      { k: "color", t: "color", label: "Color del círculo (se ve si no hay ícono)" },
+      { k: "marca", t: "select", label: "Marca", opts: () => [["club", "Sugar Club"], ["doggy", "Doggy Pops"]] },
+      { k: "lado", t: "seg", label: "Lado en el home", opts: [["left", "Izquierda"], ["right", "Derecha"]] },
+      { k: "orden", t: "number", label: "Orden (1 = arriba)" },
+      { k: "disponible", t: "toggle", label: "Visible en el home" },
+      { k: "bloqueada", t: "toggle", label: "Próximamente (no se puede abrir)" }
+    ],
+    nuevo: tab => ({ nombre: "", marca: tab === "doggy" ? "doggy" : "club", color: "#E63B2E", lado: "left", orden: 9, disponible: true, bloqueada: false, sub: "" })
   },
   cordones: {
     title: "cordón", empty: "Aún no hay cordones.",
@@ -190,9 +269,10 @@ const SCHEMAS = {
 };
 
 /* ---------- state ---------- */
-const S = { tab: "productos", sub: "todo", q: "", data: { productos: [], cordones: [], charms: [], placas: [], estilos: [] }, ajustes: null, loaded: new Set() };
+const S = { tab: "productos", sub: "todo", q: "", data: { productos: [], categorias: [], cordones: [], charms: [], placas: [], estilos: [] }, ajustes: null, loaded: new Set() };
 let db = null, assets = null;
-const categoriasDe = m => (S.ajustes?.categorias?.[m]) || [];
+const catsDe = m => S.data.categorias.filter(c => c.marca === m).sort((a, b) => (a.lado || "").localeCompare(b.lado || "") || (a.orden ?? 99) - (b.orden ?? 99));
+const prodsDe = c => S.data.productos.filter(p => p.marca === c.marca && p.categoria === c.nombre);
 
 /* ---------- status + toast ---------- */
 let pending = 0;
@@ -213,13 +293,21 @@ function stockBadge(it) {
   return "";
 }
 function thumb(it, col) {
-  if (it.fotoId) return `<div class="thumb"><img src="${esc(photoUrl(it.fotoId))}" alt="" loading="lazy"></div>`;
+  if (col === "categorias") { const src = catIcon(it); return `<div class="thumb round" style="background:${esc(it.color || "#ddd")}">${src ? `<img src="${esc(src)}" alt="">` : `<span class="mono">${esc((it.nombre || "?").charAt(0))}</span>`}</div>`; }
+  if (it.fotoId) return `<div class="thumb"><img src="${esc(blob(it.fotoId))}" alt="" loading="lazy"></div>`;
   if (col === "cordones") { const c = it.colores?.length ? it.colores : ["#ddd"]; return `<div class="thumb" style="background:linear-gradient(135deg,${c.map((x, i) => `${x} ${i * 100 / c.length}% ${(i + 1) * 100 / c.length}%`).join(",")})"></div>`; }
   if (col === "charms") return `<div class="thumb">${iconSvg(it.icono)}</div>`;
   return `<div class="thumb" aria-hidden="true">${{ club: "🍒", doggy: "🐶", match: "💞" }[it.marca] || "🦴"}</div>`;
 }
 function row(it, col) {
-  const metaTxt = col === "productos" ? `${MARCAS[it.marca] || ""}${it.categoria ? " · " + it.categoria : ""}` : col === "cordones" ? it.tipo : col === "charms" ? it.tipo : "";
+  if (col === "categorias") {
+    const n = prodsDe(it).length;
+    return `<div class="row ${it.disponible === false ? "off" : ""}" data-col="categorias" data-id="${esc(it.id)}">${thumb(it, col)}
+      <div class="info"><b>${esc(it.nombre)}</b><div class="meta">${it.lado === "right" ? "Derecha" : "Izquierda"} · orden ${it.orden ?? "–"}${it.sub ? " · " + esc(it.sub) : ""}</div>
+      <div class="badges">${it.disponible === false ? '<span class="badge hid">Oculta</span>' : ""}${it.bloqueada ? '<span class="badge low">Próximamente</span>' : ""}${!catIcon(it) ? '<span class="badge ex">Falta ícono</span>' : ""}</div></div>
+      <div class="count"><b>${n}</b>producto${n === 1 ? "" : "s"}</div></div>`;
+  }
+  const metaTxt = col === "productos" ? `${MARCAS[it.marca] || ""}${it.categoria ? " · " + it.categoria : ""}` : col === "cordones" || col === "charms" ? it.tipo : "";
   const priceTxt = col === "productos" ? (it.precioTexto || money(it.precio)) : col === "charms" ? money(it.precio) : "";
   const st = typeof it.stock === "number" ? it.stock : null;
   return `<div class="row ${it.disponible === false ? "off" : ""}" data-col="${col}" data-id="${esc(it.id)}">
@@ -236,6 +324,9 @@ function renderHeader() {
   if (S.tab === "productos") {
     sub.innerHTML = [["todo", "Todos"], ...Object.entries(MARCAS)].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
     tools.innerHTML = `<input type="search" id="q" placeholder="Buscar producto…" value="${esc(S.q)}" aria-label="Buscar"><button type="button" class="btn pri" data-new="productos">+ Nuevo</button>`;
+  } else if (S.tab === "categorias") {
+    sub.innerHTML = [["club", "Sugar Club"], ["doggy", "Doggy Pops"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
+    tools.innerHTML = `<p class="note" style="flex:1;margin:0">Cada categoría es un botón del home: ícono + texto. Toca una para editarla y ver sus productos.</p><button type="button" class="btn pri" data-new="categorias">+ Nueva</button>`;
   } else if (S.tab === "collar") {
     sub.innerHTML = [["cordones", "Cordones"], ["charms", "Charms"], ["placas", "Placas"], ["precios", "Precios"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
     tools.innerHTML = S.sub !== "precios" ? `<input type="search" id="q" placeholder="Buscar…" value="${esc(S.q)}" aria-label="Buscar"><button type="button" class="btn pri" data-new="${S.sub}">+ Nuevo</button>` : "";
@@ -246,6 +337,14 @@ function renderMain() {
   const m = $("#main");
   if (S.tab === "ajustes") return renderAjustes(m);
   if (S.tab === "collar" && S.sub === "precios") return renderPrecios(m);
+  if (S.tab === "categorias") {
+    if (!S.loaded.has("categorias")) { m.innerHTML = `<div class="empty">Cargando…</div>`; return; }
+    const cs = catsDe(S.sub);
+    const side = l => cs.filter(c => (c.lado || "left") === l);
+    m.innerHTML = cs.length ? `<p class="group">⬅︎ Izquierda</p><div class="list">${side("left").map(c => row(c, "categorias")).join("") || '<div class="empty">Ninguna</div>'}</div>
+      <p class="group">Derecha ➡︎</p><div class="list">${side("right").map(c => row(c, "categorias")).join("") || '<div class="empty">Ninguna</div>'}</div>` : `<div class="empty">${SCHEMAS.categorias.empty}</div>`;
+    return;
+  }
   const col = S.tab === "productos" ? "productos" : S.sub;
   if (!S.loaded.has(col)) { m.innerHTML = `<div class="empty">Cargando…</div>`; return; }
   let items = S.data[col].slice();
@@ -263,7 +362,7 @@ function renderPrecios(m) {
   m.innerHTML = `<form class="panel" id="preciosForm">
     <h2>Precios de los collares</h2><p>Lo que cobra “Arma tu collar”. Talla L vacío = mismo precio.</p>
     <div class="grid3"><span class="h">Collar</span><span class="h">Base · por letra</span><span class="h">Talla L</span>
-    ${E.map(e => `<b>${esc(e.nombre)}</b><div style="display:flex;gap:4px"><input class="fld" aria-label="Base ${esc(e.nombre)}" data-e="${e.id}" data-k="base" type="number" step="0.5" min="0" value="${e.base ?? ""}" style="width:50%;border:2px solid var(--line);border-radius:10px;padding:8px"><input aria-label="Por letra ${esc(e.nombre)}" data-e="${e.id}" data-k="porLetra" type="number" step="0.5" min="0" value="${e.porLetra ?? ""}" style="width:50%;border:2px solid var(--line);border-radius:10px;padding:8px"></div><input aria-label="Talla L ${esc(e.nombre)}" data-e="${e.id}" data-k="tallaL" type="number" step="0.5" min="0" value="${e.tallaL ?? ""}" style="border:2px solid var(--line);border-radius:10px;padding:8px;min-width:0">`).join("")}</div>
+    ${E.map(e => `<b>${esc(e.nombre)}</b><div style="display:flex;gap:4px"><input aria-label="Base ${esc(e.nombre)}" data-e="${e.id}" data-k="base" type="number" step="0.5" min="0" value="${e.base ?? ""}"><input aria-label="Por letra ${esc(e.nombre)}" data-e="${e.id}" data-k="porLetra" type="number" step="0.5" min="0" value="${e.porLetra ?? ""}"></div><input aria-label="Talla L ${esc(e.nombre)}" data-e="${e.id}" data-k="tallaL" type="number" step="0.5" min="0" value="${e.tallaL ?? ""}">`).join("")}</div>
     <h2>Llavero match</h2>
     <div class="grid3"><label class="field">Con collar de placa<input id="llPlaca" type="number" step="0.5" min="0" value="${L.conPlaca ?? ""}"></label><label class="field">Base<input id="llBase" type="number" step="0.5" min="0" value="${L.base ?? ""}"></label><label class="field">Por letra<input id="llLetra" type="number" step="0.5" min="0" value="${L.porLetra ?? ""}"></label></div>
     <div class="grid3"><label class="field">Número atrás<input id="numAtras" type="number" step="0.5" min="0" value="${N.precio ?? ""}"></label><label class="field">Máx. charms<input id="maxCh" type="number" min="1" value="${A.maxCharms ?? 4}"></label><label class="field">Máx. cordones<input id="maxCo" type="number" min="1" value="${A.maxCordones ?? 2}"></label></div>
@@ -283,36 +382,41 @@ function renderPrecios(m) {
   };
 }
 function renderAjustes(m) {
-  const A = S.ajustes || {}, ig = A.instagram || {}, cats = A.categorias || {};
+  const A = S.ajustes || {}, ig = A.instagram || {}, h = A.home || {};
   m.innerHTML = `<form class="panel" id="ajForm">
     <h2>WhatsApp e Instagram</h2>
     <label class="field">Número de WhatsApp (el mismo para las dos marcas)<input id="wa" inputmode="tel" placeholder="593991234567" value="${esc(A.whatsapp || "")}"><small>Formato: 593 + tu número sin el 0. Ej.: 0991234567 → 593991234567</small></label>
     <div class="grid3" style="grid-template-columns:1fr 1fr"><label class="field">Instagram Sugar Club<input id="igClub" value="${esc(ig.club || "")}"></label><label class="field">Instagram Doggy Pops<input id="igDoggy" value="${esc(ig.doggy || "")}"></label></div>
-    <h2>Categorías</h2><p>Separa con comas. Son los filtros del catálogo.</p>
-    <label class="field">Sugar Club<input id="catClub" value="${esc((cats.club || []).join(", "))}"></label>
-    <label class="field">Doggy Pops<input id="catDoggy" value="${esc((cats.doggy || []).join(", "))}"></label>
+    <h2>Home</h2><p>Lo que se ve en “Ver home”. Las categorías se editan en su pestaña.</p>
+    <div class="field">Fondo<div class="seg"><button type="button" class="btn" data-hbg="pasto" aria-pressed="${(h.fondo || "pasto") === "pasto"}">Cielo y pasto</button><button type="button" class="btn" data-hbg="cuadros" aria-pressed="${h.fondo === "cuadros"}">Cuadros</button></div></div>
+    <label class="field">Frase debajo del logo<input id="hFrase" value="${esc(h.frase ?? "Toca o arrastra una sección a la bandeja ✨")}"></label>
     <button type="submit" class="btn pri">Guardar ajustes</button></form>`;
+  let fondo = h.fondo || "pasto";
+  m.querySelectorAll("[data-hbg]").forEach(b => b.onclick = () => { fondo = b.dataset.hbg; m.querySelectorAll("[data-hbg]").forEach(x => x.setAttribute("aria-pressed", x === b)); });
   $("#ajForm").onsubmit = async ev => {
     ev.preventDefault();
-    const list = v => v.split(",").map(s => s.trim()).filter(Boolean);
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, categorias: { club: list($("#catClub").value), doggy: list($("#catDoggy").value) } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, frase: $("#hFrase").value } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 function viewCols() {
   if (S.tab === "productos") return ["productos"];
+  if (S.tab === "categorias") return ["categorias", "productos"];
   if (S.tab === "ajustes") return ["ajustes"];
   return S.sub === "precios" ? ["estilos", "ajustes"] : [S.sub];
 }
 function render() { renderHeader(); renderMain(); }
 
 /* ---------- editor sheet ---------- */
-let ed = null; // {col, id, data, isNew, newPhoto, oldPhoto}
-function openEditor(col, id) {
+let ed = null;
+function openEditor(col, id, preset) {
   const it = id ? S.data[col].find(x => x.id === id) : null;
-  ed = { col, id, isNew: !it, data: structuredClone(it || SCHEMAS[col].nuevo(S.sub)), oldPhoto: it?.fotoId || null };
-  if (col === "productos" && !ed.data.categoria && ed.data.marca !== "match") ed.data.categoria = categoriasDe(ed.data.marca)[0] || "";
+  ed = { col, id, isNew: !it, data: structuredClone(it || SCHEMAS[col].nuevo(S.sub, preset)), oldPhotos: {}, oldName: it?.nombre };
+  SCHEMAS[col].fields.filter(f => f.t === "photo").forEach(f => ed.oldPhotos[f.k] = it?.[f.k] || null);
+  ed.newPhotos = {};
+  if (col === "productos" && !ed.data.categoria && ed.data.marca !== "match") ed.data.categoria = catsDe(ed.data.marca)[0]?.nombre || "";
+  if (col === "categorias" && ed.isNew) ed.data.orden = catsDe(ed.data.marca).filter(c => c.lado === ed.data.lado).length + 1;
   drawEditor(); $("#sheet").hidden = false;
 }
 function fieldHtml(f, d) {
@@ -322,19 +426,32 @@ function fieldHtml(f, d) {
     case "text": return `<label class="field" for="${id}">${f.label}<input id="${id}" data-k="${f.k}" value="${esc(v ?? "")}" ${f.req ? "required" : ""}>${help}</label>`;
     case "textarea": return `<label class="field" for="${id}">${f.label}<textarea id="${id}" data-k="${f.k}">${esc(v ?? "")}</textarea>${help}</label>`;
     case "number": return `<label class="field" for="${id}">${f.label}<input id="${id}" data-k="${f.k}" data-num type="number" inputmode="decimal" step="any" min="0" value="${v ?? ""}">${help}</label>`;
+    case "color": return `<label class="field" for="${id}">${f.label}<input id="${id}" data-k="${f.k}" type="color" value="${esc(v || "#E63B2E")}">${help}</label>`;
     case "list": return `<label class="field" for="${id}">${f.label}<input id="${id}" data-k="${f.k}" data-list value="${esc((v || []).join(", "))}">${help}</label>`;
+    case "seg": return `<div class="field">${f.label}<div class="seg">${f.opts.map(([k, l]) => `<button type="button" class="btn" data-seg="${f.k}" data-v="${k}" aria-pressed="${v === k}">${l}</button>`).join("")}</div></div>`;
     case "select": { const o = f.opts(d); const has = o.some(([k]) => k === v); return `<label class="field" for="${id}">${f.label}<select id="${id}" data-k="${f.k}">${has || v == null || v === "" ? "" : `<option value="${esc(v)}">${esc(v)}</option>`}${o.map(([k, l]) => `<option value="${esc(k)}" ${k === v ? "selected" : ""}>${esc(l)}</option>`).join("")}</select>${help}</label>`; }
-    case "toggle": return `<button type="button" class="toggle" data-toggle="${f.k}" aria-pressed="${v !== false && v !== undefined ? (v ? "true" : "false") : "false"}">${f.label}<i></i></button>`;
+    case "toggle": return `<button type="button" class="toggle" data-toggle="${f.k}" aria-pressed="${v ? "true" : "false"}">${f.label}<i></i></button>`;
     case "colors": return `<div class="field">${f.label}<div class="colors">${(v || []).map((c, i) => `<label><input type="color" data-color="${i}" value="${esc(c)}" aria-label="Color ${i + 1}">${(v || []).length > 1 ? `<button type="button" class="x" data-rmcolor="${i}" aria-label="Quitar color">✕</button>` : ""}</label>`).join("")}<button type="button" class="btn" data-addcolor>+ color</button></div>${help}</div>`;
-    case "photo": { const pid = ed.newPhoto !== undefined ? ed.newPhoto : v; return `<div class="field">${f.label}<div class="photo"><div class="pv">${pid ? `<img src="${esc(photoUrl(pid))}" alt="">` : "Sin foto"}</div>
-      ${assets ? `<div style="display:grid;gap:6px"><label class="btn" for="up">${pid ? "Cambiar foto" : "Subir foto"}</label><input type="file" id="up" accept="image/jpeg,image/png,image/webp">${pid ? `<button type="button" class="btn" data-nophoto>Quitar foto</button>` : ""}</div>` : `<small>Las fotos solo se pueden subir con tu cuenta.</small>`}</div></div>`; }
+    case "photo": {
+      const pid = f.k in ed.newPhotos ? ed.newPhotos[f.k] : v;
+      const fb = !pid && f.fallback && d[f.fallback] ? d[f.fallback] : "";
+      const src = pid ? blob(pid) : fb;
+      return `<div class="field">${f.label}<div class="photo"><div class="pv ${f.round ? "round" : ""}" style="${f.round ? `background:${esc(d.color || "#eee")}` : ""}">${src ? `<img src="${esc(src)}" alt="">` : "Sin foto"}</div>
+      ${assets ? `<div style="display:grid;gap:6px"><label class="btn" for="up_${f.k}">${src ? "Cambiar foto" : "Subir foto"}</label><input type="file" id="up_${f.k}" data-up="${f.k}" accept="image/jpeg,image/png,image/webp">${src ? `<button type="button" class="btn" data-nophoto="${f.k}">Quitar foto</button>` : ""}</div>` : `<small>Las fotos solo se pueden subir con tu cuenta.</small>`}</div></div>`;
+    }
   }
   return "";
 }
 function drawEditor() {
   const sch = SCHEMAS[ed.col], d = ed.data;
-  $("#sheetCard").innerHTML = `<h2 id="sheetTitle">${ed.isNew ? "Nuevo " + sch.title : "Editar " + sch.title}</h2>
-    <form id="edForm" style="display:grid;gap:12px">${sch.fields.map(f => fieldHtml(f, d)).join("")}
+  let extra = "";
+  if (ed.col === "categorias" && !ed.isNew) {
+    const ps = prodsDe({ ...d, nombre: ed.oldName });
+    extra = `<div class="field">Productos en esta categoría (${ps.length})<div class="inlist">${ps.map(p => `<div class="it" data-openprod="${esc(p.id)}"><span>${esc(p.nombre)}</span><span>${esc(p.precioTexto || money(p.precio))}</span></div>`).join("") || '<small>Todavía no hay productos.</small>'}</div>
+      <button type="button" class="btn" data-addprod>+ Agregar producto a ${esc(ed.oldName)}</button></div>`;
+  }
+  $("#sheetCard").innerHTML = `<h2 id="sheetTitle">${ed.isNew ? "Nueva " + sch.title : "Editar " + sch.title}</h2>
+    <form id="edForm" style="display:grid;gap:12px">${sch.fields.map(f => fieldHtml(f, d)).join("")}${extra}
     <div class="acts">${ed.isNew ? "<span></span>" : `<button type="button" class="btn danger" id="delBtn">Eliminar</button>`}<span style="display:flex;gap:8px"><button type="button" class="btn" data-close>Cancelar</button><button type="submit" class="btn pri" id="saveBtn">Guardar</button></span></div></form>`;
   const f = $("#edForm");
   f.addEventListener("input", e => {
@@ -342,57 +459,67 @@ function drawEditor() {
     if (t.dataset.color !== undefined) { d.colores[+t.dataset.color] = t.value; return; }
     if (!t.dataset.k) return;
     d[t.dataset.k] = t.dataset.num !== undefined ? (t.value === "" ? null : +t.value) : t.dataset.list !== undefined ? t.value.split(",").map(s => s.trim()).filter(Boolean) : t.value;
+    if (t.dataset.k === "color") { const pv = f.querySelector(".pv.round"); if (pv) pv.style.background = t.value; }
   });
   f.addEventListener("change", e => {
     const t = e.target;
-    if (t.id === "up" && t.files[0]) return upload(t.files[0]);
-    if (t.dataset.k === "marca") { d.categoria = categoriasDe(d.marca)[0] || ""; drawEditor(); }
+    if (t.dataset.up && t.files[0]) return upload(t.dataset.up, t.files[0]);
+    if (t.dataset.k === "marca" && ed.col === "productos") { d.categoria = catsDe(d.marca)[0]?.nombre || ""; drawEditor(); }
   });
   f.addEventListener("click", e => {
-    const b = e.target.closest("button"); if (!b) return;
+    const b = e.target.closest("button, [data-openprod]"); if (!b) return;
     if (b.dataset.toggle) { d[b.dataset.toggle] = b.getAttribute("aria-pressed") !== "true"; b.setAttribute("aria-pressed", d[b.dataset.toggle]); }
+    if (b.dataset.seg) { d[b.dataset.seg] = b.dataset.v; f.querySelectorAll(`[data-seg="${b.dataset.seg}"]`).forEach(x => x.setAttribute("aria-pressed", x === b)); }
     if (b.dataset.addcolor !== undefined) { d.colores = [...(d.colores || []), "#FFFFFF"]; drawEditor(); }
     if (b.dataset.rmcolor !== undefined) { d.colores.splice(+b.dataset.rmcolor, 1); drawEditor(); }
-    if (b.dataset.nophoto !== undefined) { ed.newPhoto = null; drawEditor(); }
+    if (b.dataset.nophoto) { ed.newPhotos[b.dataset.nophoto] = null; if (b.dataset.nophoto === "iconoId") d.iconoSrc = null; drawEditor(); }
     if (b.dataset.close !== undefined) closeEditor();
+    if (b.dataset.openprod) { const pid = b.dataset.openprod; closeEditor(); openEditor("productos", pid); }
+    if (b.dataset.addprod !== undefined) { const preset = { marca: ed.data.marca, categoria: ed.oldName }; closeEditor(); openEditor("productos", null, preset); }
     if (b.id === "delBtn") {
+      if (ed.col === "categorias" && prodsDe({ ...d, nombre: ed.oldName }).length) { toast("Primero mueve sus productos a otra categoría"); return; }
       if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = "Toca otra vez para eliminar"; return; }
       remove();
     }
   });
   f.onsubmit = e => { e.preventDefault(); save(); };
 }
-async function upload(file) {
+async function upload(k, file) {
   if (file.size > 20 * 1024 * 1024) return toast("La foto pesa demasiado (máx. 20 MB).");
-  const btn = $("label[for=up]"); if (btn) btn.textContent = "Subiendo…";
-  try { const r = await saving(assets.upload(file)); ed.newPhoto = r.id; drawEditor(); } catch (e) { drawEditor(); }
+  const btn = $(`label[for=up_${k}]`); if (btn) btn.textContent = "Subiendo…";
+  try { const r = await saving(assets.upload(file)); ed.newPhotos[k] = r.id; drawEditor(); } catch (e) { drawEditor(); }
 }
 function closeEditor() {
-  if (ed?.newPhoto && ed.newPhoto !== ed.oldPhoto) assets?.delete(ed.newPhoto).catch(() => {});
+  if (ed) for (const [k, v] of Object.entries(ed.newPhotos || {})) if (v && v !== ed.oldPhotos[k]) assets?.delete(v).catch(() => {});
   ed = null; $("#sheet").hidden = true;
 }
 async function save() {
   const d = ed.data, col = ed.col;
   if (!String(d.nombre || "").trim()) return toast("Ponle un nombre");
-  if (ed.newPhoto !== undefined) d.fotoId = ed.newPhoto || null;
+  d.nombre = d.nombre.trim();
+  for (const [k, v] of Object.entries(ed.newPhotos)) d[k] = v || null;
+  if (col === "categorias" && S.data.categorias.some(c => c.id !== ed.id && c.marca === d.marca && c.nombre.toLowerCase() === d.nombre.toLowerCase())) return toast("Ya existe una categoría con ese nombre");
   let id = ed.id;
-  if (ed.isNew) { const base = (col === "productos" ? d.marca + "-" : "") + slug(d.nombre); id = base; let n = 2; while (S.data[col].some(x => x.id === id)) id = base + "-" + n++; }
+  if (ed.isNew) { const base = (col === "productos" || col === "categorias" ? d.marca + "-" : "") + slug(d.nombre); id = base; let n = 2; while (S.data[col].some(x => x.id === id)) id = base + "-" + n++; }
   const body = { ...d, actualizado: Date.now() }; delete body.id;
   try {
     $("#saveBtn").disabled = true;
     await saving(db.doc(col + "/" + id).set(body));
-    if (ed.oldPhoto && ed.oldPhoto !== body.fotoId) assets?.delete(ed.oldPhoto).catch(() => {});
-    ed.newPhoto = undefined; ed = null; $("#sheet").hidden = true; toast("Guardado");
+    for (const [k, old] of Object.entries(ed.oldPhotos)) if (old && old !== body[k]) assets?.delete(old).catch(() => {});
+    if (col === "categorias" && !ed.isNew && ed.oldName && ed.oldName !== d.nombre) {
+      for (const p of S.data.productos.filter(p => p.marca === d.marca && p.categoria === ed.oldName)) await saving(db.doc("productos/" + p.id).update({ categoria: d.nombre }));
+    }
+    ed.newPhotos = {}; ed = null; $("#sheet").hidden = true; toast("Guardado");
   } catch (e) { const b = $("#saveBtn"); if (b) b.disabled = false; }
 }
 async function remove() {
-  const { col, id, oldPhoto } = ed;
-  try { await saving(db.doc(col + "/" + id).delete()); if (oldPhoto) assets?.delete(oldPhoto).catch(() => {}); ed = null; $("#sheet").hidden = true; toast("Eliminado"); } catch (e) {}
+  const { col, id, oldPhotos } = ed;
+  try { await saving(db.doc(col + "/" + id).delete()); for (const v of Object.values(oldPhotos)) if (v) assets?.delete(v).catch(() => {}); ed = null; $("#sheet").hidden = true; toast("Eliminado"); } catch (e) {}
 }
 $("#sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeEditor(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#sheet").hidden) closeEditor(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { if (!$("#sheet").hidden) closeEditor(); else if (!$("#hp").hidden) closeHome(); } });
 
-/* ---------- quick stock (one write per pause) ---------- */
+/* ---------- quick stock ---------- */
 const stockTimers = {};
 function bumpStock(col, id, delta) {
   const it = S.data[col].find(x => x.id === id); if (!it) return;
@@ -413,10 +540,60 @@ $("#main").addEventListener("click", e => {
   openEditor(r.dataset.col, r.dataset.id);
 });
 document.addEventListener("click", e => {
-  const t = e.target.closest("[data-tab]"); if (t) { S.tab = t.dataset.tab; S.sub = S.tab === "productos" ? "todo" : S.tab === "collar" ? "cordones" : ""; S.q = ""; render(); return; }
-  const s = e.target.closest("[data-sub]"); if (s) { S.sub = s.dataset.sub; S.q = ""; render(); return; }
+  const t = e.target.closest(".tabs [data-tab]"); if (t) { S.tab = t.dataset.tab; S.sub = { productos: "todo", categorias: "club", collar: "cordones" }[S.tab] || ""; S.q = ""; render(); return; }
+  const s = e.target.closest("#subnav [data-sub]"); if (s) { S.sub = s.dataset.sub; S.q = ""; render(); return; }
   const n = e.target.closest("[data-new]"); if (n) openEditor(n.dataset.new, null);
 });
+
+/* ---------- home preview (built from Categorías + Productos) ---------- */
+const TRAY_SLOTS = [[78, 33, 26], [17, 63, 13], [41, 31, 13], [61, 79, 30], [17, 17, 11]];
+let hpFilled = 0, hpDrag = null;
+function openHome() {
+  const h = S.ajustes?.home || {}, cats = S.data.categorias.filter(c => c.marca === "club" && c.disponible !== false);
+  const side = l => cats.filter(c => (c.lado || "left") === l).sort((a, b) => (a.orden ?? 99) - (b.orden ?? 99));
+  const btn = c => { const src = catIcon(c); return `<button type="button" class="hsec ${c.bloqueada ? "locked" : ""}" data-cat="${esc(c.id)}" style="--c:${esc(c.color || "#E63B2E")}"><span class="pic">${src ? `<img src="${esc(src)}" alt="">` : `<span class="mono">${esc(c.nombre.charAt(0))}</span>`}</span><span>${esc(c.nombre)}${c.sub ? `<small>${esc(c.sub)}</small>` : ""}</span></button>`; };
+  const hp = $("#hp");
+  hp.style.setProperty("--hp-bg", `url("img/fondo-${h.fondo === "cuadros" ? "cuadros" : "pasto"}.jpg")`);
+  hp.innerHTML = `<div class="hp-top"><button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button><div class="hp-logo"><b>Sugar Club</b></div><p>${esc(h.frase ?? "Toca o arrastra una sección a la bandeja ✨")}</p></div>
+    <div class="hp-board"><div class="hp-col l">${side("left").map(btn).join("")}</div>
+    <div class="hp-c"><div class="hp-tray" id="hpTray"><img src="img/bandeja.png" alt="Bandeja"></div></div>
+    <div class="hp-col r">${side("right").map(btn).join("")}</div></div>
+    <div class="hp-sheet" id="hpSheet" hidden></div>`;
+  hp.hidden = false; document.body.style.overflow = "hidden"; hpFilled = 0;
+  $("#hpClose").onclick = closeHome;
+}
+function closeHome() { $("#hp").hidden = true; document.body.style.overflow = ""; }
+function hpDrop(c) {
+  if (c.bloqueada) return toast(`${c.nombre} llega muy pronto ✨`);
+  const [x, y, w] = TRAY_SLOTS[hpFilled % TRAY_SLOTS.length], k = hpFilled++ % TRAY_SLOTS.length, tray = $("#hpTray");
+  tray.querySelector(`.hp-slot[data-k="${k}"]`)?.remove();
+  const src = catIcon(c), el = document.createElement("div"); el.className = "hp-slot"; el.dataset.k = k;
+  el.style.cssText = `left:${x}%;top:${y}%;width:${w}%;height:${w * 1.25}%`;
+  el.innerHTML = src ? `<img src="${esc(src)}" alt="">` : `<span>${esc(c.nombre)}</span>`;
+  tray.appendChild(el);
+  const ps = prodsDe(c).filter(p => p.disponible !== false), sh = $("#hpSheet");
+  sh.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h3>${esc(c.nombre)}</h3><button type="button" class="btn" id="hpShClose">Cerrar</button></div>
+    <p class="note" style="margin:0">Vista previa del catálogo · ${ps.length} producto${ps.length === 1 ? "" : "s"}</p>
+    ${ps.length ? `<div class="hp-grid">${ps.map(p => `<div class="hp-card"><div class="im">${p.fotoId ? `<img src="${esc(blob(p.fotoId))}" alt="">` : "🍒"}</div><div class="t">${esc(p.nombre)}<span>${esc(p.precioTexto || money(p.precio))}</span></div></div>`).join("")}</div>` : `<div class="empty">Esta categoría todavía no tiene productos. Cárgalos en la pestaña Productos.</div>`}`;
+  sh.hidden = false; $("#hpShClose").onclick = () => sh.hidden = true;
+}
+$("#homeBtn").addEventListener("click", openHome);
+const hpEl = $("#hp");
+hpEl.addEventListener("pointerdown", e => { const b = e.target.closest(".hsec"); if (!b) return; hpDrag = { b, x0: e.clientX, y0: e.clientY, id: e.pointerId, g: null }; b.setPointerCapture(e.pointerId); });
+hpEl.addEventListener("pointermove", e => {
+  if (!hpDrag || e.pointerId !== hpDrag.id) return;
+  if (!hpDrag.g && Math.hypot(e.clientX - hpDrag.x0, e.clientY - hpDrag.y0) > 8) { const r = hpDrag.b.getBoundingClientRect(), g = hpDrag.b.cloneNode(true); g.classList.add("hp-ghost"); g.style.width = r.width + "px"; document.body.appendChild(g); hpDrag.g = g; }
+  if (hpDrag.g) { hpDrag.g.style.left = e.clientX + "px"; hpDrag.g.style.top = e.clientY + "px"; const t = $("#hpTray").getBoundingClientRect(); $("#hpTray").classList.toggle("over", e.clientX > t.left && e.clientX < t.right && e.clientY > t.top && e.clientY < t.bottom); }
+});
+function hpEnd(e, cancel) {
+  if (!hpDrag || e.pointerId !== hpDrag.id) return;
+  const { b, g } = hpDrag; hpDrag = null; const tray = $("#hpTray"); tray.classList.remove("over");
+  const c = S.data.categorias.find(x => x.id === b.dataset.cat); if (!c) return;
+  if (g) { g.remove(); const t = tray.getBoundingClientRect(); if (!cancel && e.clientX > t.left && e.clientX < t.right && e.clientY > t.top && e.clientY < t.bottom) hpDrop(c); return; }
+  if (!cancel) hpDrop(c);
+}
+hpEl.addEventListener("pointerup", e => hpEnd(e, false));
+hpEl.addEventListener("pointercancel", e => hpEnd(e, true));
 
 /* ---------- boot ---------- */
 (async () => {
@@ -426,7 +603,7 @@ document.addEventListener("click", e => {
   clearTimeout(timer);
   if (!db) { $("#main").innerHTML = `<div class="gate"><b>Abre este panel con tu cuenta de Claude.</b><p class="note">Desde aquí no se pueden ver ni guardar los productos.</p></div>`; status("err", "Sin acceso"); return; }
   status("", "Conectado");
-  for (const col of ["productos", "cordones", "charms", "placas", "estilos"]) {
+  for (const col of ["productos", "categorias", "cordones", "charms", "placas", "estilos"]) {
     db.collection(col).onSnapshot(snap => {
       S.data[col] = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       S.loaded.add(col); if (!ed && viewCols().includes(col) && !document.activeElement?.closest("form")) renderMain();

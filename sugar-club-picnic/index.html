@@ -14,7 +14,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%;overflow-x:clip}
-body{margin:0;font:800 15px/1.3 var(--f-body);color:var(--ink);background:#F2A0C8 var(--bg-url,url("img/fondo-cuadros.jpg")) center/cover fixed}
+body{margin:0;font:800 15px/1.3 var(--f-body);color:var(--ink);background:#7BC86C var(--bg-url,url("img/fondo-pasto.jpg")) center/cover fixed}
 button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 
@@ -166,7 +166,7 @@ function render() {
   $("#left").innerHTML = SECTIONS.filter(s => S(s.id).side === "left").map(secHtml).join("");
   $("#right").innerHTML = SECTIONS.filter(s => S(s.id).side === "right").map(secHtml).join("");
   const g = cfg.global || {};
-  document.body.style.setProperty("--bg-url", `url("${g.bgId ? blob(g.bgId) : BACKGROUNDS[g.bg || "cuadros"]}")`);
+  document.body.style.setProperty("--bg-url", `url("${g.bgId ? blob(g.bgId) : BACKGROUNDS[g.bg || "pasto"]}")`);
   $("#trayImg").src = g.trayId ? blob(g.trayId) : "img/bandeja.png";
   const logo = $("#logo");
   logo.classList.toggle("has-img", !!g.logoId);
@@ -257,7 +257,7 @@ function phField(label, key, val, hint) {
     <div style="display:grid;gap:6px"><label class="b" for="up-${key}">${val ? "Cambiar" : "Subir foto"}</label><input type="file" id="up-${key}" data-up="${key}" accept="image/png,image/jpeg,image/webp">${val ? `<button type="button" class="b" data-clear="${key}">Quitar</button>` : ""}</div></div>${hint ? `<p>${hint}</p>` : ""}</div>`;
 }
 function openItem(id) { const s = S(id); draft = { scope: "item", id, data: { label: s.label, photoId: s.photoId || null, color: s.color, side: s.side } }; draw(); $("#sheet").hidden = false; }
-function openGlobal() { const g = cfg.global || {}; draft = { scope: "global", data: { logoId: g.logoId || null, bgId: g.bgId || null, bg: g.bg || "cuadros", trayId: g.trayId || null } }; draw(); $("#sheet").hidden = false; }
+function openGlobal() { const g = cfg.global || {}; draft = { scope: "global", data: { logoId: g.logoId || null, bgId: g.bgId || null, bg: g.bg || "pasto", trayId: g.trayId || null } }; draw(); $("#sheet").hidden = false; }
 function draw() {
   const d = draft.data;
   $("#card").innerHTML = draft.scope === "global" ? `<h2 id="sheetTitle">Fondo, bandeja y logo</h2>
