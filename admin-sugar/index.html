@@ -118,9 +118,9 @@ h1 span{color:var(--pink)}
   padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
   display:grid;grid-template-rows:auto 1fr auto;gap:6px;--mono:"IBM Plex Mono","Courier New",monospace}
 .hp-close{position:fixed;right:max(12px,env(safe-area-inset-right,0px));top:calc(10px + env(safe-area-inset-top,0px));border:2px solid var(--ink);border-radius:8px;background:#fff;padding:6px 12px;font:600 13px var(--mono);cursor:pointer;z-index:84}
-.hp-logo{justify-self:center;text-align:center;margin:0;position:relative;padding-bottom:clamp(14px,2.4vw,30px);
-  font:400 clamp(48px,9vw,104px)/0.9 "Abril Fatface","Didot","Bodoni 72",Georgia,serif;color:#FFF8EE;letter-spacing:-.01em;text-shadow:0 4px 14px rgba(20,40,90,.28)}
-.hp-logo em{position:absolute;right:-4%;bottom:-6px;font:400 clamp(26px,4.4vw,50px)/1 "Great Vibes","Snell Roundhand",cursive;font-style:normal;letter-spacing:0;white-space:nowrap;color:#FFF8EE}
+.hp-logo{justify-self:center;display:grid;margin:0;text-align:center;
+  font:400 clamp(42px,7vw,86px)/0.92 "Abril Fatface","Didot","Bodoni 72",Georgia,serif;color:#FFF8EE;letter-spacing:.005em;text-shadow:0 3px 12px rgba(20,40,90,.3)}
+.hp-logo em{justify-self:end;margin:.06em -.15em 0 0;font:400 clamp(24px,3.4vw,42px)/1 "Great Vibes","Snell Roundhand",cursive;font-style:normal;letter-spacing:0;white-space:nowrap;color:#FFF8EE;text-shadow:0 2px 8px rgba(20,40,90,.3)}
 .hp-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.6fr) minmax(0,1.2fr);align-items:center;gap:clamp(8px,2vw,32px);min-height:0}
 .hp-icons{display:flex;flex-direction:column;gap:clamp(4px,1.4vh,14px);align-items:center;justify-content:center}
 .ico{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;display:grid;justify-items:center;gap:6px;background:none;border:0;padding:6px;border-radius:8px;
@@ -136,7 +136,7 @@ h1 span{color:var(--pink)}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes nudge{0%,100%{transform:translate(0,0) rotate(0)}30%{transform:translate(var(--nx,14px),-10px) rotate(-6deg)}60%{transform:translate(calc(var(--nx,14px) * .4),0) rotate(4deg)}}
 .hp-c{position:relative;display:grid;place-items:center}
-.hp-tray{position:relative;width:100%;max-width:720px;filter:drop-shadow(0 18px 22px rgba(20,60,10,.35))}
+.hp-tray{position:relative;width:min(100%,560px);filter:drop-shadow(0 18px 22px rgba(20,60,10,.35))}
 .hp-tray>img{width:100%;display:block;pointer-events:none}
 .hp-tray.over{filter:drop-shadow(0 0 18px #fff) drop-shadow(0 0 8px var(--yellow))}
 .hp-tray.shake{animation:tshake .5s}
@@ -146,8 +146,8 @@ h1 span{color:var(--pink)}
 .hp-slot span{font:600 clamp(11px,1.6vw,16px)/1 var(--mono);background:#fff;padding:4px 6px;border-radius:4px;white-space:nowrap}
 .hp-right{display:grid;gap:10px;justify-items:center;align-content:center}
 .dog{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;background:none;border:0;padding:0;display:grid;justify-items:center;animation:bob 3.6s ease-in-out infinite;animation-delay:.6s}
-.dog img{height:clamp(220px,52vh,520px);width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 12px 14px rgba(0,0,0,.3));pointer-events:none}
-.dog b{margin-top:-14px;background:#FFE14D;border:3px solid var(--ink);border-radius:999px;padding:6px 16px;font:700 clamp(15px,1.8vw,20px)/1 var(--display);box-shadow:0 4px 0 var(--ink);transform:rotate(-3deg)}
+.dog .pup{height:clamp(170px,36vh,360px);width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 12px 14px rgba(0,0,0,.3));pointer-events:none}
+.dog .dlogo{width:clamp(150px,15vw,240px);height:auto;margin-top:-18px;transform:rotate(-4deg);pointer-events:none;filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 6px 8px rgba(0,0,0,.25))}
 .dog.nudge{animation:nudge .9s ease-in-out;--nx:-14px}
 @keyframes ring{0%,88%,100%{transform:rotate(0)}90%{transform:rotate(-5deg)}92%{transform:rotate(5deg)}94%{transform:rotate(-4deg)}96%{transform:rotate(3deg)}}
 .hp-foot{text-align:center;margin:0;font:700 clamp(19px,2.6vw,26px)/1 var(--hand);color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.35)}
@@ -155,7 +155,7 @@ h1 span{color:var(--pink)}
 @media (max-width:760px){
   .hp-board{grid-template-columns:1fr 1fr;grid-template-areas:"c c" "i i" "r r";row-gap:18px}
   .hp-c{grid-area:c} .hp-icons{grid-area:i;flex-direction:row;justify-content:flex-start;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;gap:6px} .hp-icons .ico{flex:none} .hp-right{grid-area:r}
-  .dog img{height:190px}
+  .dog .pup{height:170px} .dog .dlogo{width:170px}
   .hp-logo{margin-top:40px}
 }
 /* the shop window */
@@ -213,6 +213,7 @@ const iconSvg = id => `<svg viewBox="-20 -20 40 40" aria-hidden="true">${ICON[id
 const blob = id => "/_blob/" + id;
 const slug = s => (s || "item").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "item";
 const catIcon = c => c?.iconoId ? blob(c.iconoId) : (c?.iconoSrc || "");
+const catTray = c => c?.bandejaId ? blob(c.bandejaId) : (c?.bandejaSrc || "");
 
 /* ---------- what each list holds ---------- */
 const SCHEMAS = {
@@ -238,9 +239,10 @@ const SCHEMAS = {
     title: "categoría", empty: "Aún no hay categorías.",
     fields: [
       { k: "nombre", t: "text", label: "Texto del botón", req: true },
-      { k: "iconoId", t: "photo", label: "Ícono (foto del círculo)", round: true, fallback: "iconoSrc" },
+      { k: "iconoId", t: "photo", label: "Ícono del escritorio", fallback: "iconoSrc" },
+      { k: "bandejaId", t: "photo", label: "Imagen que cae en la bandeja", fallback: "bandejaSrc", help: "Un producto de esta categoría en PNG sin fondo (ej.: un charm para Bag charms)." },
       { k: "sub", t: "text", label: "Texto pequeño debajo (opcional)", help: "Ej.: nuevo, próximamente, marca hermana" },
-      { k: "color", t: "color", label: "Color del círculo (se ve si no hay ícono)" },
+      { k: "color", t: "color", label: "Color de respaldo (se ve si no hay ícono)" },
       { k: "marca", t: "select", label: "Marca", opts: () => [["club", "Sugar Club"], ["doggy", "Doggy Pops"]] },
       { k: "orden", t: "number", label: "Orden en el escritorio (1 = primero)" },
       { k: "disponible", t: "toggle", label: "Visible en el home" },
@@ -320,7 +322,7 @@ function row(it, col) {
     const n = prodsDe(it).length;
     return `<div class="row ${it.disponible === false ? "off" : ""}" data-col="categorias" data-id="${esc(it.id)}">${thumb(it, col)}
       <div class="info"><b>${esc(it.nombre)}</b><div class="meta">Orden ${it.orden ?? "–"}${it.sub ? " · " + esc(it.sub) : ""}</div>
-      <div class="badges">${it.disponible === false ? '<span class="badge hid">Oculta</span>' : ""}${it.bloqueada ? '<span class="badge low">Próximamente</span>' : ""}${!catIcon(it) ? '<span class="badge ex">Falta ícono</span>' : ""}</div></div>
+      <div class="badges">${it.disponible === false ? '<span class="badge hid">Oculta</span>' : ""}${it.bloqueada ? '<span class="badge low">Próximamente</span>' : ""}${!catIcon(it) ? '<span class="badge ex">Falta ícono</span>' : ""}${!catTray(it) ? '<span class="badge ex">Falta imagen de bandeja</span>' : ""}</div></div>
       <div class="count"><b>${n}</b>producto${n === 1 ? "" : "s"}</div></div>`;
   }
   const metaTxt = col === "productos" ? `${MARCAS[it.marca] || ""}${it.categoria ? " · " + it.categoria : ""}` : col === "cordones" || col === "charms" ? it.tipo : "";
@@ -406,10 +408,11 @@ function renderAjustes(m) {
     <label class="field">Frase en cursiva debajo del nombre<input id="hEslogan" maxlength="40" value="${esc(h.eslogan ?? "accesorios hechos a mano")}"><small>Déjala vacía para que no aparezca.</small></label>
     <label class="field">Texto de abajo<input id="hPie" value="${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}"></label>
     <h2>🐶 Botón de Doggy Pops</h2>
-    ${ajPhoto("Foto del perrito (PNG sin fondo)", "dogFoto", h.doggyFotoId, "img/doggy-miel.png")}
+    ${ajPhoto("Foto del perrito (cualquier foto; PNG sin fondo se ve mejor)", "dogFoto", h.doggyFotoId, "img/doggy-miel.png")}
+    ${ajPhoto("Logo de Doggy Pops (va encima de la foto)", "dogLogo", h.doggyLogoId, "img/logo-doggy.png")}
     <button type="submit" class="btn pri">Guardar ajustes</button></form>`;
   let fondo = h.fondo || "pasto";
-  const up = { novFoto: (h.novedad || {}).fotoId || null, dogFoto: h.doggyFotoId || null };
+  const up = { dogFoto: h.doggyFotoId || null, dogLogo: h.doggyLogoId || null };
   m.querySelectorAll("[data-ajup]").forEach(inp => inp.onchange = async () => {
     const f = inp.files[0]; if (!f) return; const k = inp.dataset.ajup;
     try { const r = await saving(assets.upload(f)); up[k] = r.id; const pv = m.querySelector(`[data-ajpv="${k}"]`); if (pv) pv.innerHTML = `<img src="${esc(blob(r.id))}" alt="">`; toast("Foto lista, toca Guardar ajustes"); } catch (e) {}
@@ -420,7 +423,7 @@ function renderAjustes(m) {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, eslogan: $("#hEslogan").value.trim(), pie: $("#hPie").value, doggyFotoId: up.dogFoto, } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, eslogan: $("#hEslogan").value.trim(), pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 function ajPhoto(label, k, id, fallback) {
@@ -464,7 +467,7 @@ function fieldHtml(f, d) {
       const pid = f.k in ed.newPhotos ? ed.newPhotos[f.k] : v;
       const fb = !pid && f.fallback && d[f.fallback] ? d[f.fallback] : "";
       const src = pid ? blob(pid) : fb;
-      return `<div class="field">${f.label}<div class="photo"><div class="pv ${f.round ? "round" : ""}" style="${f.round ? `background:${esc(d.color || "#eee")}` : ""}">${src ? `<img src="${esc(src)}" alt="">` : "Sin foto"}</div>
+      return `<div class="field">${f.label}${f.help ? `<small>${esc(f.help)}</small>` : ""}<div class="photo"><div class="pv ${f.round ? "round" : ""}" style="${f.round ? `background:${esc(d.color || "#eee")}` : ""}">${src ? `<img src="${esc(src)}" alt="">` : "Sin foto"}</div>
       ${assets ? `<div style="display:grid;gap:6px"><label class="btn" for="up_${f.k}">${src ? "Cambiar foto" : "Subir foto"}</label><input type="file" id="up_${f.k}" data-up="${f.k}" accept="image/jpeg,image/png,image/webp">${src ? `<button type="button" class="btn" data-nophoto="${f.k}">Quitar foto</button>` : ""}</div>` : `<small>Las fotos solo se pueden subir con tu cuenta.</small>`}</div></div>`;
     }
   }
@@ -500,7 +503,7 @@ function drawEditor() {
     if (b.dataset.seg) { d[b.dataset.seg] = b.dataset.v; f.querySelectorAll(`[data-seg="${b.dataset.seg}"]`).forEach(x => x.setAttribute("aria-pressed", x === b)); }
     if (b.dataset.addcolor !== undefined) { d.colores = [...(d.colores || []), "#FFFFFF"]; drawEditor(); }
     if (b.dataset.rmcolor !== undefined) { d.colores.splice(+b.dataset.rmcolor, 1); drawEditor(); }
-    if (b.dataset.nophoto) { ed.newPhotos[b.dataset.nophoto] = null; if (b.dataset.nophoto === "iconoId") d.iconoSrc = null; drawEditor(); }
+    if (b.dataset.nophoto) { ed.newPhotos[b.dataset.nophoto] = null; if (b.dataset.nophoto === "iconoId") d.iconoSrc = null; if (b.dataset.nophoto === "bandejaId") d.bandejaSrc = null; drawEditor(); }
     if (b.dataset.close !== undefined) closeEditor();
     if (b.dataset.openprod) { const pid = b.dataset.openprod; closeEditor(); openEditor("productos", pid); }
     if (b.dataset.addprod !== undefined) { const preset = { marca: ed.data.marca, categoria: ed.oldName }; closeEditor(); openEditor("productos", null, preset); }
@@ -584,12 +587,12 @@ function openHome() {
   const hp = $("#hp");
   hp.style.setProperty("--hp-bg", `url("img/fondo-${h.fondo === "cuadros" ? "cuadros" : "pasto"}.jpg")`);
   hp.innerHTML = `<button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>
-    <h2 class="hp-logo">Sugar Club${h.eslogan ? `<em>${esc(h.eslogan)}</em>` : ""}</h2>
+    <h2 class="hp-logo"><span>Sugar Club</span>${h.eslogan ? `<em>${esc(h.eslogan)}</em>` : ""}</h2>
     <div class="hp-board">
       <nav class="hp-icons" aria-label="Categorías">${cats.map(icon).join("")}</nav>
       <div class="hp-c"><div class="hp-tray" id="hpTray"><img src="img/bandeja.png" alt="Bandeja"></div></div>
       <div class="hp-right">
-        <button type="button" class="dog" id="hpDog" aria-label="Sugar Doggy Pops"><img src="${esc(dogSrc)}" alt=""><b>Sugar Doggy Pops 🐶</b></button>
+        <button type="button" class="dog" id="hpDog" aria-label="Sugar Doggy Pops"><img class="pup" src="${esc(dogSrc)}" alt=""><img class="dlogo" src="${esc(h.doggyLogoId ? blob(h.doggyLogoId) : "img/logo-doggy.png")}" alt="Sugar Doggy Pops"></button>
       </div>
     </div>
     <p class="hp-foot">${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}</p>
@@ -627,10 +630,10 @@ function openWin(brand, catName) {
   $("#hpWin").querySelectorAll("[data-wtab]").forEach(b => b.onclick = () => openWin(winBrand, b.dataset.wtab));
 }
 function activate(el) {
-  if (el.id === "hpDog") { toTray(el.querySelector("img").src, "Doggy Pops"); return setTimeout(() => openWin("doggy"), 350); }
+  if (el.id === "hpDog") { toTray(el.querySelector(".pup").src, "Doggy Pops"); return setTimeout(() => openWin("doggy"), 350); }
   const c = S.data.categorias.find(x => x.id === el.dataset.cat); if (!c) return;
   if (c.bloqueada) return toast(`${c.nombre} llega muy pronto ✨`);
-  toTray(catIcon(c), c.nombre); setTimeout(() => openWin("club", c.nombre), 350);
+  toTray(catTray(c), c.nombre); setTimeout(() => openWin("club", c.nombre), 350);
 }
 $("#homeBtn").addEventListener("click", openHome);
 const hpEl = $("#hp");
