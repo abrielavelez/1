@@ -115,9 +115,12 @@ h1 span{color:var(--pink)}
 
 /* ---------- home preview: the Sugar desktop ---------- */
 .hp{position:fixed;inset:0;z-index:80;overflow:auto;background:#5FA8E8 var(--hp-bg,url("img/fondo-pasto.jpg")) center/cover;
-  padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
   display:grid;grid-template-rows:auto 1fr auto;gap:6px;--mono:"IBM Plex Mono","Courier New",monospace}
 .hp-close{position:fixed;right:max(12px,env(safe-area-inset-right,0px));top:calc(10px + env(safe-area-inset-top,0px));border:2px solid var(--ink);border-radius:8px;background:#fff;padding:6px 12px;font:600 13px var(--mono);cursor:pointer;z-index:84}
+.hp-head{margin:0 calc(-1 * max(16px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
+.hp-head h2{margin:0;line-height:0}
+.hp-head img{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 10px rgba(20,40,90,.25))}
 .hp-logo{justify-self:center;display:grid;margin:0;text-align:center;
   font:400 clamp(42px,7vw,86px)/0.92 "Abril Fatface","Didot","Bodoni 72",Georgia,serif;color:#FFF8EE;letter-spacing:.005em;text-shadow:0 3px 12px rgba(20,40,90,.3)}
 .hp-logo em{justify-self:end;margin:.06em -.15em 0 0;font:400 clamp(24px,3.4vw,42px)/1 "Great Vibes","Snell Roundhand",cursive;font-style:normal;letter-spacing:0;white-space:nowrap;color:#FFF8EE;text-shadow:0 2px 8px rgba(20,40,90,.3)}
@@ -156,7 +159,6 @@ h1 span{color:var(--pink)}
   .hp-board{grid-template-columns:1fr 1fr;grid-template-areas:"c c" "i i" "r r";row-gap:18px}
   .hp-c{grid-area:c} .hp-icons{grid-area:i;flex-direction:row;justify-content:flex-start;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;gap:6px} .hp-icons .ico{flex:none} .hp-right{grid-area:r}
   .dog .pup{height:170px} .dog .dlogo{width:170px}
-  .hp-logo{margin-top:40px}
 }
 /* the shop window */
 .win{position:fixed;inset:max(10px,4vh) max(10px,4vw);z-index:86;display:grid;grid-template-rows:auto auto 1fr;background:#ECE9D8;border:3px solid #0A246A;border-radius:10px 10px 6px 6px;box-shadow:0 20px 50px rgba(0,0,0,.45);overflow:hidden;font-family:var(--body)}
@@ -405,14 +407,14 @@ function renderAjustes(m) {
     <div class="grid3" style="grid-template-columns:1fr 1fr"><label class="field">Instagram Sugar Club<input id="igClub" value="${esc(ig.club || "")}"></label><label class="field">Instagram Doggy Pops<input id="igDoggy" value="${esc(ig.doggy || "")}"></label></div>
     <h2>Home (escritorio)</h2><p>Lo que se ve en “Ver home”. Los íconos se editan en la pestaña Categorías.</p>
     <div class="field">Fondo<div class="seg"><button type="button" class="btn" data-hbg="pasto" aria-pressed="${(h.fondo || "pasto") === "pasto"}">Cielo y pasto</button><button type="button" class="btn" data-hbg="cuadros" aria-pressed="${h.fondo === "cuadros"}">Cuadros</button></div></div>
-    <label class="field">Frase en cursiva debajo del nombre<input id="hEslogan" maxlength="40" value="${esc(h.eslogan ?? "accesorios hechos a mano")}"><small>Déjala vacía para que no aparezca.</small></label>
+    ${ajPhoto("Header (franja de arriba con el nombre)", "header", h.headerId, "img/header-club.png")}
     <label class="field">Texto de abajo<input id="hPie" value="${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}"></label>
     <h2>🐶 Botón de Doggy Pops</h2>
     ${ajPhoto("Foto del perrito (cualquier foto; PNG sin fondo se ve mejor)", "dogFoto", h.doggyFotoId, "img/doggy-miel.png")}
     ${ajPhoto("Logo de Doggy Pops (va encima de la foto)", "dogLogo", h.doggyLogoId, "img/logo-doggy.png")}
     <button type="submit" class="btn pri">Guardar ajustes</button></form>`;
   let fondo = h.fondo || "pasto";
-  const up = { dogFoto: h.doggyFotoId || null, dogLogo: h.doggyLogoId || null };
+  const up = { dogFoto: h.doggyFotoId || null, dogLogo: h.doggyLogoId || null, header: h.headerId || null };
   m.querySelectorAll("[data-ajup]").forEach(inp => inp.onchange = async () => {
     const f = inp.files[0]; if (!f) return; const k = inp.dataset.ajup;
     try { const r = await saving(assets.upload(f)); up[k] = r.id; const pv = m.querySelector(`[data-ajpv="${k}"]`); if (pv) pv.innerHTML = `<img src="${esc(blob(r.id))}" alt="">`; toast("Foto lista, toca Guardar ajustes"); } catch (e) {}
@@ -423,7 +425,7 @@ function renderAjustes(m) {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, eslogan: $("#hEslogan").value.trim(), pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, headerId: up.header, pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 function ajPhoto(label, k, id, fallback) {
@@ -587,7 +589,7 @@ function openHome() {
   const hp = $("#hp");
   hp.style.setProperty("--hp-bg", `url("img/fondo-${h.fondo === "cuadros" ? "cuadros" : "pasto"}.jpg")`);
   hp.innerHTML = `<button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>
-    <h2 class="hp-logo"><span>Sugar Club</span>${h.eslogan ? `<em>${esc(h.eslogan)}</em>` : ""}</h2>
+    <div class="hp-head"><h2>${h.headerId ? `<img src="${esc(blob(h.headerId))}" alt="Sugar Club">` : `<picture><source media="(max-width:760px)" srcset="img/header-club-m.png"><img src="img/header-club.png" alt="Sugar Club"></picture>`}</h2></header>
     <div class="hp-board">
       <nav class="hp-icons" aria-label="Categorías">${cats.map(icon).join("")}</nav>
       <div class="hp-c"><div class="hp-tray" id="hpTray"><img src="img/bandeja.png" alt="Bandeja"></div></div>
