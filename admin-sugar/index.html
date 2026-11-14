@@ -139,13 +139,19 @@ h1 span{color:var(--pink)}
 .shop::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,.12);pointer-events:none}
 .shop .top{position:sticky;top:0;z-index:5;background:linear-gradient(rgba(40,120,210,.55),rgba(40,120,210,0));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(14px,3vw,40px)}
 .shop .top .lg{height:58px;width:auto;cursor:pointer;filter:drop-shadow(0 3px 6px rgba(10,40,100,.35))}
-.shop .top .tt{flex:1;text-align:center;font:400 clamp(22px,3vw,36px)/1 "Abril Fatface",Georgia,serif;color:#fff;text-shadow:0 2px 10px rgba(10,40,100,.45)}
+.shop .top .tt{flex:1;min-width:0;text-align:center;font:400 clamp(22px,3vw,36px)/1 "Abril Fatface",Georgia,serif;color:#fff;text-shadow:0 2px 10px rgba(10,40,100,.45)}
 .bubbles{position:relative;z-index:1;display:flex;gap:clamp(10px,1.6vw,22px);overflow-x:auto;padding:6px clamp(14px,3vw,40px) 14px;scrollbar-width:none;max-width:1280px;margin:0 auto}
 .bub2{flex:none;display:grid;justify-items:center;gap:6px;background:none;border:0;cursor:pointer;width:clamp(74px,8vw,104px);color:#fff;font:700 13px/1.15 var(--body);text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
 .bub2 .ring{width:100%;aspect-ratio:1;border-radius:50%;padding:4px;background:linear-gradient(140deg,rgba(255,255,255,.9),rgba(255,255,255,.35));box-shadow:0 8px 16px rgba(10,40,100,.25)}
 .bub2 .ring span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fff;font:400 26px var(--sign);color:#E63B2E}
 .bub2 .ring img{width:100%;height:100%;object-fit:cover}
 .bub2[aria-pressed="true"] .ring{background:conic-gradient(#FF4F9A,#FFD23F,#3EC6FF,#B57BFF,#FF4F9A)}
+.bsep{flex:none;width:2px;margin:10px 4px 26px;border-radius:2px;background:rgba(255,255,255,.7)}
+.brandsw{flex:none;align-self:center;display:flex;align-items:center;gap:8px;border-radius:20px;padding:8px 14px 8px 8px;cursor:pointer;color:#fff;font:700 13px/1.15 var(--mono);text-align:left;text-shadow:0 1px 3px rgba(0,30,80,.6);background:linear-gradient(135deg,rgba(255,225,77,.45),rgba(255,141,192,.45))}
+.brandsw img{height:52px;width:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+@media (max-width:860px){.brandsw{order:-2}.bsep{order:-1}.brandsw img{height:44px}}
+@media (max-width:480px){.shop .top .tt{font-size:20px}.shop .top .lg{height:46px}}
+.back{border-radius:999px;padding:9px 14px;font:600 13px var(--mono);color:#10223f;cursor:pointer;flex:none}
 .bub2.make .ring span{background:linear-gradient(140deg,#FFE14D,#FF8DC0);font-size:30px}
 .shopgrid{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 clamp(14px,3vw,40px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
 .stage{border-radius:28px;padding:14px;position:sticky;top:80px}
@@ -700,7 +706,7 @@ const homeCfgX = () => S.ajustes?.home || {};
 const doggyLogo = () => homeCfgX().doggyLogoId ? blob(homeCfgX().doggyLogoId) : "img/logo-doggy.png";
 const cartBtn = () => `<button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button>`;
 const closeBtn = `<button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>`;
-const topBar = (brand, title) => `<div class="top"><img class="lg" src="${esc(brand === "doggy" ? doggyLogo() : "img/logo-club.png")}" alt="Inicio" data-go="hero"><span class="tt">${esc(title)}</span>${cartBtn()}</div>`;
+const topBar = (brand, title, back = "hero") => `<div class="top"><button type="button" class="back gl" data-go="${back}" aria-label="Volver">‹ ${back === "hero" ? "Inicio" : "Tienda"}</button><img class="lg" src="${esc(brand === "doggy" ? doggyLogo() : "img/logo-club.png")}" alt="Inicio" data-go="hero"><span class="tt">${esc(title)}</span>${cartBtn()}</div>`;
 const live = arr => arr.filter(x => x.disponible !== false);
 const inStock = x => x.disponible !== false && x.stock !== 0;
 
@@ -715,22 +721,25 @@ function renderHero() {
 }
 
 /* shop: sections as photo bubbles, product shown at its own shape */
-function bubbles(brand, cats) {
+const shopCats = brand => catsDe(brand).filter(c => c.disponible !== false && !c.bloqueada);
+function bubbles(brand, active) {
+  const cats = shopCats(brand), isMake = active === "make";
   const make = brand === "doggy"
-    ? `<button type="button" class="bub2 make" data-go="collar"><span class="ring"><span>🎨</span></span>Arma su collar</button>`
-    : `<button type="button" class="bub2 make" data-go="crea"><span class="ring"><span>✨</span></span>Crea el tuyo</button>`;
-  return `<nav class="bubbles" aria-label="Secciones">${make}${cats.map(c => { const ic = catIcon(c); return `<button type="button" class="bub2" data-cat="${esc(c.id)}" aria-pressed="${c === shopCat}"><span class="ring"><span>${ic ? `<img src="${esc(ic)}" alt="">` : esc(c.nombre.charAt(0))}</span></span>${esc(c.nombre)}</button>`; }).join("")}${brand === "doggy"
-    ? `<button type="button" class="bub2" data-go="shop"><span class="ring"><span><img src="img/logo-club.png" alt="" style="object-fit:contain;padding:8px"></span></span>Sugar Club</button>`
-    : `<button type="button" class="bub2" data-go="doggy"><span class="ring"><span><img src="${esc(doggyLogo())}" alt="" style="object-fit:contain;padding:8px"></span></span>Doggy Pops</button>`}</nav>`;
+    ? `<button type="button" class="bub2 make" data-go="collar" aria-pressed="${isMake}"><span class="ring"><span>🎨</span></span>Arma su collar</button>`
+    : `<button type="button" class="bub2 make" data-go="crea" aria-pressed="${isMake}"><span class="ring"><span>✨</span></span>Crea el tuyo</button>`;
+  const other = brand === "doggy"
+    ? `<button type="button" class="brandsw gl" data-go="shop" aria-label="Ir a Sugar Club"><img src="img/logo-club.png" alt=""><span>Sugar Club 🍒<br>para ti</span></button>`
+    : `<button type="button" class="brandsw gl" data-go="doggy" aria-label="Ir a Sugar Doggy Pops"><img src="${esc(doggyLogo())}" alt=""><span>para tu<br>mascota 🐾</span></button>`;
+  return `<nav class="bubbles" aria-label="Secciones">${make}${cats.map(c => { const ic = catIcon(c); return `<button type="button" class="bub2" data-cat="${esc(c.id)}" aria-pressed="${!isMake && c === shopCat}"><span class="ring"><span>${ic ? `<img src="${esc(ic)}" alt="">` : esc(c.nombre.charAt(0))}</span></span>${esc(c.nombre)}</button>`; }).join("")}<span class="bsep" aria-hidden="true"></span>${other}</nav>`;
 }
 function renderShop(brand = shopBrand) {
   view = "shop"; shopBrand = brand;
-  const cats = catsDe(brand).filter(c => c.disponible !== false && !c.bloqueada);
+  const cats = shopCats(brand);
   if (!shopCat || !cats.some(c => c.id === shopCat.id)) shopCat = cats[0] || null;
   const ps = shopCat ? live(prodsDe(shopCat)) : [];
   if (!shopProd || !ps.some(p => p.id === shopProd.id)) shopProd = ps[0] || null;
   const p = shopProd, out = p && p.stock === 0;
-  $("#hp").innerHTML = `<section class="shop">${topBar(brand, brand === "doggy" ? "Doggy Pops" : "Tienda")}${bubbles(brand, cats)}
+  $("#hp").innerHTML = `<section class="shop">${topBar(brand, brand === "doggy" ? "Doggy Pops" : "Tienda")}${bubbles(brand)}
     <div class="shopgrid">
       <div class="stage gl" aria-live="polite"><div class="big">${p && ps.length > 1 ? `<button type="button" class="arr l" data-step="-1" aria-label="Producto anterior">‹</button>` : ""}${p ? (prodImg(p) ? `<img src="${esc(prodImg(p))}" alt="${esc(p.nombre)}">` : `<span style="font-size:60px">🍒</span>`) : `<span class="emptyg">Pronto ✨</span>`}${p && ps.length > 1 ? `<button type="button" class="arr r" data-step="1" aria-label="Producto siguiente">›</button><span class="idx">${ps.indexOf(p) + 1} / ${ps.length}</span>` : ""}${out ? `<span class="sold">Sold out</span>` : ""}</div></div>
       <div class="info gl">${p ? `<h1>${esc(p.nombre)}</h1><div class="pr">${esc(p.precioTexto || money(p.precio))}</div>
@@ -771,12 +780,12 @@ function renderCrea() {
   const ch = creaCharms(), base = S.ajustes?.creaBase;
   crea.sel = crea.sel.filter(id => ch.some(c => c.id === id && c.stock !== 0));
   const picked = crea.sel.map((id, i) => ({ c: ch.find(c => c.id === id), i }));
-  $("#hp").innerHTML = `<section class="shop">${topBar("club", "Crea el tuyo")}
+  $("#hp").innerHTML = `<section class="shop">${topBar("club", "Crea el tuyo", "shop")}${bubbles("club", "make")}
     <div class="bld">
       <div class="prev gl" aria-live="polite"><h2>Tu bag charm</h2>
         <div class="hook" aria-hidden="true"></div><div class="chain" aria-hidden="true"></div>
         <div class="hang">${picked.map(({ c, i }) => `<button type="button" data-rm="${i}" style="border:0;background:none;padding:0;cursor:pointer" aria-label="Quitar ${esc(c.nombre)}"><img src="${esc(prodImg(c))}" alt="${esc(c.nombre)}"></button>`).join("")}</div>
-        ${picked.length ? `<p class="hint">Toca un charm para quitarlo</p>` : `<p class="hint">Elige tus charms de la derecha 👉<br>hasta ${creaMax()}</p>`}
+        ${picked.length ? `<p class="hint">Toca un charm para quitarlo</p>` : `<p class="hint">Elige tus charms ✨<br>hasta ${creaMax()}</p>`}
         <ul class="lines">${base != null ? `<li><span>Gancho metálico + cadena</span><span>${money(base)}</span></li>` : `<li><span>Gancho metálico + cadena</span><span>se confirma</span></li>`}${picked.map(({ c }) => `<li><span>${esc(c.nombre)}</span><span>${money(c.precio)}</span></li>`).join("")}</ul>
         <div class="tot">Total ${money(creaTotal())}</div>
         <div class="row2"><button type="button" class="btnp" data-go="creaAdd" ${picked.length ? "" : "disabled"}>Agregar a la canasta</button><button type="button" class="btnp wa" data-go="creaWa" ${picked.length ? "" : "disabled"}>Pedir por WhatsApp</button></div>
@@ -861,7 +870,7 @@ function renderCollar() {
   if (!col.estilo || !E.some(e => e.id === col.estilo)) col.estilo = E[0]?.id || null;
   const cords = cCords(); col.cordones = col.cordones.filter(id => cords.some(c => c.id === id)); if (!col.cordones.length && cords[0]) col.cordones = [cords[0].id];
   const pls = cPlacas(); if (!pls.some(p => p.id === col.placa)) col.placa = pls[0]?.id || null;
-  $("#hp").innerHTML = `<section class="shop">${topBar("doggy", "Arma su collar")}
+  $("#hp").innerHTML = `<section class="shop">${topBar("doggy", "Arma su collar", "doggy")}${bubbles("doggy", "make")}
     <div class="bld">
       <div class="prev gl" id="colPrev" aria-live="polite">${colPreview()}</div>
       <div class="pick gl"><div class="steps2" role="tablist">${COL_STEPS.map((t, i) => `<button type="button" role="tab" data-cst="${i + 1}" aria-selected="${col.step === i + 1}">${i + 1} · ${t}</button>`).join("")}</div>
