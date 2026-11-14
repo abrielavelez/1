@@ -320,6 +320,7 @@ const SCHEMAS = {
       { k: "descripcion", t: "textarea", label: "Descripción" },
       { k: "precio", t: "number", label: "Precio ($)", help: "Vacío = “Consultar precio”." },
       { k: "precioTexto", t: "text", label: "Cómo se muestra el precio (opcional)", help: "Ej.: $6 + $1 por letra" },
+      { k: "opciones", t: "list", label: "Set: pares u opciones a elegir (opcional)", help: "Separa con comas, en orden de izquierda a derecha como en la foto. La clienta elige cuáles quiere y paga el Precio por cada uno. Ej.: Gota café, Carey, Negro" },
       { k: "incluye", t: "list", label: "Incluye", help: "Separa con comas. Ej.: Lazo humano, Lazo perrito", when: d => d.marca === "match" },
       { k: "stock", t: "number", label: "Stock", help: "Empieza en 1. En 0 se muestra Agotado. Vacío = hecho a pedido." },
       { k: "fotoId", t: "photo", label: "Foto (PNG sin fondo se ve mejor en la tienda)", fallback: "fotoSrc" },
@@ -747,6 +748,15 @@ function bubbles(brand, active) {
     : `<button type="button" class="brandsw gl" data-go="doggy" aria-label="Ir a Sugar Doggy Pops"><img src="${esc(doggyLogo())}" alt=""><span>para tu<br>mascota 🐾</span></button>`;
   return `<nav class="bubbles" aria-label="Secciones">${make}${cats.map(c => { const ic = catIcon(c); return `<button type="button" class="bub2" data-cat="${esc(c.id)}" aria-pressed="${!isMake && c === shopCat}"><span class="ring"><span>${ic ? `<img src="${esc(ic)}" alt="">` : esc(c.nombre.charAt(0))}</span></span>${esc(c.nombre)}</button>`; }).join("")}<span class="bsep" aria-hidden="true"></span>${other}</nav>`;
 }
+/* sets: the client picks which pairs she wants, each at the product price */
+const optSel = {};
+function optPicker(p, out) {
+  const sel = optSel[p.id] || (optSel[p.id] = []), n = sel.length, all = n === p.opciones.length;
+  return `<div style="display:grid;gap:8px"><b style="color:#fff;text-shadow:0 1px 3px rgba(0,30,80,.6)">Elige tus pares · ${money(p.precio)} c/u <small style="font-weight:600">(de izquierda a derecha en la foto)</small></b>
+    <div class="steps2">${p.opciones.map((o, i) => `<button type="button" data-opt="${esc(p.id)}" data-i="${i}" aria-selected="${sel.includes(i)}">${i + 1} · ${esc(o)}</button>`).join("")}<button type="button" data-opt="${esc(p.id)}" data-i="all" aria-selected="${all}">Todo el set</button></div>
+    <div class="row2"><button type="button" class="btnp" data-addopt="${esc(p.id)}" ${out || !n ? "disabled" : ""}>Agregar ${n ? `${n} par${n > 1 ? "es" : ""} · ${money(n * (+p.precio || 0))}` : "a la canasta"}</button><button type="button" class="btnp wa" data-waopt="${esc(p.id)}" ${out || !n ? "disabled" : ""}>Pedir por WhatsApp</button></div></div>`;
+}
+const optNames = p => (optSel[p.id] || []).slice().sort((a, b) => a - b).map(i => p.opciones[i]);
 function renderShop(brand = shopBrand) {
   view = "shop"; shopBrand = brand;
   const cats = shopCats(brand);
@@ -760,7 +770,7 @@ function renderShop(brand = shopBrand) {
       <div class="info gl">${p ? `<h1>${esc(p.nombre)}</h1><div class="pr">${esc(p.precioTexto || money(p.precio))}</div>
         ${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}
         ${p.configurable ? `<div class="stk">Hecho a mano a su medida</div>` : `<div class="stk">${out ? "Agotado" : typeof p.stock === "number" ? `Quedan ${p.stock}` : "Hecho a pedido"}</div>`}
-        ${p.configurable ? `<div class="row2"><button type="button" class="btnp" data-perso="${esc(p.id)}">${p.matchy ? "Armar mi Matchy 💞" : "Personalizar 🎨"}</button></div>` : `<div class="row2"><button type="button" class="btnp" data-add="${esc(p.id)}" ${out ? "disabled" : ""}>Agregar a la canasta</button><button type="button" class="btnp wa" data-wa1="${esc(p.id)}" ${out ? "disabled" : ""}>Pedir por WhatsApp</button></div>`}` : `<div class="emptyg">Esta sección todavía no tiene productos.</div>`}
+        ${!p.configurable && p.opciones?.length ? optPicker(p, out) : p.configurable ? `<div class="row2"><button type="button" class="btnp" data-perso="${esc(p.id)}">${p.matchy ? "Armar mi Matchy 💞" : "Personalizar 🎨"}</button></div>` : `<div class="row2"><button type="button" class="btnp" data-add="${esc(p.id)}" ${out ? "disabled" : ""}>Agregar a la canasta</button><button type="button" class="btnp wa" data-wa1="${esc(p.id)}" ${out ? "disabled" : ""}>Pedir por WhatsApp</button></div>`}` : `<div class="emptyg">Esta sección todavía no tiene productos.</div>`}
         ${ps.length > 1 ? `<div class="thumbs">${ps.map(x => `<button type="button" class="th ${x.stock === 0 ? "out" : ""}" data-prod="${esc(x.id)}" aria-pressed="${x === p}"><span class="im">${prodImg(x) ? `<img src="${esc(prodImg(x))}" alt="" loading="lazy">` : "🍒"}</span><b>${esc(x.nombre)}</b><span>${esc(x.precioTexto || money(x.precio))}</span></button>`).join("")}</div>` : ""}
       </div>
     </div></section>${closeBtn}`;
@@ -912,7 +922,7 @@ $("#hp").addEventListener("input", e => {
   if (t.id === "colPal") { t.value = t.value.toUpperCase(); col.palabra = t.value; colRefresh(); }
 });
 $("#hp").addEventListener("click", e => {
-  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-perso],[data-gift],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
+  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-perso],[data-gift],[data-opt],[data-addopt],[data-waopt],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
   if (t.id === "hpClose") return closeHome();
   if (t.dataset.step) { const ps = live(prodsDe(shopCat)), i = ps.findIndex(p => p.id === shopProd?.id); shopProd = ps[(i + +t.dataset.step + ps.length) % ps.length]; return renderShop(); }
   if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return sendWa([`• 1 × ${p.nombre} – ${p.precioTexto || money(p.precio)}`], p.marca); }
@@ -921,6 +931,9 @@ $("#hp").addEventListener("click", e => {
   if (t.dataset.add) { addToCart(prodLine(S.data.productos.find(p => p.id === t.dataset.add))); return renderShop(); }
   if (t.dataset.q) { const l = cart[+t.dataset.q]; if (l) { l.q += +t.dataset.d; if (l.q <= 0) cart.splice(+t.dataset.q, 1); } return renderCart(); }
   if (t.dataset.perso) { const pp = S.data.productos.find(x => x.id === t.dataset.perso); if (pp?.estilo) col.estilo = pp.estilo; col.matchy = pp?.matchy ? { nombre: pp.nombre, precioHumano: pp.precioHumano } : null; col.step = 1; renderCollar(); $("#hp").scrollTo({ top: 0 }); return; }
+  if (t.dataset.opt) { const p = S.data.productos.find(x => x.id === t.dataset.opt), sel = optSel[p.id] || (optSel[p.id] = []); if (t.dataset.i === "all") optSel[p.id] = sel.length === p.opciones.length ? [] : p.opciones.map((_, i) => i); else { const i = +t.dataset.i, k = sel.indexOf(i); k >= 0 ? sel.splice(k, 1) : sel.push(i); } const y = $("#hp").scrollTop; renderShop(); $("#hp").scrollTop = y; return; }
+  if (t.dataset.addopt) { const p = S.data.productos.find(x => x.id === t.dataset.addopt), names = optNames(p); addToCart({ key: p.id + ":" + names.join("+"), nombre: `${p.nombre} (${names.length} par${names.length > 1 ? "es" : ""})`, detalle: names.join(", "), precio: names.length * (+p.precio || 0), precioTexto: money(names.length * (+p.precio || 0)), img: prodImg(p), marca: p.marca }); optSel[p.id] = []; return renderShop(); }
+  if (t.dataset.waopt) { const p = S.data.productos.find(x => x.id === t.dataset.waopt), names = optNames(p); return sendWa([`• ${p.nombre}: ${names.join(", ")}`, `Total: ${money(names.length * (+p.precio || 0))} (${names.length} × ${money(p.precio)})`], p.marca); }
   if (t.dataset.gift) { col.regalo = col.regalo === t.dataset.gift ? null : t.dataset.gift; return renderCollar(); }
   if (t.dataset.ch) { const y = $("#hp").scrollTop; setTimeout(() => $("#hp").scrollTop = y); const i = crea.sel.indexOf(t.dataset.ch); if (i >= 0) crea.sel.splice(i, 1); else if (crea.sel.length < creaMax()) crea.sel.push(t.dataset.ch); else toast(`Máximo ${creaMax()} charms`); return renderCrea(); }
   if (t.dataset.rm) { crea.sel.splice(+t.dataset.rm, 1); return renderCrea(); }
