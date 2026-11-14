@@ -181,6 +181,19 @@ h1 span{color:var(--pink)}
 .idx{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font:600 12px var(--mono);background:rgba(255,255,255,.7);border-radius:999px;padding:3px 10px}
 .sold{position:absolute;top:12px;left:12px;background:#D92D20;color:#fff;font:700 12px var(--mono);padding:4px 10px;border-radius:999px;z-index:2}
 .arr{font-size:26px;cursor:pointer;display:grid;place-items:center;color:var(--ink)}
+/* footer + search */
+.foot{position:relative;z-index:1;display:grid;justify-items:center;gap:10px;padding:28px 16px 80px;text-align:center}
+.hero + .foot{background:linear-gradient(#5aa6e6,#2E8BE0)}
+.foot .fls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.fl{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 16px;color:#fff;text-decoration:none;font:700 14px var(--body);text-shadow:0 1px 3px rgba(0,30,80,.5)}
+.fl small{font:500 12px var(--mono);opacity:.9}
+.fl svg{width:20px;height:20px}
+.foot p{margin:0;color:#fff;font:400 18px var(--sign, "Abril Fatface"),serif;text-shadow:0 1px 4px rgba(0,30,80,.5)}
+.srch{position:fixed;inset:0;z-index:95;background:rgba(20,50,100,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:grid;align-items:start;justify-items:center;padding:clamp(14px,6vh,70px) 14px}
+.srch .box{width:min(860px,100%);max-height:85svh;overflow:auto;border-radius:24px;padding:16px;display:grid;gap:12px;background:rgba(255,255,255,.82)}
+.srch .bar{display:flex;gap:8px}
+.srch input{flex:1;border:2px solid #fff;border-radius:999px;padding:12px 18px;font:600 17px var(--body);background:#fff;color:var(--ink)}
+.srch .hint2{font:600 13px var(--mono);color:#3a4a66}
 /* builders (charm + dog collar) */
 .minibar{display:none}
 @media (max-width:860px){.minibar{display:flex;position:fixed;left:12px;right:12px;bottom:calc(52px + env(safe-area-inset-bottom,0px));z-index:20;align-items:center;justify-content:space-between;gap:10px;border-radius:999px;padding:8px 8px 8px 18px;font:700 15px var(--body);color:var(--ink);background:rgba(255,255,255,.8)}
@@ -258,6 +271,13 @@ header{border-bottom:1px solid var(--line);margin-bottom:6px}
 .count{font-weight:500} .count b{font:600 16px var(--body)}
 .sheet .card{background:#fff}
 .sub2{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+#subnav.stack{display:grid;gap:8px;overflow:visible}
+.subrow{display:flex;gap:6px;align-items:center;overflow-x:auto;scrollbar-width:none;min-width:0}
+.subrow .lbl{flex:none;width:76px;font:600 11px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--soft)}
+.pinfo{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.pinfo span{font:500 11px var(--body);padding:2px 7px;border-radius:6px;background:#F1F3F6;color:#3B4252;border:1px solid var(--line)}
+.pinfo span.warn{background:#FFF4E5;color:#9A5B00;border-color:#FAD7A0}
+.pinfo span.pr{background:#EEF6EE;color:#1E6B34;border-color:#C6E4CC;font-weight:600}
 .hp{--body:"Nunito","Avenir Next","Segoe UI",system-ui,sans-serif;--display:"Fredoka","Arial Rounded MT Bold",sans-serif;font-family:var(--body)}
 
 </style>
@@ -441,6 +461,18 @@ function thumb(it, col) {
   if (col === "charms") return `<div class="thumb">${iconSvg(it.icono)}</div>`;
   return `<div class="thumb" aria-hidden="true">${{ club: "🍒", doggy: "🐶", match: "💞" }[it.marca] || "🦴"}</div>`;
 }
+function prodInfo(p) {
+  const t = [];
+  t.push(p.precio == null || p.precio === "" ? `<span class="warn">Sin precio</span>` : `<span class="pr">${esc(p.precioTexto || money(p.precio))}</span>`);
+  t.push(`<span>Stock: ${typeof p.stock === "number" ? p.stock : "a pedido"}</span>`);
+  if (p.opciones?.length) t.push(`<span>Set · ${p.opciones.length} opciones a ${money(p.precio)} c/u</span>`);
+  if (p.configurable) t.push(`<span>Personalizable${p.estilo ? " · " + esc(S.data.estilos.find(e => e.id === p.estilo)?.nombre || p.estilo) : ""}</span>`);
+  if (p.matchy) t.push(`<span>💞 Matchy${p.precioHumano != null && p.precioHumano !== "" ? " · humano " + money(p.precioHumano) : " · humano sin precio"}</span>`);
+  if (!p.fotoId && !p.fotoSrc && !p.configurable) t.push(`<span class="warn">Sin foto</span>`);
+  if (!p.descripcion) t.push(`<span class="warn">Sin descripción</span>`);
+  if (p.disponible === false) t.push(`<span class="warn">Oculto en la tienda</span>`);
+  return `<div class="pinfo">${t.join("")}</div>`;
+}
 function row(it, col) {
   if (col === "categorias") {
     const n = prodsDe(it).length;
@@ -450,12 +482,12 @@ function row(it, col) {
       <div class="count"><b>${n}</b>producto${n === 1 ? "" : "s"}</div></div>`;
   }
   const metaTxt = col === "productos" ? `${MARCAS[it.marca] || ""}${it.categoria ? " · " + it.categoria : ""}` : col === "cordones" || col === "charms" ? it.tipo : col === "promos" ? (it.cat ? "🎁 Regalo a elegir de " + it.cat : "🎁 Regalo con el collar") + (it.disponible === false ? " · apagada" : "") : col === "estilos" ? `desde ${money(it.base)}` : "";
-  const priceTxt = col === "productos" ? (it.precioTexto || money(it.precio)) : col === "charms" ? money(it.precio) : "";
+  const priceTxt = col === "productos" ? "" : col === "charms" ? money(it.precio) : "";
   const st = typeof it.stock === "number" ? it.stock : null;
   return `<div class="row ${it.disponible === false ? "off" : ""}" data-col="${col}" data-id="${esc(it.id)}">
     ${thumb(it, col)}
     <div class="info"><b>${esc(it.nombre || "Sin nombre")}</b><div class="meta">${esc(metaTxt)}${priceTxt ? ` · <span class="price">${esc(priceTxt)}</span>` : ""}</div>
-      <div class="badges">${stockBadge(it)}${it.ejemplo ? '<span class="badge ex">Ejemplo</span>' : ""}</div></div>
+      ${col === "productos" ? prodInfo(it) : ""}<div class="badges">${stockBadge(it)}${it.ejemplo ? '<span class="badge ex">Ejemplo</span>' : ""}</div></div>
     ${col === "promos" || col === "estilos" ? "" : `<div class="stock" data-stock>${st === null ? `<button type="button" class="btn" data-setstock style="width:auto;height:auto;font-size:12px;padding:6px 8px">+ stock</button>` :
       `<button type="button" data-step="-1" aria-label="Restar 1">−</button><output>${st}</output><button type="button" data-step="1" aria-label="Sumar 1">+</button>`}</div>`}
   </div>`;
@@ -463,9 +495,11 @@ function row(it, col) {
 function renderHeader() {
   document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === S.tab));
   const sub = $("#subnav"), tools = $("#tools");
+  sub.classList.remove("stack");
   if (S.tab === "productos") {
-    sub.innerHTML = [["todo", "Todas las marcas"], ...Object.entries(MARCAS)].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("")
-      + (["club", "doggy"].includes(S.sub) ? `</div><div class="sub2">${[["", "Todas las categorías"], ...catsDe(S.sub).map(c => [c.nombre, c.nombre])].map(([k, v]) => `<button type="button" class="chip" data-pcat="${esc(k)}" aria-pressed="${S.cat === k}">${esc(v)} <span style="opacity:.6">${k ? S.data.productos.filter(p => p.marca === S.sub && p.categoria === k).length : S.data.productos.filter(p => p.marca === S.sub).length}</span></button>`).join("")}` : "");
+    sub.classList.add("stack");
+    sub.innerHTML = `<div class="subrow"><span class="lbl">Marca</span>${[["todo", "Todas"], ...Object.entries(MARCAS)].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("")}</div>`
+      + (["club", "doggy"].includes(S.sub) ? `<div class="sub2 subrow"><span class="lbl">Categoría</span>${[["", "Todas las categorías"], ...catsDe(S.sub).map(c => [c.nombre, c.nombre])].map(([k, v]) => `<button type="button" class="chip" data-pcat="${esc(k)}" aria-pressed="${S.cat === k}">${esc(v)} <span style="opacity:.6">${k ? S.data.productos.filter(p => p.marca === S.sub && p.categoria === k).length : S.data.productos.filter(p => p.marca === S.sub).length}</span></button>`).join("")}</div>` : `<div class="subrow"><span class="lbl">Categoría</span><span class="note" style="margin:0">Elige Sugar Club o Doggy Pops para ver sus categorías</span></div>`);
     tools.innerHTML = `<input type="search" id="q" placeholder="Buscar producto…" value="${esc(S.q)}" aria-label="Buscar"><button type="button" class="btn pri" data-new="productos">+ Nuevo</button>`;
   } else if (S.tab === "categorias") {
     sub.innerHTML = [["club", "Sugar Club"], ["doggy", "Doggy Pops"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
@@ -534,29 +568,27 @@ function renderAjustes(m) {
     <h2>WhatsApp e Instagram</h2>
     <label class="field">Número de WhatsApp (el mismo para las dos marcas)<input id="wa" inputmode="tel" placeholder="593991234567" value="${esc(A.whatsapp || "")}"><small>Formato: 593 + tu número sin el 0. Ej.: 0991234567 → 593991234567</small></label>
     <div class="grid3" style="grid-template-columns:1fr 1fr"><label class="field">Instagram Sugar Club<input id="igClub" value="${esc(ig.club || "")}"></label><label class="field">Instagram Doggy Pops<input id="igDoggy" value="${esc(ig.doggy || "")}"></label></div>
-    <h2>Home (escritorio)</h2><p>Lo que se ve en “Ver home”. Los íconos se editan en la pestaña Categorías.</p>
-    <div class="field">Fondo<div class="seg"><button type="button" class="btn" data-hbg="estrellas" aria-pressed="${!["pasto", "cuadros"].includes(h.fondo)}">Cielo con estrellas</button><button type="button" class="btn" data-hbg="pasto" aria-pressed="${h.fondo === "pasto"}">Windows</button><button type="button" class="btn" data-hbg="cuadros" aria-pressed="${h.fondo === "cuadros"}">Cuadros</button></div></div>
+    <h2>Foto de portada</h2><p>La imagen grande del inicio y del fondo de la tienda. Si no subes otra, se queda la actual (el charm en el cielo). Usa una foto horizontal grande.</p>
+    ${ajPhoto("Foto de portada", "hero", h.heroId, "img/hero.jpg")}
     <h2>Información de compra (se ve en la canasta)</h2>
     <label class="field">Envíos, tiempos de espera y pagos<textarea id="infoCompra" rows="7" placeholder="Envíos: …&#10;Tiempo de espera: …&#10;Pagos: …">${esc(A.infoCompra || "")}</textarea><small>Escríbelo como quieras que lo lea la clienta. Los saltos de línea se respetan.</small></label>
-    <label class="field" style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="creaActivo" ${A.creaActivo ? "checked" : ""} style="width:auto"> “Crea el tuyo” abierto al público <small>(apagado = dice “Próximamente”)</small></label>
+    <label class="field" style="display:flex;flex-direction:row;align-items:center;gap:8px;font-weight:600"><input type="checkbox" id="creaActivo" ${A.creaActivo ? "checked" : ""} style="width:auto"> “Crea el tuyo” abierto al público <small>(apagado = dice “Próximamente”)</small></label>
     <label class="field">“Crea el tuyo”: precio del gancho y cadena ($)<input id="creaBase" type="number" step="0.5" min="0" value="${A.creaBase ?? ""}"><small>Se suma a los charms que elija. Vacío = “se confirma por WhatsApp”.</small></label><label hidden></label>
-    <label class="field">Texto de abajo<input id="hPie" value="${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}"></label>
+    <h2>Pie de página</h2><label class="field">Texto del pie de página<input id="hPie" value="${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}"></label>
     <h2>🐶 Logo de Doggy Pops</h2>
     ${ajPhoto("Logo de Doggy Pops (va encima de la foto)", "dogLogo", h.doggyLogoId, "img/logo-doggy.png")}
     <button type="submit" class="btn pri">Guardar ajustes</button></form>`;
-  let fondo = ["pasto", "cuadros"].includes(h.fondo) ? h.fondo : "estrellas";
-  const up = { dogFoto: h.doggyFotoId || null, dogLogo: h.doggyLogoId || null, header: h.headerId || null };
+  const up = { hero: h.heroId || null, dogFoto: h.doggyFotoId || null, dogLogo: h.doggyLogoId || null, header: h.headerId || null };
   m.querySelectorAll("[data-ajup]").forEach(inp => inp.onchange = async () => {
     const f = inp.files[0]; if (!f) return; const k = inp.dataset.ajup;
     try { const r = await saving(assets.upload(f)); up[k] = r.id; const pv = m.querySelector(`[data-ajpv="${k}"]`); if (pv) pv.innerHTML = `<img src="${esc(blob(r.id))}" alt="">`; toast("Foto lista, toca Guardar ajustes"); } catch (e) {}
   });
   m.querySelectorAll("[data-ajclear]").forEach(b => b.onclick = () => { up[b.dataset.ajclear] = null; const pv = m.querySelector(`[data-ajpv="${b.dataset.ajclear}"]`); if (pv) pv.textContent = "Sin foto"; });
-  m.querySelectorAll("[data-hbg]").forEach(b => b.onclick = () => { fondo = b.dataset.hbg; m.querySelectorAll("[data-hbg]").forEach(x => x.setAttribute("aria-pressed", x === b)); });
   $("#ajForm").onsubmit = async ev => {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, headerId: up.header, pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, heroId: up.hero, headerId: up.header, pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 function ajPhoto(label, k, id, fallback) {
@@ -719,21 +751,27 @@ function openHome() { const hp = $("#hp"); hp.hidden = false; document.body.styl
 function closeHome() { $("#hp").hidden = true; document.body.style.overflow = ""; }
 function cartCount() { return cart.reduce((a, c) => a + c.q, 0); }
 const homeCfgX = () => S.ajustes?.home || {};
+const heroBg = () => homeCfgX().heroId ? `style="background-image:url('${blob(homeCfgX().heroId)}')"` : "";
+function footer() {
+  const ig = S.ajustes?.instagram || {}, wa = (S.ajustes?.whatsapp || "").replace(/\D/g, ""), pie = homeCfgX().pie ?? "Hecho con todo el amor del mundo 💖";
+  const igA = (u, t) => u ? `<a class="fl gl" href="https://instagram.com/${esc(u)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>${t} <small>@${esc(u)}</small></a>` : "";
+  return `<footer class="foot"><div class="fls">${igA(ig.club, "Sugar Club")}${igA(ig.doggy, "Doggy Pops")}${wa ? `<a class="fl gl" href="https://wa.me/${wa}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19l-4 1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>WhatsApp</a>` : ""}</div><p>${esc(pie)}</p></footer>`;
+}
 const doggyLogo = () => homeCfgX().doggyLogoId ? blob(homeCfgX().doggyLogoId) : "img/logo-doggy.png";
 const cartBtn = () => `<button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button>`;
 const closeBtn = `<button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>`;
-const topBar = (brand, title, back = "hero") => `<div class="top"><button type="button" class="back gl" data-go="${back}" aria-label="Volver">‹ ${back === "hero" ? "Inicio" : "Tienda"}</button><img class="lg" src="${esc(brand === "doggy" ? doggyLogo() : "img/logo-club.png")}" alt="Inicio" data-go="hero"><span class="tt">${esc(title)}</span>${cartBtn()}</div>`;
+const topBar = (brand, title, back = "hero") => `<div class="top"><button type="button" class="back gl" data-go="${back}" aria-label="Volver">‹ ${back === "hero" ? "Inicio" : "Tienda"}</button><img class="lg" src="${esc(brand === "doggy" ? doggyLogo() : "img/logo-club.png")}" alt="Inicio" data-go="hero"><span class="tt">${esc(title)}</span><span style="display:flex;gap:8px"><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</span></div>`;
 const live = arr => arr.filter(x => x.disponible !== false);
 const inStock = x => x.disponible !== false && x.stock !== 0;
 
 function renderHero() {
   view = "hero";
-  $("#hp").innerHTML = `<section class="hero" aria-label="Sugar Club">
+  $("#hp").innerHTML = `<section class="hero" aria-label="Sugar Club" ${heroBg()}>
     <div class="logo gl"><img src="img/logo-club.png" alt="Sugar Club"></div>
-    <nav class="nav"><button type="button" class="pill gl" data-go="shop">Ver productos</button><button type="button" class="iconbtn gl" data-go="shop" aria-label="Buscar">🔍</button>${cartBtn()}</nav>
+    <nav class="nav"><button type="button" class="pill gl" data-go="shop">Ver productos</button><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</nav>
     <div class="ctas"><button type="button" class="pill w gl" data-go="crea">Crea el tuyo</button><button type="button" class="pill w gl" data-go="shop">Compra ahora</button></div>
     <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, para tu mascota"><img src="${esc(doggyLogo())}" alt=""><span class="dcap">para tu mascota 🐾</span></button>
-  </section>${closeBtn}`;
+  </section>${footer()}${closeBtn}`;
 }
 
 /* shop: sections as photo bubbles, product shown at its own shape */
@@ -764,7 +802,7 @@ function renderShop(brand = shopBrand) {
   const ps = shopCat ? live(prodsDe(shopCat)) : [];
   if (!shopProd || !ps.some(p => p.id === shopProd.id)) shopProd = ps[0] || null;
   const p = shopProd, out = p && p.stock === 0;
-  $("#hp").innerHTML = `<section class="shop">${topBar(brand, brand === "doggy" ? "Doggy Pops" : "Tienda")}${bubbles(brand)}
+  $("#hp").innerHTML = `<section class="shop" ${heroBg()}>${topBar(brand, brand === "doggy" ? "Doggy Pops" : "Tienda")}${bubbles(brand)}
     <div class="shopgrid">
       <div class="stage gl" aria-live="polite"><div class="big">${p && ps.length > 1 ? `<button type="button" class="arr l" data-step="-1" aria-label="Producto anterior">‹</button>` : ""}${p ? (prodImg(p) ? `<img src="${esc(prodImg(p))}" alt="${esc(p.nombre)}">` : `<span style="font-size:60px">🍒</span>`) : `<span class="emptyg">Pronto ✨</span>`}${p && ps.length > 1 ? `<button type="button" class="arr r" data-step="1" aria-label="Producto siguiente">›</button><span class="idx">${ps.indexOf(p) + 1} / ${ps.length}</span>` : ""}${out ? `<span class="sold">Sold out</span>` : ""}</div></div>
       <div class="info gl">${p ? `<h1>${esc(p.nombre)}</h1><div class="pr">${esc(p.precioTexto || money(p.precio))}</div>
@@ -773,12 +811,35 @@ function renderShop(brand = shopBrand) {
         ${!p.configurable && p.opciones?.length ? optPicker(p, out) : p.configurable ? `<div class="row2"><button type="button" class="btnp" data-perso="${esc(p.id)}">${p.matchy ? "Armar mi Matchy 💞" : "Personalizar 🎨"}</button></div>` : `<div class="row2"><button type="button" class="btnp" data-add="${esc(p.id)}" ${out ? "disabled" : ""}>Agregar a la canasta</button><button type="button" class="btnp wa" data-wa1="${esc(p.id)}" ${out ? "disabled" : ""}>Pedir por WhatsApp</button></div>`}` : `<div class="emptyg">Esta sección todavía no tiene productos.</div>`}
         ${ps.length > 1 ? `<div class="thumbs">${ps.map(x => `<button type="button" class="th ${x.stock === 0 ? "out" : ""}" data-prod="${esc(x.id)}" aria-pressed="${x === p}"><span class="im">${prodImg(x) ? `<img src="${esc(prodImg(x))}" alt="" loading="lazy">` : "🍒"}</span><b>${esc(x.nombre)}</b><span>${esc(x.precioTexto || money(x.precio))}</span></button>`).join("")}</div>` : ""}
       </div>
-    </div></section>${closeBtn}`;
+    </div>${footer()}</section>${closeBtn}`;
 }
 
 /* cart: each line is a snapshot so custom builds fit too */
 function addToCart(line) { const l = cart.find(x => x.key === line.key); l ? l.q++ : cart.push({ ...line, q: 1 }); toast("Agregado a la canasta 🛒"); }
 const prodLine = p => ({ key: p.id, nombre: p.nombre, precio: +p.precio || 0, precioTexto: p.precioTexto || money(p.precio), img: prodImg(p), marca: p.marca });
+/* search: type text, get matching products from both brands */
+const norm = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+function searchProds(q) {
+  const words = norm(q).split(/\s+/).filter(Boolean); if (!words.length) return [];
+  const visibleCat = p => S.data.categorias.some(c => c.marca === p.marca && c.nombre === p.categoria && c.disponible !== false && !c.bloqueada);
+  return S.data.productos.filter(p => p.disponible !== false && visibleCat(p)).map(p => {
+    const hay = norm([p.nombre, p.categoria, p.descripcion, MARCAS[p.marca], ...(p.opciones || [])].join(" "));
+    const name = norm(p.nombre); let sc = 0;
+    for (const w of words) { if (!hay.includes(w)) return null; sc += name.includes(w) ? 3 : 1; }
+    return { p, sc };
+  }).filter(Boolean).sort((a, b) => b.sc - a.sc).map(x => x.p);
+}
+let searchQ = "";
+function openSearch() {
+  let o = $("#hpSearch"); if (!o) { o = document.createElement("div"); o.id = "hpSearch"; o.className = "srch"; $("#hp").appendChild(o); }
+  o.innerHTML = `<div class="box gl" role="dialog" aria-label="Buscar productos"><div class="bar"><input id="srchIn" type="search" placeholder="Busca: perla, flor, bandana, collar…" value="${esc(searchQ)}" autocomplete="off" aria-label="Buscar productos"><button type="button" class="iconbtn" data-go="closesearch" aria-label="Cerrar" style="background:#fff">✕</button></div><div id="srchRes"></div></div>`;
+  drawSearch(); const i = $("#srchIn"); i.focus(); i.setSelectionRange(i.value.length, i.value.length);
+}
+function drawSearch() {
+  const r = $("#srchRes"); if (!r) return;
+  const res = searchProds(searchQ);
+  r.innerHTML = !searchQ.trim() ? `<p class="hint2">Escribe lo que buscas y te mostramos los productos relacionados.</p>` : res.length ? `<p class="hint2">${res.length} resultado${res.length > 1 ? "s" : ""}</p><div class="thumbs">${res.map(x => `<button type="button" class="th" data-hit="${esc(x.id)}"><span class="im">${prodImg(x) ? `<img src="${esc(prodImg(x))}" alt="" loading="lazy">` : (x.marca === "doggy" ? "🐶" : "🍒")}</span><b>${esc(x.nombre)}</b><span>${esc(x.categoria || "")} · ${esc(x.precioTexto || money(x.precio))}</span></button>`).join("")}</div>` : `<p class="hint2">No encontramos “${esc(searchQ)}”. Prueba con otra palabra 💖</p>`;
+}
 function renderCart() {
   let c = $("#hpCart"); if (!c) { c = document.createElement("aside"); c.id = "hpCart"; c.className = "cart gl"; $("#hp").appendChild(c); }
   const total = cart.reduce((a, l) => a + l.precio * l.q, 0);
@@ -802,11 +863,11 @@ const creaMax = () => S.ajustes?.maxCharmsCrea || 6;
 function creaTotal() { const ch = creaCharms(); return (S.ajustes?.creaBase || 0) + crea.sel.reduce((a, id) => a + (+ch.find(c => c.id === id)?.precio || 0), 0); }
 function renderCrea() {
   view = "crea"; shopBrand = "club";
-  if (!S.ajustes?.creaActivo) { $("#hp").innerHTML = `<section class="shop">${topBar("club", "Crea el tuyo", "shop")}${bubbles("club", "make")}<div class="bld" style="grid-template-columns:1fr;max-width:720px"><div class="prev gl" style="min-height:40svh;align-content:center"><h2>Próximamente ✨</h2><p class="hint" style="font-size:17px">Muy pronto podrás armar tu propio bag charm con tus charms favoritos.<br>Mientras tanto, mira los charms individuales en la tienda 💖</p><div class="row2" style="justify-content:center"><button type="button" class="btnp" data-cat="club-charms">Ver charms</button></div></div></div></section>${closeBtn}`; return; }
+  if (!S.ajustes?.creaActivo) { $("#hp").innerHTML = `<section class="shop" ${heroBg()}>${topBar("club", "Crea el tuyo", "shop")}${bubbles("club", "make")}<div class="bld" style="grid-template-columns:1fr;max-width:720px"><div class="prev gl" style="min-height:40svh;align-content:center"><h2>Próximamente ✨</h2><p class="hint" style="font-size:17px">Muy pronto podrás armar tu propio bag charm con tus charms favoritos.<br>Mientras tanto, mira los charms individuales en la tienda 💖</p><div class="row2" style="justify-content:center"><button type="button" class="btnp" data-cat="club-charms">Ver charms</button></div></div></div>${footer()}</section>${closeBtn}`; return; }
   const ch = creaCharms(), base = S.ajustes?.creaBase;
   crea.sel = crea.sel.filter(id => ch.some(c => c.id === id && c.stock !== 0));
   const picked = crea.sel.map((id, i) => ({ c: ch.find(c => c.id === id), i }));
-  $("#hp").innerHTML = `<section class="shop">${topBar("club", "Crea el tuyo", "shop")}${bubbles("club", "make")}
+  $("#hp").innerHTML = `<section class="shop" ${heroBg()}>${topBar("club", "Crea el tuyo", "shop")}${bubbles("club", "make")}
     <div class="bld">
       <div class="prev gl" aria-live="polite"><h2>Tu bag charm</h2>
         <div class="hook" aria-hidden="true"></div><div class="chain" aria-hidden="true"></div>
@@ -819,7 +880,7 @@ function renderCrea() {
       <div class="pick gl"><h3>Charms · ${crea.sel.length}/${creaMax()}</h3>
         ${ch.length ? `<div class="opts">${ch.map(c => { const n = crea.sel.filter(x => x === c.id).length, off = c.stock === 0; return `<button type="button" class="opt2 ${off ? "off" : ""}" data-ch="${esc(c.id)}" aria-pressed="${n > 0}" ${off ? "disabled" : ""}><span class="ph">${prodImg(c) ? `<img src="${esc(prodImg(c))}" alt="" loading="lazy">` : "✨"}</span><b>${esc(c.nombre)}</b><span class="p">${off ? "Agotado" : money(c.precio)}</span></button>`; }).join("")}</div>` : `<div class="emptyg">Carga charms en la categoría “${CHARM_CAT}” de Sugar Club.</div>`}
       </div>
-    </div><div class="minibar gl"><span>${crea.sel.length} charm${crea.sel.length === 1 ? "" : "s"} · ${money(creaTotal())}</span><button type="button" data-go="top">Ver mi charm ↑</button></div></section>${closeBtn}`;
+    </div><div class="minibar gl"><span>${crea.sel.length} charm${crea.sel.length === 1 ? "" : "s"} · ${money(creaTotal())}</span><button type="button" data-go="top">Ver mi charm ↑</button></div>${footer()}</section>${closeBtn}`;
 }
 function creaSummary() { const ch = creaCharms(); return crea.sel.map(id => ch.find(c => c.id === id)?.nombre).filter(Boolean).join(" + "); }
 
@@ -902,14 +963,14 @@ function renderCollar() {
   if (!col.estilo || !E.some(e => e.id === col.estilo)) col.estilo = E[0]?.id || null;
   const cords = cCords(); col.cordones = col.cordones.filter(id => cords.some(c => c.id === id)); if (!col.cordones.length && cords[0]) col.cordones = [cords[0].id];
   const pls = cPlacas(); if (!pls.some(p => p.id === col.placa)) col.placa = pls[0]?.id || null;
-  $("#hp").innerHTML = `<section class="shop">${topBar("doggy", col.matchy ? "Arma tu Matchy 💞" : "Arma su collar", "doggy")}${bubbles("doggy", "make")}
+  $("#hp").innerHTML = `<section class="shop" ${heroBg()}>${topBar("doggy", col.matchy ? "Arma tu Matchy 💞" : "Arma su collar", "doggy")}${bubbles("doggy", "make")}
     <div class="bld">
       <div class="prev gl" id="colPrev" aria-live="polite">${colPreview()}</div>
       <div class="pick gl"><div class="steps2" role="tablist">${COL_STEPS.map((t, i) => `<button type="button" role="tab" data-cst="${i + 1}" aria-selected="${col.step === i + 1}">${i + 1} · ${t}</button>`).join("")}</div>
         <div id="colPanel" style="display:grid;gap:12px">${colPanel()}</div>
         ${col.step < 5 ? `<div class="row2"><button type="button" class="btnp" data-cst="${col.step + 1}">Siguiente →</button></div>` : ""}
       </div>
-    </div><div class="minibar gl"><span id="colMini">Total ${money(colTotal())}</span><button type="button" data-go="top">Ver su collar ↑</button></div></section>${closeBtn}`;
+    </div><div class="minibar gl"><span id="colMini">Total ${money(colTotal())}</span><button type="button" data-go="top">Ver su collar ↑</button></div>${footer()}</section>${closeBtn}`;
 }
 const colRefresh = () => { const p = $("#colPrev"); if (p) p.innerHTML = colPreview(); const m = $("#colMini"); if (m) m.textContent = "Total " + money(colTotal()); };
 
@@ -918,11 +979,12 @@ $("#hp").addEventListener("input", e => {
   const t = e.target;
   if (t.id === "colName") { t.value = t.value.toUpperCase().replace(/[^A-ZÁÉÍÓÚÑÜ0-9 ]/g, ""); col.nombre = t.value; colRefresh(); }
   if (t.id === "colNum") { col.numero = t.value; colRefresh(); }
+  if (t.id === "srchIn") { searchQ = t.value; drawSearch(); return; }
   if (t.id === "colHum") { col.humano = t.value; colRefresh(); }
   if (t.id === "colPal") { t.value = t.value.toUpperCase(); col.palabra = t.value; colRefresh(); }
 });
 $("#hp").addEventListener("click", e => {
-  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-perso],[data-gift],[data-opt],[data-addopt],[data-waopt],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
+  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-hit],[data-perso],[data-gift],[data-opt],[data-addopt],[data-waopt],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
   if (t.id === "hpClose") return closeHome();
   if (t.dataset.step) { const ps = live(prodsDe(shopCat)), i = ps.findIndex(p => p.id === shopProd?.id); shopProd = ps[(i + +t.dataset.step + ps.length) % ps.length]; return renderShop(); }
   if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return sendWa([`• 1 × ${p.nombre} – ${p.precioTexto || money(p.precio)}`], p.marca); }
@@ -934,6 +996,7 @@ $("#hp").addEventListener("click", e => {
   if (t.dataset.opt) { const p = S.data.productos.find(x => x.id === t.dataset.opt), sel = optSel[p.id] || (optSel[p.id] = []); if (t.dataset.i === "all") optSel[p.id] = sel.length === p.opciones.length ? [] : p.opciones.map((_, i) => i); else { const i = +t.dataset.i, k = sel.indexOf(i); k >= 0 ? sel.splice(k, 1) : sel.push(i); } const y = $("#hp").scrollTop; renderShop(); $("#hp").scrollTop = y; return; }
   if (t.dataset.addopt) { const p = S.data.productos.find(x => x.id === t.dataset.addopt), names = optNames(p); addToCart({ key: p.id + ":" + names.join("+"), nombre: `${p.nombre} (${names.length} par${names.length > 1 ? "es" : ""})`, detalle: names.join(", "), precio: names.length * (+p.precio || 0), precioTexto: money(names.length * (+p.precio || 0)), img: prodImg(p), marca: p.marca }); optSel[p.id] = []; return renderShop(); }
   if (t.dataset.waopt) { const p = S.data.productos.find(x => x.id === t.dataset.waopt), names = optNames(p); return sendWa([`• ${p.nombre}: ${names.join(", ")}`, `Total: ${money(names.length * (+p.precio || 0))} (${names.length} × ${money(p.precio)})`], p.marca); }
+  if (t.dataset.hit) { const p = S.data.productos.find(x => x.id === t.dataset.hit); shopCat = S.data.categorias.find(c => c.marca === p.marca && c.nombre === p.categoria) || null; shopProd = p; $("#hpSearch")?.remove(); renderShop(p.marca); $("#hp").scrollTo({ top: 0 }); return; }
   if (t.dataset.gift) { col.regalo = col.regalo === t.dataset.gift ? null : t.dataset.gift; return renderCollar(); }
   if (t.dataset.ch) { const y = $("#hp").scrollTop; setTimeout(() => $("#hp").scrollTop = y); const i = crea.sel.indexOf(t.dataset.ch); if (i >= 0) crea.sel.splice(i, 1); else if (crea.sel.length < creaMax()) crea.sel.push(t.dataset.ch); else toast(`Máximo ${creaMax()} charms`); return renderCrea(); }
   if (t.dataset.rm) { crea.sel.splice(+t.dataset.rm, 1); return renderCrea(); }
@@ -958,6 +1021,8 @@ $("#hp").addEventListener("click", e => {
   if (g === "colLlv") { col.llavero = !col.llavero; return renderCollar(); }
   if (g === "colAdd") { addToCart({ key: "col-" + Date.now(), nombre: `${col.matchy ? "Matchy" : "Collar"} ${cEstilo()?.nombre || ""} · ${nombreUsado() || "sin nombre"}`, detalle: colOrder().map(x => x.slice(2)).join(" · "), precio: colTotal(), precioTexto: money(colTotal()), img: itemImg(cEstilo()), marca: "doggy" }); return renderCollar(); }
   if (g === "colWa") return sendWa(["Este collar 🐾", ...colOrder(), `Total: ${money(colTotal())}`], "doggy");
+  if (g === "search") return openSearch();
+  if (g === "closesearch") return $("#hpSearch")?.remove();
   if (g === "cart") return renderCart();
   if (g === "closecart") return $("#hpCart")?.remove();
   if (g === "wa") {
