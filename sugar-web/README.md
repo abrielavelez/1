@@ -1,4 +1,4 @@
-# Web Sugar · Sugar Club + Sugar Doggy Pops
+# Sugar Tienda Digital · Sugar Club + Sugar Doggy Pops
 
 Sitio estático (HTML, CSS y JS), mobile-first, sin pasarela de pago: todos los pedidos van por WhatsApp.
 

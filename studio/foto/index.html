@@ -1,4 +1,4 @@
-<title>Sugar Town Studio Foto</title>
+<title>Sugar Tienda Digital Foto</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Nunito:wght@500;700;800&display=swap">
@@ -116,7 +116,7 @@ h1 span{color:var(--pink-deep)}
 <div class="wrap">
   <header>
     <div class="tag">Sugar Doggy Pops · Hecho a mano en Cuenca</div>
-    <h1>Sugar Town <span>Studio</span></h1>
+    <h1>Sugar Tienda <span>Digital</span></h1>
     <p class="lede">Arma el collar de tu peludito capa por capa: arrastra los hilos, la placa y los charms a la caja. Tu llavero a juego se arma solo.</p>
     <span class="badge" id="photoBadge">Versión de prueba con fotos generadas por IA</span>
   </header>
@@ -410,7 +410,7 @@ function orderText(){
     `Hilos: ${state.threads.map(id=>thread(id).name).join(', ')}`,
     `Charms: ${state.charms.length?state.charms.map(id=>CHARMS.find(c=>c.id===id).name).join(', '):'sin charms'}`,
     state.phone.trim()?`Número atrás de la placa: ${state.phone.trim()}`:null,
-    `Llavero: ${state.word||'DOG MOM'}`,'Diseñado en Sugar Town Studio ✨'].filter(Boolean).join('\n');
+    `Llavero: ${state.word||'DOG MOM'}`,'Diseñado en Sugar Tienda Digital ✨'].filter(Boolean).join('\n');
 }
 const sheet=$('#sheet'),card=$('#sheetCard');
 function openSheet(html){card.innerHTML=html;sheet.hidden=false;card.querySelector('[data-close]')?.addEventListener('click',()=>sheet.hidden=true)}
@@ -449,7 +449,7 @@ $('#shareBtn').addEventListener('click',async()=>{
     x.font='800 44px Nunito, sans-serif';x.fillText('ya tiene su collar Sugar ✨',W/2,270);
     x.font='800 40px Nunito, sans-serif';x.fillText(state.threads.map(id=>thread(id).name).join(' · '),W/2,470);
     const k=kit();x.font='800 56px Sniglet, sans-serif';x.fillText(`${k.name} · $${k.price}`,W/2,1450);
-    x.font='700 40px Nunito, sans-serif';x.fillText('Diseña el tuyo en Sugar Town Studio',W/2,1530);
+    x.font='700 40px Nunito, sans-serif';x.fillText('Diseña el tuyo en Sugar Tienda Digital',W/2,1530);
     x.fillStyle=INK;x.beginPath();x.roundRect(290,1620,500,96,48);x.fill();x.fillStyle='#FFF7FA';x.font='800 42px Nunito, sans-serif';x.fillText('@sugardoggypops.ec',W/2,1683);
     openSheet(`<h3>Tu tarjeta para historias</h3><img src="${cv.toDataURL('image/png')}" alt="Tarjeta con el diseño del collar de ${esc(state.name)}"><p>Mantén presionada la imagen para guardarla y súbela a tus historias etiquetando a <b>@sugardoggypops.ec</b>.</p><div class="actions"><button class="btn" data-close type="button">Cerrar</button></div>`);
   }catch(err){openSheet(`<h3>No se pudo crear la tarjeta</h3><p>Haz una captura de pantalla de la caja; se ve igual de bonita.</p><div class="actions"><button class="btn" data-close type="button">Cerrar</button></div>`)}

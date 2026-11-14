@@ -1,4 +1,4 @@
-# Sugar Town Studio · Sugar Doggy Pops
+# Sugar Tienda Digital · Sugar Doggy Pops
 
 Prototipo de web interactiva para **@sugardoggypops.ec**: la clienta arma el collar de su peludito "capa por capa" (hilos → placa → charms → llavero a juego) y envía el pedido ya escrito por DM.
 
