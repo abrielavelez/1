@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Match · Sugar</title>
+<meta name="description" content="Sets a juego de Sugar Club y Sugar Doggy Pops: tú + tu perrito.">
+<meta name="theme-color" content="#F2A0C8">
+<meta property="og:title" content="Match · Sugar">
+<meta property="og:description" content="Sets a juego de Sugar Club y Sugar Doggy Pops: tú + tu perrito.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Fredoka:wght@500;700&family=Nunito:wght@600;800;900&display=swap">
+<link rel="stylesheet" href="assets/css/sugar.css">
+</head>
+<body class="doggy" data-root="">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="wavy"><feTurbulence type="fractalNoise" baseFrequency="0.006" numOctaves="1" seed="4"/><feDisplacementMap in="SourceGraphic" scale="46"/></filter></svg>
+<div class="bg" aria-hidden="true"></div>
+<header class="top"><a class="back" href="doggy/index.html">← Doggy Pops</a><a class="back" href="club/index.html">Sugar Club →</a></header>
+<h1 class="page-title">Match: tú + tu perrito 💞</h1>
+<div class="match-band"><div><b>Sugar Club × Doggy Pops</b><p>Sets combinados de las dos marcas para que salgan iguales a todas partes.</p></div></div>
+<main class="grid match" id="grid" aria-live="polite"></main>
+<a class="fab" data-wa="Hola Sugar 💞 quiero un set match" href="#whatsapp" aria-label="Escribir por WhatsApp">💬</a>
+<script src="assets/js/sugar.js"></script>
+<script>Sugar.match({grid:document.getElementById("grid")});</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+[build]
+  publish = "sugar-web"
+
+# Links cortos para la bio de Instagram: sugar.ec/club y sugar.ec/doggy
+[[redirects]]
+  from = "/club"
+  to = "/club/index.html"
+  status = 200
+[[redirects]]
+  from = "/doggy"
+  to = "/doggy/index.html"
+  status = 200
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300"

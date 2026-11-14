@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Catálogo · Sugar Doggy Pops</title>
+<meta name="description" content="Collares, charms, Sparkle Kit, bandanas y más para tu perrito.">
+<meta name="theme-color" content="#F5D738">
+<meta property="og:title" content="Catálogo · Sugar Doggy Pops">
+<meta property="og:description" content="Collares, charms, Sparkle Kit, bandanas y más para tu perrito.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Fredoka:wght@500;700&family=Nunito:wght@600;800;900&display=swap">
+<link rel="stylesheet" href="../assets/css/sugar.css">
+</head>
+<body class="doggy" data-root="../">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="wavy"><feTurbulence type="fractalNoise" baseFrequency="0.006" numOctaves="1" seed="4"/><feDisplacementMap in="SourceGraphic" scale="46"/></filter></svg>
+<div class="bg" aria-hidden="true"></div>
+<header class="top"><a class="back" href="index.html">← Doggy Pops</a></header>
+<h1 class="page-title">Catálogo</h1>
+<p class="page-sub">Toca “Pedir por WhatsApp” y el mensaje sale listo 🐶</p>
+<div class="chips" id="chips" role="toolbar" aria-label="Filtrar por categoría"></div>
+<main class="grid" id="grid" aria-live="polite"></main>
+<p class="empty-msg" hidden>No hay productos en esta categoría por ahora.</p>
+<a class="fab" data-wa="Hola Sugar Doggy Pops 🐶 tengo una consulta" href="#whatsapp" aria-label="Escribir por WhatsApp">💬</a>
+<script src="../assets/js/sugar.js"></script>
+<script>Sugar.catalog({marca:"doggy",grid:document.getElementById("grid"),chips:document.getElementById("chips"),configurador:"arma-tu-collar.html"});</script>
+</body>
+</html>
