@@ -124,10 +124,6 @@ body.editing .sec{outline:3px dashed #fff;outline-offset:4px;cursor:pointer}
 </div>
 
 <aside class="check" id="check" aria-live="polite" aria-hidden="true"></aside>
-<div class="editbar" id="editbar" hidden>
-  <button type="button" id="bgBtn">Fondo y bandeja</button>
-  <button type="button" id="editBtn" aria-pressed="false">✏️ Editar secciones</button>
-</div>
 <div class="sheet" id="sheet" hidden><div class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
 
 <script>
@@ -297,14 +293,10 @@ async function save(mut) {
   catch (err) { toast(err?.code === "not_granted" ? "No tienes permiso para editar" : "No se pudo guardar. Inténtalo otra vez."); }
 }
 $("#sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeSheet(); });
-$("#editBtn").addEventListener("click", () => { editing = !editing; $("#editBtn").setAttribute("aria-pressed", editing); document.body.classList.toggle("editing", editing); hideCheck(); toast(editing ? "Toca una sección para cambiar su foto, nombre o lado" : "Modo vista"); });
-$("#bgBtn").addEventListener("click", openGlobal);
 
 render();
 (async () => {
   db = await window.claude?.use?.("db");
   if (db) { ref = db.doc("home/picnic"); ref.onSnapshot(s => { const d = s.exists ? s.data() : null; cfg = { items: d?.items || {}, global: d?.global || {} }; if (!draft) render(); }, () => {}); }
-  assets = await window.claude?.use?.("assets");
-  if (assets && db) $("#editbar").hidden = false;
 })();
 </script>
