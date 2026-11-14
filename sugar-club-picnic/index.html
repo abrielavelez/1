@@ -1,0 +1,308 @@
+<title>Sugar Club Picnic</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Caveat:wght@600;700&family=Nunito:wght@700;800;900&display=swap">
+<style>
+/* Layout: a scrapbook picnic seen from above — pink gingham cloth, a red shop basket on a clipboard in the middle, Sugar products stuck around it like stickers. Drop one in the basket and a guest check prints the way in. Single bold theme by choice. */
+:root{
+  --pink:#F6B3CB; --cloth:#FFF6F8; --cherry:#E63B2E; --ink:#2A1638; --paper:#FFFDF6; --kraft:#E9CFA3; --yellow:#F5D738;
+  --f-sign:"Bagel Fat One","Cooper Black","Arial Black",sans-serif;
+  --f-hand:"Caveat","Bradley Hand","Segoe Print",cursive;
+  --f-body:"Nunito","Avenir Next","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{min-height:100%;overflow-x:clip}
+body{margin:0;font:800 15px/1.4 var(--f-body);color:var(--ink);
+  background-color:var(--cloth);
+  background-image:linear-gradient(90deg,rgba(240,130,170,.45) 50%,transparent 50%),linear-gradient(rgba(240,130,170,.45) 50%,transparent 50%);
+  background-size:64px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 30px}
+body.bgphoto{background:var(--cloth) var(--bg-url) center/cover fixed}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+.top{max-width:560px;margin:0 auto 6px;text-align:center}
+.top h1{margin:0;font:400 clamp(40px,11vw,64px)/0.95 var(--f-sign);color:var(--cherry);text-shadow:3px 3px 0 #fff,6px 6px 0 rgba(42,22,56,.15);text-wrap:balance}
+.top h1 img{max-width:min(340px,78vw);max-height:150px;display:inline-block}
+.top p{margin:4px 0 0;font:700 clamp(21px,5.4vw,27px)/1 var(--f-hand)}
+
+/* the scene: positions are % of this box */
+.scene{position:relative;max-width:560px;margin:14px auto 70px;aspect-ratio:9/15}
+.el{position:absolute;transform:translate(-50%,-50%) rotate(var(--r,0deg));width:var(--w);touch-action:none;user-select:none;-webkit-user-select:none}
+.el img{width:100%;display:block;pointer-events:none;-webkit-user-drag:none}
+.sticker img{filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 7px 8px rgba(60,20,40,.35))}
+.photo{background:#fff;padding:6% 6% 16%;box-shadow:0 8px 14px rgba(60,20,40,.3)}
+.photo img{aspect-ratio:1;object-fit:cover}
+.photo::before{content:"";position:absolute;top:-9px;left:28%;width:44%;height:18px;background:rgba(255,236,170,.8);transform:rotate(-4deg)}
+.tag{position:absolute;left:50%;bottom:-4px;transform:translate(-50%,100%) rotate(calc(var(--r,0deg) * -1));white-space:nowrap;font:700 clamp(17px,4.4vw,25px)/1 var(--f-hand);color:var(--ink);text-shadow:0 0 4px #fff,0 0 8px #fff}
+.photo .tag{bottom:2%;transform:translate(-50%,0) rotate(calc(var(--r,0deg) * -1));text-shadow:none}
+.note{background:var(--paper);padding:9% 6% 10%;text-align:center;box-shadow:0 6px 12px rgba(60,20,40,.25);
+  background-image:repeating-linear-gradient(transparent 0 18px,rgba(62,154,214,.22) 18px 19px);font:700 clamp(17px,4.4vw,28px)/1 var(--f-hand)}
+.note small{display:block;font-size:.62em;opacity:.7;margin-top:4px}
+.note::before{content:"";position:absolute;top:-9px;left:30%;width:40%;height:18px;background:rgba(246,179,203,.85);transform:rotate(3deg)}
+.prod{cursor:grab;transition:filter .15s}
+.prod:hover{filter:brightness(1.05)}
+.prod.gone{opacity:0;pointer-events:none;transition:opacity .2s}
+.star{pointer-events:none;font-size:clamp(22px,6vw,34px);line-height:1;width:auto;filter:drop-shadow(0 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 4px 4px rgba(0,0,0,.2))}
+.star img{width:clamp(26px,7vw,40px)}
+
+/* clipboard + basket stand-ins (replaced by photos when uploaded) */
+.board{aspect-ratio:3/4;background:var(--kraft);border-radius:14px;box-shadow:0 12px 20px rgba(60,20,40,.3);
+  background-image:linear-gradient(135deg,rgba(255,255,255,.25),transparent 40%,rgba(0,0,0,.06))}
+.board .paper{position:absolute;inset:9% 7% 5%;background:var(--paper);box-shadow:0 2px 4px rgba(0,0,0,.15);padding:9% 9%;
+  background-image:repeating-linear-gradient(transparent 0 26px,rgba(62,154,214,.22) 26px 27px)}
+.board .paper b{display:block;font:400 clamp(22px,6vw,32px)/1 var(--f-sign);color:var(--cherry)}
+.board .paper span{display:block;font:700 clamp(19px,4.8vw,24px)/1.1 var(--f-hand);margin-top:4px}
+.board .clip{position:absolute;left:50%;top:-4%;width:34%;height:9%;transform:translateX(-50%);border-radius:8px 8px 4px 4px;background:linear-gradient(#D9D9DE,#8E8E96);box-shadow:0 3px 4px rgba(0,0,0,.3)}
+.board.photo-on{background:none;box-shadow:none}
+.board.photo-on .paper,.board.photo-on .clip{display:none}
+.basket{aspect-ratio:4/3.1;cursor:default}
+.basket .tub{position:absolute;inset:6% 2% 6%;border-radius:12% / 15%;background:#D9261C;box-shadow:inset 0 0 0 7px #B51D15,0 14px 18px rgba(60,20,40,.35)}
+.basket .tub::before{content:"";position:absolute;inset:12% 9%;border-radius:8%;background:#A8170F;
+  background-image:linear-gradient(90deg,rgba(255,255,255,.75) 0 38%,transparent 38%),linear-gradient(rgba(255,255,255,.75) 0 38%,transparent 38%);background-size:14px 14px;box-shadow:inset 0 6px 10px rgba(0,0,0,.4)}
+.basket .tub::after{content:"";position:absolute;inset:3% 4%;border-radius:10% / 13%;border:3px solid rgba(255,255,255,.18)}
+.basket .handle{position:absolute;left:30%;right:30%;height:9%;border-radius:6px;background:linear-gradient(#FCE7A0,#E9C35A);box-shadow:0 3px 4px rgba(0,0,0,.3)}
+.basket .handle.t{top:0} .basket .handle.b{bottom:0}
+.basket.photo-on .tub,.basket.photo-on .handle{display:none}
+.basket .inside{position:absolute;inset:18% 16%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4%;pointer-events:none}
+.basket .inside img{width:30%;filter:drop-shadow(0 4px 4px rgba(0,0,0,.4));animation:land .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes land{from{transform:scale(1.5) translateY(-30%)}to{transform:none}}
+.basket.over{filter:drop-shadow(0 0 14px #fff) drop-shadow(0 0 6px var(--yellow))}
+.basket.shake{animation:bshake .5s}
+@keyframes bshake{0%,100%{transform:translate(-50%,-50%) rotate(var(--r))}25%{transform:translate(-50%,-50%) rotate(calc(var(--r) - 4deg))}75%{transform:translate(-50%,-50%) rotate(calc(var(--r) + 4deg))}}
+.hint{position:absolute;left:50%;top:78.5%;z-index:2;transform:translateX(-50%);background:var(--yellow);border:2px solid var(--ink);border-radius:999px;padding:4px 12px;font:900 12px var(--f-body);white-space:nowrap;box-shadow:0 3px 0 var(--ink)}
+.ghost{position:fixed;z-index:30;pointer-events:none;transform:translate(-50%,-50%) rotate(-6deg) scale(1.08)}
+.ghost.fly{transition:all .45s cubic-bezier(.5,0,.7,1)}
+.spark{position:fixed;z-index:31;pointer-events:none;font-size:20px;animation:spark .8s ease-out forwards}
+@keyframes spark{from{transform:translate(-50%,-50%) scale(.4);opacity:1}to{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.2) rotate(120deg);opacity:0}}
+
+/* guest check */
+.check{position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:40;width:min(330px,calc(100vw - 32px));transform:translate(-50%,120%) rotate(-2deg);
+  transition:transform .55s cubic-bezier(.3,1.3,.5,1);background:var(--paper);padding:16px 16px 18px;box-shadow:0 14px 30px rgba(60,20,40,.35);
+  -webkit-mask:radial-gradient(circle 6px at 50% 0,transparent 98%,#000) 0 0/16px 100% repeat-x;mask:radial-gradient(circle 6px at 50% 0,transparent 98%,#000) 0 0/16px 100% repeat-x}
+.check.show{transform:translate(-50%,0) rotate(-2deg)}
+.check .hd{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #9EC5E8;padding-bottom:4px;color:#2E5C8A;font:900 13px var(--f-body);letter-spacing:.04em;text-transform:uppercase}
+.check .hd span{color:var(--cherry);font-variant-numeric:tabular-nums}
+.check .ln{display:flex;justify-content:space-between;font:700 25px/1.2 var(--f-hand);padding:8px 0 4px;border-bottom:1px solid #CFE1F1}
+.check .thanks{font:700 22px/1 var(--f-hand);color:var(--cherry);margin:6px 0 10px}
+.check .go{display:block;width:100%;text-align:center;text-decoration:none;border:0;border-radius:999px;background:var(--cherry);color:#fff;padding:12px;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 4px 0 #9E1D14}
+.check .later{display:block;width:100%;margin-top:8px;background:none;border:0;font-weight:900;font-size:13px;text-decoration:underline;cursor:pointer;color:#6B5A78}
+.foot{max-width:560px;margin:8px auto 0;text-align:center;font:700 20px/1.2 var(--f-hand)}
+
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;padding:10px 16px;border-radius:14px;font-weight:900;max-width:calc(100vw - 32px);text-align:center}
+.editbar{position:fixed;right:max(16px,env(safe-area-inset-right,0px));top:calc(14px + env(safe-area-inset-top,0px));z-index:45;display:flex;gap:8px}
+.editbar button{border:3px solid var(--ink);border-radius:999px;background:#fff;padding:8px 14px;font-weight:900;font-size:13px;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+.editbar button[aria-pressed="true"]{background:var(--ink);color:#fff}
+body.editing .editable{outline:3px dashed var(--ink);outline-offset:4px;cursor:pointer}
+.sheet{position:fixed;inset:0;z-index:70;background:rgba(42,22,56,.5);display:flex;align-items:flex-end;justify-content:center}
+.card{background:#FFF7FA;width:min(540px,100%);max-height:100%;overflow:auto;border-radius:22px 22px 0 0;display:grid;gap:12px;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+@media (min-width:700px){.sheet{align-items:center}.card{border-radius:22px}}
+.card h2{margin:0;font:400 24px var(--f-sign);color:var(--cherry)}
+.card p{margin:0;font-weight:700;font-size:13px;color:#6B5A78}
+.fld{display:grid;gap:4px;font-weight:900;font-size:13px}
+.fld input[type=text]{border:2px solid #E3D3E3;border-radius:12px;padding:10px 12px;font-weight:800;width:100%;min-width:0}
+.ph{display:flex;gap:10px;align-items:center}
+.ph .pv{width:76px;height:76px;border-radius:12px;background:#EFE2EC;display:grid;place-items:center;overflow:hidden;font-size:11px;color:#6B5A78;text-align:center;flex:none}
+.ph .pv img{width:100%;height:100%;object-fit:contain}
+.ph input[type=file]{position:absolute;width:1px;height:1px;opacity:0}
+.b{border:2px solid var(--ink);border-radius:12px;padding:8px 12px;background:#fff;font-weight:900;cursor:pointer;font-size:13px}
+.b.pri{background:var(--ink);color:#fff}
+.seg{display:flex;gap:6px}.seg .b{flex:1}.seg .b[aria-pressed="true"]{background:var(--pink)}
+.acts{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top" id="top">
+  <h1 id="logo">Sugar Club</h1>
+  <p>Elige algo y suéltalo en la canasta ✨</p>
+</header>
+<main class="scene" id="scene" aria-label="Picnic Sugar Club"></main>
+<p class="foot">Hecho a mano en Cuenca · envíos a todo Ecuador 🍒</p>
+
+<aside class="check" id="check" aria-live="polite" aria-hidden="true"></aside>
+<div class="editbar" id="editbar" hidden>
+  <button type="button" id="bgBtn">Fondo y logo</button>
+  <button type="button" id="editBtn" aria-pressed="false">✏️ Editar</button>
+</div>
+<div class="sheet" id="sheet" hidden><div class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const DOGGY_URL = "https://claude.ai/artifact/FkpBLWsjSidFPE8sWrbeUh";
+const blob = id => "/_blob/" + id;
+
+/* Scene pieces. x,y = center in % of the scene; w = width in %. kind: cutout (PNG sticker), photo (taped polaroid), note (paper tag). */
+const PRODUCTS = [
+  { id: "bagcharms", label: "Bag charms", x: 21, y: 12, w: 33, r: -8, kind: "cutout", src: "img/bagcharm-jackpot.webp" },
+  { id: "rings", label: "Rings Pets", x: 80, y: 12, w: 28, r: 6, kind: "photo", src: "img/rings-pets.webp" },
+  { id: "minifiguras", label: "Minifiguras", x: 14, y: 37, w: 25, r: -6, kind: "note" },
+  { id: "aretes", label: "Aretes", x: 87, y: 37, w: 21, r: 5, kind: "note" },
+  { id: "lazos", label: "Lazos", x: 13, y: 63, w: 21, r: 4, kind: "note" },
+  { id: "llaveros", label: "Llaveros", x: 87, y: 63, w: 23, r: -5, kind: "note" },
+  { id: "collares", label: "Collares", x: 18, y: 88, w: 24, r: -3, kind: "note" },
+  { id: "doggy", label: "Doggy Pops", x: 79, y: 87, w: 30, r: 5, kind: "photo", src: "img/doggy-rocco.webp", link: DOGGY_URL },
+  { id: "arma", label: "Arma tu charm", x: 50, y: 95, w: 30, r: -2, kind: "note", sub: "próximamente", locked: true }
+];
+const STARS = [[6, 2, "⭐"], [94, 1, "✨"], [50, 26, "🌟"], [4, 50, "✨"], [96, 50, "⭐"], [34, 99, "🍒"], [66, 99, "⭐"], [97, 79, "🍒"], [3, 77, "🌟"], [62, 20, "🍒"]];
+let cfg = { items: {}, global: {} }, db = null, assets = null, ref = null, editing = false;
+const P = id => ({ ...PRODUCTS.find(p => p.id === id), ...(cfg.items[id] || {}) });
+
+let tt; function toast(m) { let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); } t.textContent = m; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2800); }
+
+function prodHtml(base) {
+  const p = P(base.id);
+  const src = p.photoId ? blob(p.photoId) : p.src;
+  const kind = p.photoId ? (p.kind === "note" ? "cutout" : p.kind) : (src ? p.kind : "note");
+  const style = `left:${p.x}%;top:${p.y}%;--w:${p.w}%;--r:${p.r}deg`;
+  const cls = `el prod editable ${kind === "cutout" ? "sticker" : kind}`;
+  const inner = kind === "note" ? `${esc(p.label)}${p.sub ? `<small>${esc(p.sub)}</small>` : ""}` : `<img src="${esc(src)}" alt="">${kind === "photo" ? `<span class="tag">${esc(p.label)}</span>` : `<span class="tag">${esc(p.label)}</span>`}`;
+  return `<div class="${cls}" role="button" tabindex="0" aria-label="${esc(p.label)}${p.locked ? " (próximamente)" : ""}" data-id="${p.id}" style="${style}">${inner}</div>`;
+}
+function render() {
+  const g = cfg.global || {};
+  const board = g.boardId ? `<img src="${esc(blob(g.boardId))}" alt="">` : `<div class="clip"></div><div class="paper"><b>Lista Sugar ✨</b><span>☐ algo bonito</span><span>☐ algo brillante</span><span>☐ algo para mí</span></div>`;
+  const basket = g.basketId ? `<img src="${esc(blob(g.basketId))}" alt="">` : `<div class="tub"></div><div class="handle t"></div><div class="handle b"></div>`;
+  $("#scene").innerHTML =
+    STARS.map(([x, y, e], i) => `<div class="el star" style="left:${x}%;top:${y}%;--r:${(i * 37) % 40 - 20}deg" aria-hidden="true">${g.starId ? `<img src="${esc(blob(g.starId))}" alt="">` : e}</div>`).join("") +
+    `<div class="el board editable ${g.boardId ? "photo-on" : ""}" data-g="boardId" style="left:50%;top:47%;--w:60%;--r:-3deg">${board}</div>` +
+    `<div class="el basket editable ${g.basketId ? "photo-on" : ""}" id="basket" data-g="basketId" style="left:50%;top:53%;--w:64%;--r:2deg">${basket}<div class="inside" id="inside"></div></div>` +
+    `<span class="hint" id="hint">Arrastra o toca un producto</span>` +
+    PRODUCTS.map(prodHtml).join("");
+  $("#logo").innerHTML = g.logoId ? `<img src="${esc(blob(g.logoId))}" alt="Sugar Club">` : "Sugar Club";
+  document.body.classList.toggle("bgphoto", !!g.bgId); if (g.bgId) document.body.style.setProperty("--bg-url", `url('${blob(g.bgId)}')`);
+}
+
+/* ---------- drop in basket + guest check ---------- */
+let orderNo = 143000 + Math.floor(Math.random() * 900);
+function sparkle(x, y) {
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement("span"); s.className = "spark"; s.textContent = ["✨", "⭐", "💖"][i % 3];
+    const a = Math.random() * Math.PI * 2, d = 50 + Math.random() * 70;
+    s.style.left = x + "px"; s.style.top = y + "px"; s.style.setProperty("--dx", Math.cos(a) * d + "px"); s.style.setProperty("--dy", Math.sin(a) * d + "px");
+    document.body.appendChild(s); setTimeout(() => s.remove(), 850);
+  }
+}
+function drop(el, fromX, fromY) {
+  const p = P(el.dataset.id);
+  if (p.locked) { el.animate([{ transform: "translate(-50%,-50%) rotate(-6deg)" }, { transform: "translate(-50%,-50%) rotate(6deg)" }, { transform: `translate(-50%,-50%) rotate(${p.r}deg)` }], { duration: 400 }); return toast("Arma tu charm llega muy pronto ✨"); }
+  const b = $("#basket").getBoundingClientRect(), r = el.getBoundingClientRect();
+  const g = el.cloneNode(true); g.classList.add("ghost"); g.style.width = r.width + "px"; g.style.left = (fromX ?? r.left + r.width / 2) + "px"; g.style.top = (fromY ?? r.top + r.height / 2) + "px";
+  document.body.appendChild(g); el.classList.add("gone");
+  requestAnimationFrame(() => requestAnimationFrame(() => { g.classList.add("fly"); g.style.left = b.left + b.width / 2 + "px"; g.style.top = b.top + b.height / 2 + "px"; g.style.width = r.width * .45 + "px"; g.style.opacity = ".2"; }));
+  setTimeout(() => {
+    g.remove(); el.classList.remove("gone");
+    const img = el.querySelector("img"), ins = $("#inside");
+    if (img) { const m = document.createElement("img"); m.src = img.src; m.alt = ""; ins.appendChild(m); while (ins.children.length > 4) ins.firstElementChild.remove(); }
+    const bk = $("#basket"); bk.classList.remove("shake"); void bk.offsetWidth; bk.classList.add("shake");
+    sparkle(b.left + b.width / 2, b.top + b.height / 2); $("#hint").hidden = true;
+    showCheck(p);
+  }, 460);
+}
+function showCheck(p) {
+  const c = $("#check");
+  c.innerHTML = `<div class="hd">Guest check <span>Nº ${++orderNo}</span></div>
+    <div class="ln"><span>1 · ${esc(p.label)}</span><span>✓</span></div>
+    <div class="thanks">gracias por pasar por el club ♡</div>
+    ${p.link ? `<a class="go" href="${esc(p.link)}" target="_blank" rel="noopener">Ir a ${esc(p.label)} 🐶</a>` : `<button type="button" class="go" data-go>Ver ${esc(p.label)} →</button>`}
+    <button type="button" class="later" data-later>Seguir mirando</button>`;
+  c.classList.add("show"); c.setAttribute("aria-hidden", "false");
+  c.querySelector("[data-go]")?.addEventListener("click", () => toast(`Siguiente paso: el catálogo de ${p.label}`));
+  c.querySelector("[data-later]").addEventListener("click", hideCheck);
+}
+function hideCheck() { const c = $("#check"); c.classList.remove("show"); c.setAttribute("aria-hidden", "true"); }
+
+/* pointer: tap = drop, drag onto basket = drop */
+let drag = null;
+const overBasket = (x, y) => { const b = $("#basket").getBoundingClientRect(); return x > b.left && x < b.right && y > b.top && y < b.bottom; };
+$("#scene").addEventListener("pointerdown", e => {
+  const el = e.target.closest(".prod, .board, .basket");
+  if (!el) return;
+  if (editing) return;
+  if (!el.classList.contains("prod")) return;
+  drag = { el, x0: e.clientX, y0: e.clientY, id: e.pointerId, ghost: null }; el.setPointerCapture(e.pointerId);
+});
+$("#scene").addEventListener("pointermove", e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  if (!drag.ghost && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) > 8 && !P(drag.el.dataset.id).locked) {
+    const r = drag.el.getBoundingClientRect(), g = drag.el.cloneNode(true); g.classList.add("ghost"); g.style.width = r.width + "px"; document.body.appendChild(g); drag.ghost = g; drag.el.classList.add("gone");
+  }
+  if (drag.ghost) { drag.ghost.style.left = e.clientX + "px"; drag.ghost.style.top = e.clientY + "px"; $("#basket").classList.toggle("over", overBasket(e.clientX, e.clientY)); }
+});
+function end(e, cancel) {
+  if (!drag || e.pointerId !== drag.id) return;
+  const { el, ghost } = drag; drag = null; $("#basket").classList.remove("over");
+  if (ghost) { ghost.remove(); el.classList.remove("gone"); if (!cancel && overBasket(e.clientX, e.clientY)) drop(el, e.clientX, e.clientY); return; }
+  if (!cancel) drop(el);
+}
+$("#scene").addEventListener("pointerup", e => end(e, false));
+$("#scene").addEventListener("pointercancel", e => end(e, true));
+$("#scene").addEventListener("keydown", e => { const el = e.target.closest(".prod"); if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); drop(el); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { hideCheck(); closeSheet(); } });
+
+/* ---------- owner editor ---------- */
+let draft = null;
+function phField(label, key, val, hint) {
+  return `<div class="fld">${label}<div class="ph"><div class="pv">${val ? `<img src="${esc(blob(val))}" alt="">` : "Sin foto"}</div>
+    <div style="display:grid;gap:6px"><label class="b" for="up-${key}">${val ? "Cambiar" : "Subir foto"}</label><input type="file" id="up-${key}" data-up="${key}" accept="image/png,image/jpeg,image/webp">${val ? `<button type="button" class="b" data-clear="${key}">Quitar</button>` : ""}</div></div>${hint ? `<p>${hint}</p>` : ""}</div>`;
+}
+function openItem(id) { const p = P(id); draft = { scope: "item", id, data: { label: p.label, photoId: p.photoId || null, kind: p.kind === "note" ? "cutout" : p.kind } }; draw(); $("#sheet").hidden = false; }
+function openGlobal() { const g = cfg.global || {}; draft = { scope: "global", data: { logoId: g.logoId || null, bgId: g.bgId || null, basketId: g.basketId || null, boardId: g.boardId || null, starId: g.starId || null } }; draw(); $("#sheet").hidden = false; }
+function draw() {
+  const d = draft.data;
+  $("#card").innerHTML = draft.scope === "global" ? `<h2 id="sheetTitle">Fondo, canasta y logo</h2>
+    ${phField("Logo Sugar Club", "logoId", d.logoId, "PNG sin fondo.")}
+    ${phField("Fondo (mantel vichy)", "bgId", d.bgId, "Foto de la tela vista desde arriba.")}
+    ${phField("Canasta", "basketId", d.basketId, "Canasta de súper vista desde arriba, PNG sin fondo.")}
+    ${phField("Tabla con clip", "boardId", d.boardId, "Tabla con hoja, vista desde arriba, PNG sin fondo.")}
+    ${phField("Sticker de estrellas", "starId", d.starId, "PNG de una estrella glitter: reemplaza todas las estrellas.")}
+    <div class="acts"><button type="button" class="b" data-close>Cancelar</button><button type="button" class="b pri" id="saveBtn">Guardar</button></div>`
+  : `<h2 id="sheetTitle">${esc(d.label)}</h2>
+    <label class="fld">Nombre escrito a mano<input type="text" id="fLabel" maxlength="22" value="${esc(d.label)}"></label>
+    ${phField("Foto del producto", "photoId", d.photoId, "Sticker: PNG sin fondo (le pongo borde blanco). Polaroid: cualquier foto.")}
+    <div class="fld">Cómo se ve<div class="seg"><button type="button" class="b" data-kind="cutout" aria-pressed="${d.kind === "cutout"}">Sticker</button><button type="button" class="b" data-kind="photo" aria-pressed="${d.kind === "photo"}">Polaroid</button></div></div>
+    <div class="acts"><button type="button" class="b" data-reset>Volver al original</button><span style="display:flex;gap:8px"><button type="button" class="b" data-close>Cancelar</button><button type="button" class="b pri" id="saveBtn">Guardar</button></span></div>`;
+}
+function closeSheet() { draft = null; $("#sheet").hidden = true; }
+$("#card").addEventListener("input", e => { if (e.target.id === "fLabel") draft.data.label = e.target.value; });
+$("#card").addEventListener("change", async e => {
+  const k = e.target.dataset.up; if (!k || !e.target.files[0]) return;
+  const f = e.target.files[0]; if (f.size > 20 * 1024 * 1024) return toast("La foto pesa demasiado (máx. 20 MB)");
+  toast("Subiendo foto…");
+  try { const r = await assets.upload(f); draft.data[k] = r.id; draw(); toast("Foto lista, toca Guardar"); }
+  catch (err) { toast(err?.code === "unsupported_type" ? "Usa JPG, PNG o WebP" : "No se pudo subir la foto"); }
+});
+$("#card").addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.clear) { draft.data[b.dataset.clear] = null; draw(); }
+  if (b.dataset.kind) { draft.data.kind = b.dataset.kind; draw(); }
+  if (b.dataset.close !== undefined) closeSheet();
+  if (b.dataset.reset !== undefined) await save(c => { delete c.items[draft.id]; });
+  if (b.id === "saveBtn") await save(c => { if (draft.scope === "global") c.global = { ...c.global, ...draft.data }; else c.items[draft.id] = { label: draft.data.label, photoId: draft.data.photoId, ...(draft.data.photoId ? { kind: draft.data.kind } : {}) }; });
+});
+async function save(mut) {
+  const next = structuredClone(cfg); next.items ||= {}; next.global ||= {}; mut(next);
+  try { await ref.set({ ...next, actualizado: Date.now() }); cfg = next; render(); closeSheet(); toast("Guardado ✓"); }
+  catch (err) { toast(err?.code === "not_granted" ? "No tienes permiso para editar" : "No se pudo guardar. Inténtalo otra vez."); }
+}
+$("#sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeSheet(); });
+$("#scene").addEventListener("click", e => {
+  if (!editing) return;
+  const el = e.target.closest(".editable"); if (!el) return;
+  if (el.dataset.id) openItem(el.dataset.id); else openGlobal();
+});
+$("#editBtn").addEventListener("click", () => { editing = !editing; $("#editBtn").setAttribute("aria-pressed", editing); document.body.classList.toggle("editing", editing); hideCheck(); toast(editing ? "Toca un producto, la canasta o la tabla para cambiar su foto" : "Modo vista"); });
+$("#bgBtn").addEventListener("click", openGlobal);
+
+/* ---------- boot ---------- */
+render();
+(async () => {
+  db = await window.claude?.use?.("db");
+  if (db) { ref = db.doc("home/picnic"); ref.onSnapshot(s => { const d = s.exists ? s.data() : null; cfg = { items: d?.items || {}, global: d?.global || {} }; if (!draft) render(); }, () => {}); }
+  assets = await window.claude?.use?.("assets");
+  if (assets && db) $("#editbar").hidden = false;
+})();
+</script>
