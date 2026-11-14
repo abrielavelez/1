@@ -1,0 +1,10 @@
+{
+  "_ayuda": "Número de WhatsApp en formato internacional, solo dígitos y sin +. Ecuador: 593 + número sin el 0 inicial. Ej.: 0991234567 -> 593991234567",
+  "whatsapp": "593987097059",
+  "instagram": {
+    "club": "sugarclub.ec",
+    "doggy": "sugardoggypops.ec"
+  },
+  "ciudad": "Cuenca, Ecuador",
+  "envios": "Envíos a todo Ecuador"
+}

@@ -1,0 +1,47 @@
+{
+  "_ayuda": "Precios y opciones del configurador 'Arma tu collar'. tallaL: precio en talla L (null = mismo precio). Los colores de los cordones son aproximados: ajústalos a tu muestrario.",
+  "estilos": [
+    { "id": "letras", "nombre": "Letras", "detalle": "Cordón ajustable con su nombre en letras", "base": 6, "porLetra": 1, "tallaL": null, "maxLetras": 10 },
+    { "id": "placa", "nombre": "Trenzado con placa", "detalle": "Trenzado a mano + placa con su nombre", "base": 15, "porLetra": 0, "tallaL": 20, "maxLetras": 10 },
+    { "id": "dije", "nombre": "Trenzado con dije", "detalle": "Trenzado a mano + su inicial colgando", "base": 12, "porLetra": 0, "tallaL": null, "maxLetras": 1 }
+  ],
+  "tallas": [
+    { "id": "S", "cm": "20–30 cm", "ejemplos": "Chihuahua, Yorkie, Pomerania, gatos" },
+    { "id": "M", "cm": "30–40 cm", "ejemplos": "Frenchie, Pug, Beagle, Schnauzer" },
+    { "id": "L", "cm": "40–55 cm", "ejemplos": "Labrador, Golden, Husky" }
+  ],
+  "maxCordones": 2,
+  "cordones": [
+    { "id": "rojo-turquesa", "nombre": "Rojo y turquesa", "tipo": "Mezclado", "colores": ["#E8463C", "#3FB8C9"] },
+    { "id": "rainbow", "nombre": "Rainbow", "tipo": "Mezclado", "colores": ["#F5D738", "#3E9AD6", "#7B3AF5", "#F28A2E", "#34A96A"] },
+    { "id": "rosa-multi", "nombre": "Rosado multicolor", "tipo": "Mezclado", "colores": ["#F28DB5", "#F58A6E", "#3BB59A"] },
+    { "id": "rosado", "nombre": "Rosado", "tipo": "Liso", "colores": ["#F5A3C7"] },
+    { "id": "fucsia", "nombre": "Fucsia", "tipo": "Liso", "colores": ["#E6407F"] },
+    { "id": "lila", "nombre": "Lila", "tipo": "Liso", "colores": ["#B79CFF"] },
+    { "id": "celeste", "nombre": "Celeste", "tipo": "Liso", "colores": ["#7CC8EE"] },
+    { "id": "menta", "nombre": "Menta", "tipo": "Liso", "colores": ["#7FDDB4"] },
+    { "id": "amarillo", "nombre": "Amarillo", "tipo": "Liso", "colores": ["#F5D738"] },
+    { "id": "rojo", "nombre": "Rojo", "tipo": "Liso", "colores": ["#E63B2E"] },
+    { "id": "negro", "nombre": "Negro", "tipo": "Liso", "colores": ["#2E2A33"] },
+    { "id": "blanco", "nombre": "Blanco", "tipo": "Liso", "colores": ["#FAF7F2"] }
+  ],
+  "maxCharms": 4,
+  "charms": [
+    { "id": "helado", "nombre": "Helado", "tipo": "Charm Up", "precio": 2, "icono": "helado" },
+    { "id": "sapo", "nombre": "Sapito", "tipo": "Charm Up", "precio": 2, "icono": "sapo" },
+    { "id": "estrella", "nombre": "Estrella", "tipo": "Charm Up", "precio": 2, "icono": "estrella" },
+    { "id": "corazon", "nombre": "Corazón", "tipo": "Charm Up", "precio": 2, "icono": "corazon" },
+    { "id": "cereza", "nombre": "Cerezas", "tipo": "Charm Up", "precio": 2, "icono": "cereza" },
+    { "id": "hueso", "nombre": "Huesito", "tipo": "Charm Up", "precio": 2, "icono": "hueso" },
+    { "id": "nube", "nombre": "Nube", "tipo": "Charm Up", "precio": 2, "icono": "nube" },
+    { "id": "flor-cristal", "nombre": "Flor con cristal", "tipo": "Sugar Premium", "precio": 3, "icono": "florCristal" },
+    { "id": "brillo", "nombre": "Brillito", "tipo": "Sugar Premium", "precio": 3, "icono": "brillo" }
+  ],
+  "placas": [
+    { "id": "metal", "nombre": "Hueso de metal" },
+    { "id": "resina", "nombre": "Hueso de resina" },
+    { "id": "transparente", "nombre": "Acrílico transparente" }
+  ],
+  "llavero": { "conPlaca": 10, "base": 2, "porLetra": 1 },
+  "numeroAtras": { "precio": 0, "soloEn": "placa" }
+}

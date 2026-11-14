@@ -1,0 +1,26 @@
+{
+  "_ayuda": "Edita aquí precios, fotos y disponibilidad. precio: número o null (muestra 'Consultar precio'). precioTexto: opcional, reemplaza cómo se muestra el precio. foto: ruta dentro de /fotos (si está vacía se muestra una tarjeta de color). disponible: false lo oculta. ejemplo: true marca un producto de prueba que debes reemplazar.",
+  "categorias": {
+    "club": ["Collares", "Aretes", "Lazos"],
+    "doggy": ["Collares", "Charms", "Sparkle Kit", "Bandanas", "Disfraces", "Llaveros"]
+  },
+  "productos": [
+    { "id": "doggy-collar-letras", "marca": "doggy", "categoria": "Collares", "nombre": "Collar de letras", "descripcion": "Cordón ajustable con el nombre de tu peludito en letras de colores.", "precio": 6, "precioTexto": "$6 + $1 por letra", "foto": "", "disponible": true, "configurable": true },
+    { "id": "doggy-collar-placa", "marca": "doggy", "categoria": "Collares", "nombre": "Collar trenzado con placa", "descripcion": "Trenzado a mano con placa personalizada (metal, resina o transparente).", "precio": 15, "precioTexto": "$15 · talla L $20", "foto": "", "disponible": true, "configurable": true },
+    { "id": "doggy-collar-dije", "marca": "doggy", "categoria": "Collares", "nombre": "Collar trenzado con dije", "descripcion": "Trenzado a mano con su inicial o un dije protagonista.", "precio": 12, "foto": "", "disponible": true, "configurable": true },
+    { "id": "doggy-charm-normal", "marca": "doggy", "categoria": "Charms", "nombre": "Charm Up", "descripcion": "Helados, sapitos, frutas, animalitos… súmalo a cualquier collar.", "precio": 2, "precioTexto": "$2 c/u", "foto": "", "disponible": true },
+    { "id": "doggy-charm-premium", "marca": "doggy", "categoria": "Charms", "nombre": "Charm Sugar Premium", "descripcion": "Charm de resina hecho a mano por Sugar. Cada uno es único.", "precio": 3, "precioTexto": "$3 c/u", "foto": "", "disponible": true },
+    { "id": "doggy-sparkle-kit", "marca": "doggy", "categoria": "Sparkle Kit", "nombre": "Sparkle Kit", "descripcion": "Brillitos para el glow up de tu peludito.", "precio": null, "foto": "", "disponible": true },
+    { "id": "doggy-bandana", "marca": "doggy", "categoria": "Bandanas", "nombre": "Bandana", "descripcion": "Bandana para perritos.", "precio": null, "foto": "", "disponible": true, "ejemplo": true },
+    { "id": "doggy-disfraz", "marca": "doggy", "categoria": "Disfraces", "nombre": "Disfraz de temporada", "descripcion": "Disfraces para cada temporada.", "precio": null, "foto": "", "disponible": true, "ejemplo": true },
+    { "id": "doggy-llavero", "marca": "doggy", "categoria": "Llaveros", "nombre": "Llavero con nombre", "descripcion": "Tu nombre, DOG MOM o el de tu peludito.", "precio": 2, "precioTexto": "$2 + $1 por letra", "foto": "", "disponible": true },
+
+    { "id": "club-collar-ejemplo", "marca": "club", "categoria": "Collares", "nombre": "Collar Cherry", "descripcion": "Producto de ejemplo: reemplázalo por los tuyos.", "precio": null, "foto": "", "disponible": true, "ejemplo": true },
+    { "id": "club-aretes-ejemplo", "marca": "club", "categoria": "Aretes", "nombre": "Aretes cereza", "descripcion": "Producto de ejemplo: reemplázalo por los tuyos.", "precio": null, "foto": "", "disponible": true, "ejemplo": true },
+    { "id": "club-lazo-ejemplo", "marca": "club", "categoria": "Lazos", "nombre": "Lazo rosa", "descripcion": "Producto de ejemplo: reemplázalo por los tuyos.", "precio": null, "foto": "", "disponible": true, "ejemplo": true }
+  ],
+  "match": [
+    { "id": "match-kit-full", "nombre": "Kit Matchy", "descripcion": "Collar trenzado con placa (nombre adelante y número atrás) + llavero a juego para ti.", "incluye": ["Collar con placa", "Llavero match"], "precio": 25, "foto": "", "disponible": true },
+    { "id": "match-lazos", "nombre": "Lazos a juego", "descripcion": "Un lazo Sugar Club para ti y uno Doggy Pops para tu perrito.", "incluye": ["Lazo humano", "Lazo perrito"], "precio": null, "foto": "", "disponible": true, "ejemplo": true }
+  ]
+}

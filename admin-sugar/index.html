@@ -2,14 +2,14 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800;900&family=Bagel+Fat+One&family=Caveat:wght@700&family=IBM+Plex+Mono:wght@500;600&family=Abril+Fatface&family=Great+Vibes&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fredoka:wght@500;700&family=Nunito:wght@600;800;900&family=Bagel+Fat+One&family=Caveat:wght@700&family=IBM+Plex+Mono:wght@500;600&family=Abril+Fatface&family=Great+Vibes&display=swap">
 <style>
 /* Layout: a back-office for one person on a phone — sticky header, four tabs, long scannable lists, full-screen editor sheet, plus a full-screen home preview built from the same data. Sugar pastel world, single theme by choice. */
 :root{
-  --bg:#FFF8E4; --card:#FFFFFF; --ink:#2A1638; --soft:#6B5A78; --line:#E9DFF3;
-  --pink:#E66A92; --cherry:#E63B2E; --yellow:#F5D738; --blue:#3E9AD6; --green:#34A96A; --purple:#7B3AF5; --paper:#FFFDF6;
-  --display:"Fredoka","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
-  --body:"Nunito","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --bg:#F5F6F8; --card:#FFFFFF; --ink:#16181D; --soft:#636B78; --line:#E2E5EA;
+  --pink:#D6336C; --cherry:#D92D20; --yellow:#FDF2C4; --blue:#2563EB; --green:#15803D; --purple:#4F46E5; --paper:#FFFDF6;
+  --display:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --sign:"Bagel Fat One","Cooper Black","Arial Black",sans-serif;
   --hand:"Caveat","Bradley Hand","Segoe Print",cursive;
   color-scheme:light;
@@ -120,7 +120,7 @@ h1 span{color:var(--pink)}
   box-shadow:inset 0 2px 1px rgba(255,255,255,.8),inset 0 -8px 16px rgba(120,180,255,.18),0 10px 24px rgba(10,50,120,.22)}
 /* hero */
 .hero{position:relative;height:100svh;min-height:560px;background:#2E8BE0 url("img/hero.jpg") center/cover;overflow:hidden}
-.hero .logo{position:absolute;left:clamp(14px,3vw,40px);top:0;width:clamp(110px,14vw,190px);padding:clamp(14px,2vw,26px) 12px 18px;border-radius:0 0 999px 999px;display:grid;place-items:center}
+.hero .logo{position:absolute;left:clamp(14px,3vw,40px);top:0;width:clamp(104px,12vw,170px);padding:clamp(22px,3vw,40px) clamp(18px,2.2vw,30px) clamp(26px,3vw,40px);border-radius:0 0 999px 999px;display:grid;place-items:center}
 .hero .logo img{width:100%;height:auto;display:block}
 .hero .nav{position:absolute;right:clamp(14px,3vw,40px);top:clamp(14px,4vh,40px);display:flex;gap:10px;align-items:center}
 .pill{border-radius:999px;padding:12px 26px;font:500 clamp(14px,1.5vw,19px)/1 var(--mono);color:#10223f;cursor:pointer;letter-spacing:.02em}
@@ -131,6 +131,7 @@ h1 span{color:var(--pink)}
 .hero .ctas .pill{padding:16px 30px;font-size:clamp(16px,2vw,26px);text-transform:uppercase}
 .hero .doggy{position:absolute;right:clamp(14px,3vw,40px);bottom:clamp(16px,5vh,40px);width:clamp(110px,12vw,170px);border-radius:22px;padding:10px;cursor:pointer}
 .hero .doggy img{width:100%;display:block}
+.hero .doggy .dcap{display:block;margin-top:6px;font:600 12px/1.1 var(--mono);color:#fff;text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
 @media (max-width:760px){.hero{background-image:url("img/hero-m.jpg")} .hero .ctas{left:50%;transform:translateX(-50%);justify-content:center;width:calc(100% - 32px);bottom:70px}
   .hero .ctas .pill{flex:1;padding:14px 10px;text-align:center;font-size:15px} .hero .nav .pill{display:none} .hero .doggy{top:clamp(14px,4vh,40px);bottom:auto;right:auto;left:50%;transform:translateX(-50%);display:none}}
 /* shop */
@@ -140,7 +141,7 @@ h1 span{color:var(--pink)}
 .shop .top .lg{height:64px;filter:drop-shadow(0 3px 6px rgba(10,40,100,.35));width:auto;cursor:pointer}
 .shop .wrapx{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:6px clamp(14px,3vw,40px) 80px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start}
 .stage{border-radius:28px;padding:18px;position:sticky;top:84px;display:grid;gap:12px}
-.stage .big{aspect-ratio:1;max-height:56vh;width:100%;margin:0 auto;border-radius:20px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.55),rgba(255,255,255,.12))}
+.stage .big{position:relative;aspect-ratio:1;max-height:56vh;width:100%;margin:0 auto;border-radius:20px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.55),rgba(255,255,255,.12))}
 .stage .big img{max-width:92%;max-height:92%;object-fit:contain;filter:drop-shadow(0 18px 22px rgba(10,40,100,.35));animation:pop .45s cubic-bezier(.3,1.5,.5,1)}
 @keyframes pop{from{transform:scale(.9);opacity:.3}to{transform:none;opacity:1}}
 .stage h1{margin:0;font:400 clamp(30px,3.6vw,48px)/1 "Abril Fatface",Georgia,serif;color:#fff;text-shadow:0 2px 10px rgba(10,40,100,.4)}
@@ -150,6 +151,18 @@ h1 span{color:var(--pink)}
 .stage .row2{display:flex;gap:10px;flex-wrap:wrap}
 .btnp{border:0;border-radius:999px;padding:14px 22px;font:700 15px var(--body);cursor:pointer;background:#FF4F9A;color:#fff;box-shadow:inset 0 2px 1px rgba(255,255,255,.5),0 8px 18px rgba(255,79,154,.35)}
 .btnp[disabled]{opacity:.5;cursor:not-allowed}
+.btnp.wa{background:#25D366;box-shadow:inset 0 2px 1px rgba(255,255,255,.5),0 8px 18px rgba(37,211,102,.3)}
+.arr{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:46px;height:46px;border-radius:50%;border:1.5px solid rgba(255,255,255,.9);background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font:400 30px/1 var(--body);color:var(--ink);cursor:pointer;box-shadow:0 6px 14px rgba(10,40,100,.25)}
+.arr.l{left:10px} .arr.r{right:10px}
+.idx{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font:600 12px var(--mono);background:rgba(255,255,255,.7);border-radius:999px;padding:3px 10px}
+.sold{position:absolute;top:12px;left:12px;background:#D92D20;color:#fff;font:700 12px var(--mono);padding:4px 10px;border-radius:999px;z-index:2}
+.cinfo{font-size:11.5px;line-height:1.4;color:#3b4250;background:rgba(255,255,255,.7);border-radius:12px;padding:10px;white-space:pre-line;max-height:28vh;overflow:auto}
+.cinfo b{display:block;font-size:12px;margin-bottom:2px}
+.cfg{position:fixed;inset:0;z-index:97;background:rgba(10,30,70,.45);display:grid;place-items:center;padding:12px}
+.cfg .box{width:min(1100px,100%);height:min(92svh,900px);border-radius:20px;overflow:hidden;background:#fff;display:grid;grid-template-rows:auto 1fr}
+.cfg .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#F5D738;font:700 15px var(--display)}
+.cfg iframe{width:100%;height:100%;border:0}
+.sec.make{background:rgba(245,215,56,.85);color:var(--ink);text-shadow:none}
 .side{display:grid;gap:14px}
 .secs{border-radius:24px;padding:12px;display:grid;gap:6px}
 .secs h2,.prods h2{margin:2px 6px 4px;font:600 13px var(--mono);color:#fff;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,30,80,.5)}
@@ -169,7 +182,7 @@ h1 span{color:var(--pink)}
 .emptyg{color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,30,80,.5);padding:20px 8px;text-align:center}
 @media (max-width:860px){.shop .wrapx{grid-template-columns:1fr}.stage{position:static}.secs{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;scrollbar-width:none}.secs h2{display:none}.sec .c{display:none}}
 /* cart */
-.cart{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);z-index:96;border-radius:24px 0 0 24px;padding:18px;display:grid;grid-template-rows:auto 1fr auto;gap:12px;background:rgba(255,255,255,.75)}
+.cart{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);z-index:96;border-radius:24px 0 0 24px;padding:18px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:12px;background:rgba(255,255,255,.75)}
 .cart h3{margin:0;font:400 30px "Abril Fatface",Georgia,serif}
 .cart ul{list-style:none;margin:0;padding:0;overflow:auto;display:grid;gap:8px;align-content:start}
 .cart li{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;background:#fff;border-radius:14px;padding:6px}
@@ -178,11 +191,43 @@ h1 span{color:var(--pink)}
 .cart .q button{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--ink);background:#fff;font-weight:900;cursor:pointer}
 .cart .tot{display:flex;justify-content:space-between;font:700 18px var(--body)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* ---------- console overrides: calm, neutral back-office ---------- */
+body{font:400 14px/1.45 var(--body)}
+h1{font:600 18px/1 var(--display);letter-spacing:-.01em} h1 span{color:var(--soft);font-weight:500}
+header{border-bottom:1px solid var(--line);margin-bottom:6px}
+.status{font-weight:600;border-width:1px}
+.tabs{border:1px solid var(--line);border-radius:10px;padding:3px;background:#EEF0F3}
+.tabs button{font-weight:500;border-radius:8px;color:var(--soft)}
+.tabs button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.chip{border:1px solid var(--line);border-radius:8px;font-weight:500;padding:5px 11px;color:var(--soft)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sub2 .chip[aria-pressed="true"]{background:#E8EDFF;color:var(--purple);border-color:#C7D2FE}
+.btn{border:1px solid var(--line);border-radius:8px;font-weight:500;padding:8px 12px}
+.btn.pri{background:var(--ink);border-color:var(--ink)}
+.btn.home{background:#fff}
+.tools input,.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:8px;font-weight:400}
+.row{border:1px solid var(--line);border-radius:10px}
+.info b{font:600 14px/1.25 var(--body)}
+.meta{font-weight:400}
+.badge{font-weight:600;border-radius:6px}
+.group{font:600 12px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--soft);margin:16px 0 0}
+.panel{border:1px solid var(--line);border-radius:12px}
+.panel h2,.sheet h2{font:600 16px var(--display)}
+.field{font-weight:500}
+.toggle{border:1px solid var(--line);border-radius:8px;font-weight:500}
+.stock button{border:1px solid var(--line);border-radius:8px;font-weight:500}
+.summary{font-weight:500}
+.empty{border:1px dashed var(--line);font-weight:500}
+.count{font-weight:500} .count b{font:600 16px var(--body)}
+.sheet .card{background:#fff}
+.sub2{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.hp{--body:"Nunito","Avenir Next","Segoe UI",system-ui,sans-serif;--display:"Fredoka","Arial Rounded MT Bold",sans-serif;font-family:var(--body)}
+
 </style>
 
 <div class="wrap">
   <header>
-    <div class="hrow"><h1>Sugar <span>Admin</span></h1><div class="hright"><button type="button" class="btn home" id="homeBtn">🏡 Ver home</button><span class="status" id="status" role="status">Conectando…</span></div></div>
+    <div class="hrow"><h1>Sugar <span>· Consola</span></h1><div class="hright"><button type="button" class="btn home" id="homeBtn">Ver sitio</button><span class="status" id="status" role="status">Conectando…</span></div></div>
     <nav class="tabs" role="tablist" aria-label="Secciones">
       <button type="button" role="tab" data-tab="productos" aria-selected="true">Productos</button>
       <button type="button" role="tab" data-tab="categorias" aria-selected="false">Categorías</button>
@@ -219,7 +264,12 @@ const ICON = {
 const iconSvg = id => `<svg viewBox="-20 -20 40 40" aria-hidden="true">${ICON[id] || ICON.estrella}</svg>`;
 const blob = id => "/_blob/" + id;
 const slug = s => (s || "item").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "item";
-const catIcon = c => c?.iconoId ? blob(c.iconoId) : (c?.iconoSrc || "");
+const catIcon = c => {
+  if (c?.iconoId) return blob(c.iconoId);
+  if (c?.iconoSrc) return c.iconoSrc;
+  const p = (S.data.productos || []).find(p => p.marca === c?.marca && p.categoria === c?.nombre && (p.fotoId || p.fotoSrc));
+  return p ? (p.fotoId ? blob(p.fotoId) : p.fotoSrc) : "";
+};
 const catTray = c => c?.bandejaId ? blob(c.bandejaId) : (c?.bandejaSrc || "");
 
 /* ---------- what each list holds ---------- */
@@ -234,19 +284,19 @@ const SCHEMAS = {
       { k: "precio", t: "number", label: "Precio ($)", help: "Vacío = “Consultar precio”." },
       { k: "precioTexto", t: "text", label: "Cómo se muestra el precio (opcional)", help: "Ej.: $6 + $1 por letra" },
       { k: "incluye", t: "list", label: "Incluye", help: "Separa con comas. Ej.: Lazo humano, Lazo perrito", when: d => d.marca === "match" },
-      { k: "stock", t: "number", label: "Stock", help: "En 0 se muestra Agotado. Vacío = hecho a pedido." },
+      { k: "stock", t: "number", label: "Stock", help: "Empieza en 1. En 0 se muestra Agotado. Vacío = hecho a pedido." },
       { k: "fotoId", t: "photo", label: "Foto (PNG sin fondo se ve mejor en la tienda)", fallback: "fotoSrc" },
       { k: "disponible", t: "toggle", label: "Visible en la web" },
       { k: "configurable", t: "toggle", label: "Mostrar botón “Arma el tuyo”", when: d => d.marca === "doggy" },
       { k: "ejemplo", t: "toggle", label: "Es un producto de ejemplo" }
     ],
-    nuevo: (tab, preset) => ({ nombre: "", marca: preset?.marca || (["club", "doggy", "match"].includes(tab) ? tab : "club"), categoria: preset?.categoria || "", descripcion: "", precio: null, stock: null, disponible: true, ejemplo: false })
+    nuevo: (tab, preset) => ({ nombre: "", marca: preset?.marca || (["club", "doggy", "match"].includes(tab) ? tab : "club"), categoria: preset?.categoria || "", descripcion: "", precio: null, stock: 1, disponible: true, ejemplo: false })
   },
   categorias: {
     title: "categoría", empty: "Aún no hay categorías.",
     fields: [
       { k: "nombre", t: "text", label: "Texto del botón", req: true },
-      { k: "iconoId", t: "photo", label: "Ícono del escritorio", fallback: "iconoSrc" },
+      { k: "iconoId", t: "photo", label: "Ícono de la sección (miniatura)", fallback: "iconoSrc", help: "Si no subes uno, se usa la foto del primer producto de la categoría." },
       { k: "sub", t: "text", label: "Texto pequeño debajo (opcional)", help: "Ej.: nuevo, próximamente, marca hermana" },
       { k: "color", t: "color", label: "Color de respaldo (se ve si no hay ícono)" },
       { k: "marca", t: "select", label: "Marca", opts: () => [["club", "Sugar Club"], ["doggy", "Doggy Pops"]] },
@@ -293,7 +343,7 @@ const SCHEMAS = {
 };
 
 /* ---------- state ---------- */
-const S = { tab: "productos", sub: "todo", q: "", data: { productos: [], categorias: [], cordones: [], charms: [], placas: [], estilos: [] }, ajustes: null, loaded: new Set() };
+const S = { tab: "productos", sub: "todo", cat: "", q: "", data: { productos: [], categorias: [], cordones: [], charms: [], placas: [], estilos: [] }, ajustes: null, loaded: new Set() };
 let db = null, assets = null;
 const catsDe = m => S.data.categorias.filter(c => c.marca === m).sort((a, b) => (a.orden ?? 99) - (b.orden ?? 99) || (a.nombre || "").localeCompare(b.nombre || ""));
 const prodsDe = c => S.data.productos.filter(p => p.marca === c.marca && p.categoria === c.nombre);
@@ -346,7 +396,8 @@ function renderHeader() {
   document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === S.tab));
   const sub = $("#subnav"), tools = $("#tools");
   if (S.tab === "productos") {
-    sub.innerHTML = [["todo", "Todos"], ...Object.entries(MARCAS)].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
+    sub.innerHTML = [["todo", "Todas las marcas"], ...Object.entries(MARCAS)].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("")
+      + (["club", "doggy"].includes(S.sub) ? `</div><div class="sub2">${[["", "Todas las categorías"], ...catsDe(S.sub).map(c => [c.nombre, c.nombre])].map(([k, v]) => `<button type="button" class="chip" data-pcat="${esc(k)}" aria-pressed="${S.cat === k}">${esc(v)} <span style="opacity:.6">${k ? S.data.productos.filter(p => p.marca === S.sub && p.categoria === k).length : S.data.productos.filter(p => p.marca === S.sub).length}</span></button>`).join("")}` : "");
     tools.innerHTML = `<input type="search" id="q" placeholder="Buscar producto…" value="${esc(S.q)}" aria-label="Buscar"><button type="button" class="btn pri" data-new="productos">+ Nuevo</button>`;
   } else if (S.tab === "categorias") {
     sub.innerHTML = [["club", "Sugar Club"], ["doggy", "Doggy Pops"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
@@ -371,12 +422,18 @@ function renderMain() {
   if (!S.loaded.has(col)) { m.innerHTML = `<div class="empty">Cargando…</div>`; return; }
   let items = S.data[col].slice();
   if (col === "productos" && S.sub !== "todo") items = items.filter(p => p.marca === S.sub);
+  if (col === "productos" && S.cat) items = items.filter(p => p.categoria === S.cat);
   const q = S.q.trim().toLowerCase();
   if (q) items = items.filter(p => (p.nombre + " " + (p.categoria || "") + " " + (p.tipo || "")).toLowerCase().includes(q));
   items.sort((a, b) => (a.marca || "").localeCompare(b.marca || "") || (a.categoria || a.tipo || "").localeCompare(b.categoria || b.tipo || "") || (a.nombre || "").localeCompare(b.nombre || ""));
   const out = items.filter(i => i.stock === 0).length, low = items.filter(i => typeof i.stock === "number" && i.stock > 0 && i.stock <= LOW).length;
   m.innerHTML = `<div class="summary"><span><b>${items.length}</b> ${col}</span>${out ? `<span>· <b>${out}</b> agotados</span>` : ""}${low ? `<span>· <b>${low}</b> por acabarse</span>` : ""}</div>` +
-    (items.length ? `<div class="list">${items.map(i => row(i, col)).join("")}</div>` : `<div class="empty">${q ? "No hay resultados para esa búsqueda." : SCHEMAS[col].empty}</div>`);
+    (items.length ? (col === "productos" ? groupByCat(items) : `<div class="list">${items.map(i => row(i, col)).join("")}</div>`) : `<div class="empty">${q ? "No hay resultados para esa búsqueda." : SCHEMAS[col].empty}</div>`);
+}
+function groupByCat(items) {
+  const g = new Map();
+  for (const it of items) { const k = `${MARCAS[it.marca] || ""} · ${it.categoria || "Sin categoría"}`; if (!g.has(k)) g.set(k, []); g.get(k).push(it); }
+  return [...g].map(([k, list]) => `<p class="group">${esc(k)} <span style="font-weight:400">(${list.length})</span></p><div class="list">${list.map(i => row(i, "productos")).join("")}</div>`).join("");
 }
 function renderPrecios(m) {
   const E = S.data.estilos.slice().sort((a, b) => (a.orden || 0) - (b.orden || 0)), A = S.ajustes || {};
@@ -411,6 +468,8 @@ function renderAjustes(m) {
     <div class="grid3" style="grid-template-columns:1fr 1fr"><label class="field">Instagram Sugar Club<input id="igClub" value="${esc(ig.club || "")}"></label><label class="field">Instagram Doggy Pops<input id="igDoggy" value="${esc(ig.doggy || "")}"></label></div>
     <h2>Home (escritorio)</h2><p>Lo que se ve en “Ver home”. Los íconos se editan en la pestaña Categorías.</p>
     <div class="field">Fondo<div class="seg"><button type="button" class="btn" data-hbg="estrellas" aria-pressed="${!["pasto", "cuadros"].includes(h.fondo)}">Cielo con estrellas</button><button type="button" class="btn" data-hbg="pasto" aria-pressed="${h.fondo === "pasto"}">Windows</button><button type="button" class="btn" data-hbg="cuadros" aria-pressed="${h.fondo === "cuadros"}">Cuadros</button></div></div>
+    <h2>Información de compra (se ve en la canasta)</h2>
+    <label class="field">Envíos, tiempos de espera y pagos<textarea id="infoCompra" rows="7" placeholder="Envíos: …&#10;Tiempo de espera: …&#10;Pagos: …">${esc(A.infoCompra || "")}</textarea><small>Escríbelo como quieras que lo lea la clienta. Los saltos de línea se respetan.</small></label>
     <label class="field">Texto de abajo<input id="hPie" value="${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}"></label>
     <h2>🐶 Logo de Doggy Pops</h2>
     ${ajPhoto("Logo de Doggy Pops (va encima de la foto)", "dogLogo", h.doggyLogoId, "img/logo-doggy.png")}
@@ -427,7 +486,7 @@ function renderAjustes(m) {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, headerId: up.header, pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, headerId: up.header, pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 function ajPhoto(label, k, id, fallback) {
@@ -576,8 +635,9 @@ $("#main").addEventListener("click", e => {
 });
 document.addEventListener("click", e => {
   const t = e.target.closest(".tabs [data-tab]"); if (t) { S.tab = t.dataset.tab; S.sub = { productos: "todo", categorias: "club", collar: "cordones" }[S.tab] || ""; S.q = ""; render(); return; }
-  const s = e.target.closest("#subnav [data-sub]"); if (s) { S.sub = s.dataset.sub; S.q = ""; render(); return; }
-  const n = e.target.closest("[data-new]"); if (n) openEditor(n.dataset.new, null);
+  const s = e.target.closest("#subnav [data-sub]"); if (s) { S.sub = s.dataset.sub; S.cat = ""; S.q = ""; render(); return; }
+  const pc = e.target.closest("#subnav [data-pcat]"); if (pc) { S.cat = pc.dataset.pcat; render(); return; }
+  const n = e.target.closest("[data-new]"); if (n) openEditor(n.dataset.new, null, n.dataset.new === "productos" && S.cat ? { marca: S.sub, categoria: S.cat } : null);
 });
 
 /* ---------- public site preview: hero + shop (built from Categorías + Productos + Ajustes) ---------- */
@@ -592,11 +652,13 @@ function renderHero() {
     <div class="logo gl"><img src="img/logo-club.png" alt="Sugar Club"></div>
     <nav class="nav"><button type="button" class="pill gl" data-go="shop">Ver productos</button><button type="button" class="iconbtn gl" data-go="shop" aria-label="Buscar">🔍</button><button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button></nav>
     <div class="ctas"><button type="button" class="pill w gl" data-go="crea">Crea el tuyo</button><button type="button" class="pill w gl" data-go="shop">Compra ahora</button></div>
-    <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops"><img src="${esc(h.doggyLogoId ? blob(h.doggyLogoId) : "img/logo-doggy.png")}" alt=""></button>
+    <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, para tu mascota"><img src="${esc(h.doggyLogoId ? blob(h.doggyLogoId) : "img/logo-doggy.png")}" alt=""><span class="dcap">para tu mascota 🐾</span></button>
   </section><button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>`;
 }
 const homeCfgX = () => S.ajustes?.home || {};
-function renderShop(brand = "club") {
+let shopBrand = "club";
+function renderShop(brand = shopBrand) {
+  shopBrand = brand;
   const cats = catsDe(brand).filter(c => c.disponible !== false && !c.bloqueada);
   if (!shopCat || !cats.some(c => c.id === shopCat.id)) shopCat = cats[0] || null;
   const ps = shopCat ? prodsDe(shopCat).filter(p => p.disponible !== false) : [];
@@ -606,14 +668,14 @@ function renderShop(brand = "club") {
     <div class="top"><img class="lg" src="img/logo-club.png" alt="Sugar Club — inicio" data-go="hero"><button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button></div>
     <div class="wrapx">
       <article class="stage gl" aria-live="polite">${p ? `
-        <div class="big">${prodImg(p) ? `<img src="${esc(prodImg(p))}" alt="${esc(p.nombre)}">` : `<span style="font-size:60px">🍒</span>`}</div>
-        <h1>${esc(p.nombre)}</h1><div class="pr">${esc(p.precioTexto || money(p.precio))}</div>
+        <div class="big">${ps.length > 1 ? `<button type="button" class="arr l" data-step="-1" aria-label="Producto anterior">‹</button>` : ""}${prodImg(p) ? `<img src="${esc(prodImg(p))}" alt="${esc(p.nombre)}">` : `<span style="font-size:60px">🍒</span>`}${ps.length > 1 ? `<button type="button" class="arr r" data-step="1" aria-label="Producto siguiente">›</button><span class="idx">${ps.indexOf(p) + 1} / ${ps.length}</span>` : ""}</div>
+        ${out ? `<span class="sold">Sold out</span>` : ""}<h1>${esc(p.nombre)}</h1><div class="pr">${esc(p.precioTexto || money(p.precio))}</div>
         ${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}
         <div class="stk">${out ? "Agotado" : typeof p.stock === "number" ? `Quedan ${p.stock}` : "Hecho a pedido"}</div>
-        <div class="row2"><button type="button" class="btnp" data-add="${esc(p.id)}" ${out ? "disabled" : ""}>Agregar a la canasta</button></div>` : `<div class="emptyg">Esta sección todavía no tiene productos.</div>`}
+        <div class="row2"><button type="button" class="btnp" data-add="${esc(p.id)}" ${out ? "disabled" : ""}>Agregar a la canasta</button><button type="button" class="btnp wa" data-wa1="${esc(p.id)}" ${out ? "disabled" : ""}>Pedir por WhatsApp</button></div>` : `<div class="emptyg">Esta sección todavía no tiene productos.</div>`}
       </article>
       <div class="side">
-        <nav class="secs gl" aria-label="Secciones"><h2>Secciones</h2>${cats.map(c => { const n = prodsDe(c).filter(x => x.disponible !== false).length, ic = catIcon(c); return `<button type="button" class="sec" data-cat="${esc(c.id)}" aria-pressed="${c === shopCat}">${ic ? `<img src="${esc(ic)}" alt="">` : `<span class="ph">${esc(c.nombre.charAt(0))}</span>`}${esc(c.nombre)}<span class="c">${n}</span></button>`; }).join("")}</nav>
+        <nav class="secs gl" aria-label="Secciones"><h2>Secciones</h2>${brand === "doggy" ? `<button type="button" class="sec make" data-go="armacollar"><span class="ph">🎨</span>Arma su collar</button>` : ""}${cats.map(c => { const n = prodsDe(c).filter(x => x.disponible !== false).length, ic = catIcon(c); return `<button type="button" class="sec" data-cat="${esc(c.id)}" aria-pressed="${c === shopCat}">${ic ? `<img src="${esc(ic)}" alt="">` : `<span class="ph">${esc(c.nombre.charAt(0))}</span>`}${esc(c.nombre)}<span class="c">${n}</span></button>`; }).join("")}</nav>
         <div class="prods gl"><h2>${esc(shopCat?.nombre || "")}</h2>${ps.length ? `<div class="pgrid">${ps.map(x => `<button type="button" class="pc ${x.stock === 0 ? "out" : ""}" data-prod="${esc(x.id)}" aria-pressed="${x === p}"><span class="im">${prodImg(x) ? `<img src="${esc(prodImg(x))}" alt="">` : "🍒"}</span><b>${esc(x.nombre)}</b><span>${esc(x.precioTexto || money(x.precio))}</span></button>`).join("")}</div>` : `<div class="emptyg">Pronto ✨</div>`}</div>
       </div>
     </div></section><button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>`;
@@ -624,12 +686,22 @@ function renderCart() {
   const total = lines.reduce((a, l) => a + (+l.p.precio || 0) * l.q, 0);
   c.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><h3>Tu canasta</h3><button type="button" class="iconbtn" data-go="closecart" aria-label="Cerrar">✕</button></div>
     <ul>${lines.map(l => `<li><img src="${esc(prodImg(l.p))}" alt=""><div><b>${esc(l.p.nombre)}</b><div style="font:600 12px var(--mono)">${esc(l.p.precioTexto || money(l.p.precio))}</div></div><div class="q"><button type="button" data-q="${esc(l.id)}" data-d="-1">−</button>${l.q}<button type="button" data-q="${esc(l.id)}" data-d="1">+</button></div></li>`).join("") || `<li style="grid-template-columns:1fr">Tu canasta está vacía.</li>`}</ul>
-    <div style="display:grid;gap:10px"><div class="tot"><span>Total</span><span>${money(total)}</span></div><button type="button" class="btnp" data-go="wa" ${lines.length ? "" : "disabled"}>Enviar pedido por WhatsApp</button></div>`;
+    <div style="display:grid;gap:10px"><div class="tot"><span>Total</span><span>${money(total)}</span></div><button type="button" class="btnp wa" data-go="wa" ${lines.length ? "" : "disabled"}>Enviar pedido por WhatsApp</button>
+    <div class="cinfo"><b>Información importante</b>${esc(S.ajustes?.infoCompra || "Envíos, tiempos de espera y formas de pago: pronto 💖")}</div></div>`;
+}
+function sendWa(lines) {
+  const wa = (S.ajustes?.whatsapp || "").replace(/\D/g, "");
+  if (!wa) return toast("Pon tu número de WhatsApp en Ajustes");
+  const marca = shopBrand === "doggy" ? "Sugar Doggy Pops 🐶" : "Sugar Club 🍒";
+  const msg = [`Hola ${marca}, quiero pedir:`, ...lines].join("\n");
+  const a = document.createElement("a"); a.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(msg); a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
 }
 $("#homeBtn").addEventListener("click", openHome);
 $("#hp").addEventListener("click", e => {
-  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],#hpClose"); if (!t) return;
+  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],#hpClose"); if (!t) return;
   if (t.id === "hpClose") return closeHome();
+  if (t.dataset.step) { const ps = prodsDe(shopCat).filter(p => p.disponible !== false), i = ps.findIndex(p => p.id === shopProd?.id); shopProd = ps[(i + +t.dataset.step + ps.length) % ps.length]; return renderShop(); }
+  if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return sendWa([`• 1 × ${p.nombre} – ${p.precioTexto || money(p.precio)}`]); }
   if (t.dataset.cat) { shopCat = S.data.categorias.find(c => c.id === t.dataset.cat); shopProd = null; return renderShop(shopCat.marca); }
   if (t.dataset.prod) { shopProd = S.data.productos.find(p => p.id === t.dataset.prod); return renderShop(shopCat?.marca); }
   if (t.dataset.add) { const l = cart.find(x => x.id === t.dataset.add); l ? l.q++ : cart.push({ id: t.dataset.add, q: 1 }); toast("Agregado a la canasta 🛒"); renderShop(shopCat?.marca); return; }
@@ -638,15 +710,15 @@ $("#hp").addEventListener("click", e => {
   if (g === "shop") { shopCat = null; return renderShop("club"); }
   if (g === "doggy") { shopCat = null; return renderShop("doggy"); }
   if (g === "hero") return renderHero();
-  if (g === "crea") return toast("Crea el tuyo llega muy pronto ✨");
+  if (g === "crea") return toast("Pronto podrás armar tu propio bag charm ✨");
+  if (g === "armacollar") { const d = document.createElement("div"); d.className = "cfg"; d.innerHTML = `<div class="box"><div class="bar"><span>🐶 Arma su collar · Doggy Pops</span><button type="button" class="iconbtn" data-go="closecfg" aria-label="Cerrar" style="background:#fff">✕</button></div><iframe src="doggy/arma-tu-collar.html" title="Arma su collar"></iframe></div>`; $("#hp").appendChild(d); return; }
+  if (g === "closecfg") return $("#hp .cfg")?.remove();
   if (g === "cart") return renderCart();
   if (g === "closecart") return $("#hpCart")?.remove();
   if (g === "wa") {
-    const wa = (S.ajustes?.whatsapp || "").replace(/\D/g, "");
     const lines = cart.map(l => { const p = S.data.productos.find(x => x.id === l.id); return p ? `• ${l.q} × ${p.nombre} – ${p.precioTexto || money(p.precio)}` : null; }).filter(Boolean);
-    const msg = ["Hola Sugar Club 🍒 quiero hacer este pedido:", ...lines].join("\n");
-    if (!wa) return toast("Pon tu número de WhatsApp en Ajustes");
-    window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(msg), "_blank");
+    const total = cart.reduce((a, l) => { const p = S.data.productos.find(x => x.id === l.id); return a + (+p?.precio || 0) * l.q; }, 0);
+    return sendWa([...lines, `Total: ${money(total)}`]);
   }
 });
 
