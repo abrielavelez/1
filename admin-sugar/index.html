@@ -133,54 +133,85 @@ h1 span{color:var(--pink)}
 .hero .doggy img{width:100%;display:block}
 .hero .doggy .dcap{display:block;margin-top:6px;font:600 12px/1.1 var(--mono);color:#fff;text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
 @media (max-width:760px){.hero{background-image:url("img/hero-m.jpg")} .hero .ctas{left:50%;transform:translateX(-50%);justify-content:center;width:calc(100% - 32px);bottom:70px}
-  .hero .ctas .pill{flex:1;padding:14px 10px;text-align:center;font-size:15px} .hero .nav .pill{display:none} .hero .doggy{top:clamp(14px,4vh,40px);bottom:auto;right:auto;left:50%;transform:translateX(-50%);display:none}}
+  .hero .ctas .pill{flex:1;padding:14px 10px;text-align:center;font-size:15px} .hero .nav .pill{display:none} .hero .doggy{top:clamp(14px,4vh,40px);bottom:auto;right:auto;left:auto;right:16px;transform:none;width:92px;padding:6px;border-radius:18px}}
 /* shop */
-.shop{min-height:100svh;background:url("img/hero.jpg") center/cover fixed;position:relative}
-.shop::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.18),rgba(255,255,255,.08))}
-.shop .top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(14px,3vw,40px)}
-.shop .top .lg{height:64px;filter:drop-shadow(0 3px 6px rgba(10,40,100,.35));width:auto;cursor:pointer}
-.shop .wrapx{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:6px clamp(14px,3vw,40px) 80px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start}
-.stage{border-radius:28px;padding:18px;position:sticky;top:84px;display:grid;gap:12px}
-.stage .big{position:relative;aspect-ratio:1;max-height:56vh;width:100%;margin:0 auto;border-radius:20px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.55),rgba(255,255,255,.12))}
-.stage .big img{max-width:92%;max-height:92%;object-fit:contain;filter:drop-shadow(0 18px 22px rgba(10,40,100,.35));animation:pop .45s cubic-bezier(.3,1.5,.5,1)}
-@keyframes pop{from{transform:scale(.9);opacity:.3}to{transform:none;opacity:1}}
-.stage h1{margin:0;font:400 clamp(30px,3.6vw,48px)/1 "Abril Fatface",Georgia,serif;color:#fff;text-shadow:0 2px 10px rgba(10,40,100,.4)}
-.stage .pr{font:600 22px var(--mono);color:#fff;text-shadow:0 1px 4px rgba(10,40,100,.5)}
-.stage p{margin:0;color:#fff;font-weight:700;text-shadow:0 1px 4px rgba(10,40,100,.5)}
-.stage .stk{font:600 13px var(--mono);color:#fff;opacity:.95}
-.stage .row2{display:flex;gap:10px;flex-wrap:wrap}
+.shop{min-height:100svh;background:url("img/hero.jpg") center/cover fixed;position:relative;padding-bottom:70px}
+.shop::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,.12);pointer-events:none}
+.shop .top{position:sticky;top:0;z-index:5;background:linear-gradient(rgba(40,120,210,.55),rgba(40,120,210,0));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(14px,3vw,40px)}
+.shop .top .lg{height:58px;width:auto;cursor:pointer;filter:drop-shadow(0 3px 6px rgba(10,40,100,.35))}
+.shop .top .tt{flex:1;text-align:center;font:400 clamp(22px,3vw,36px)/1 "Abril Fatface",Georgia,serif;color:#fff;text-shadow:0 2px 10px rgba(10,40,100,.45)}
+.bubbles{position:relative;z-index:1;display:flex;gap:clamp(10px,1.6vw,22px);overflow-x:auto;padding:6px clamp(14px,3vw,40px) 14px;scrollbar-width:none;max-width:1280px;margin:0 auto}
+.bub2{flex:none;display:grid;justify-items:center;gap:6px;background:none;border:0;cursor:pointer;width:clamp(74px,8vw,104px);color:#fff;font:700 13px/1.15 var(--body);text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
+.bub2 .ring{width:100%;aspect-ratio:1;border-radius:50%;padding:4px;background:linear-gradient(140deg,rgba(255,255,255,.9),rgba(255,255,255,.35));box-shadow:0 8px 16px rgba(10,40,100,.25)}
+.bub2 .ring span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fff;font:400 26px var(--sign);color:#E63B2E}
+.bub2 .ring img{width:100%;height:100%;object-fit:cover}
+.bub2[aria-pressed="true"] .ring{background:conic-gradient(#FF4F9A,#FFD23F,#3EC6FF,#B57BFF,#FF4F9A)}
+.bub2.make .ring span{background:linear-gradient(140deg,#FFE14D,#FF8DC0);font-size:30px}
+.shopgrid{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 clamp(14px,3vw,40px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
+.stage{border-radius:28px;padding:14px;position:sticky;top:80px}
+.stage .big{position:relative;border-radius:20px;display:grid;place-items:center;min-height:40vh;max-height:76svh;overflow:hidden;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.6),rgba(255,255,255,.15))}
+.stage .big img{display:block;max-width:100%;max-height:74svh;width:auto;height:auto;object-fit:contain;border-radius:14px;animation:pop .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{from{transform:scale(.94);opacity:.3}to{transform:none;opacity:1}}
+.info{border-radius:24px;padding:18px;display:grid;gap:10px}
+.info h1{margin:0;font:400 clamp(30px,3.4vw,46px)/1 "Abril Fatface",Georgia,serif;color:#fff;text-shadow:0 2px 10px rgba(10,40,100,.45)}
+.info .pr{font:600 22px var(--mono);color:#fff;text-shadow:0 1px 4px rgba(10,40,100,.5)}
+.info p{margin:0;color:#fff;font-weight:700;text-shadow:0 1px 4px rgba(10,40,100,.55)}
+.info .stk{font:600 13px var(--mono);color:#fff}
+.row2{display:flex;gap:10px;flex-wrap:wrap}
 .btnp{border:0;border-radius:999px;padding:14px 22px;font:700 15px var(--body);cursor:pointer;background:#FF4F9A;color:#fff;box-shadow:inset 0 2px 1px rgba(255,255,255,.5),0 8px 18px rgba(255,79,154,.35)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;margin-top:4px}
+.th{border:2px solid rgba(255,255,255,.8);border-radius:14px;background:rgba(255,255,255,.55);padding:4px;cursor:pointer;display:grid;gap:4px;color:var(--ink);text-align:left}
+.th .im{aspect-ratio:3/4;border-radius:10px;background:#fff;display:grid;place-items:center;overflow:hidden}
+.th .im img{width:100%;height:100%;object-fit:contain}
+.th b{font:700 11.5px/1.15 var(--body);padding:0 2px} .th span{font:600 11px var(--mono);padding:0 2px 2px}
+.th[aria-pressed="true"]{border-color:#FF4F9A;background:#fff;box-shadow:0 0 0 2px #FF4F9A}
+.th.out{opacity:.5}
+.emptyg{color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,30,80,.5);padding:30px 8px;text-align:center}
+@media (max-width:860px){.shopgrid{grid-template-columns:1fr}.stage{position:static}.stage .big{max-height:62svh}.stage .big img{max-height:60svh}}
 .btnp[disabled]{opacity:.5;cursor:not-allowed}
 .btnp.wa{background:#25D366;box-shadow:inset 0 2px 1px rgba(255,255,255,.5),0 8px 18px rgba(37,211,102,.3)}
 .arr{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:46px;height:46px;border-radius:50%;border:1.5px solid rgba(255,255,255,.9);background:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font:400 30px/1 var(--body);color:var(--ink);cursor:pointer;box-shadow:0 6px 14px rgba(10,40,100,.25)}
 .arr.l{left:10px} .arr.r{right:10px}
 .idx{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font:600 12px var(--mono);background:rgba(255,255,255,.7);border-radius:999px;padding:3px 10px}
 .sold{position:absolute;top:12px;left:12px;background:#D92D20;color:#fff;font:700 12px var(--mono);padding:4px 10px;border-radius:999px;z-index:2}
-.cinfo{font-size:11.5px;line-height:1.4;color:#3b4250;background:rgba(255,255,255,.7);border-radius:12px;padding:10px;white-space:pre-line;max-height:28vh;overflow:auto}
-.cinfo b{display:block;font-size:12px;margin-bottom:2px}
-.cfg{position:fixed;inset:0;z-index:97;background:rgba(10,30,70,.45);display:grid;place-items:center;padding:12px}
-.cfg .box{width:min(1100px,100%);height:min(92svh,900px);border-radius:20px;overflow:hidden;background:#fff;display:grid;grid-template-rows:auto 1fr}
-.cfg .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#F5D738;font:700 15px var(--display)}
-.cfg iframe{width:100%;height:100%;border:0}
-.sec.make{background:rgba(245,215,56,.85);color:var(--ink);text-shadow:none}
-.side{display:grid;gap:14px}
-.secs{border-radius:24px;padding:12px;display:grid;gap:6px}
-.secs h2,.prods h2{margin:2px 6px 4px;font:600 13px var(--mono);color:#fff;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,30,80,.5)}
-.sec{display:flex;align-items:center;gap:12px;border:0;border-radius:16px;padding:8px 12px;background:transparent;cursor:pointer;text-align:left;color:#fff;font:700 16px var(--body);text-shadow:0 1px 3px rgba(0,30,80,.5)}
-.sec img,.sec .ph{width:38px;height:38px;object-fit:contain;flex:none}
-.sec .ph{border-radius:50%;background:rgba(255,255,255,.4);display:grid;place-items:center;text-shadow:none;color:var(--ink)}
-.sec .c{margin-left:auto;font:600 12px var(--mono);opacity:.9}
-.sec[aria-pressed="true"]{background:rgba(255,255,255,.75);color:var(--ink);text-shadow:none}
-.prods{border-radius:24px;padding:12px}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
-.pc{border:1.5px solid rgba(255,255,255,.8);border-radius:16px;background:rgba(255,255,255,.35);padding:8px;cursor:pointer;display:grid;gap:6px;text-align:left;color:var(--ink)}
-.pc .im{aspect-ratio:1;border-radius:12px;background:rgba(255,255,255,.6);display:grid;place-items:center;overflow:hidden}
-.pc .im img{width:100%;height:100%;object-fit:contain}
-.pc b{font:700 13px/1.2 var(--body)} .pc span{font:600 12px var(--mono)}
-.pc[aria-pressed="true"]{background:#fff;box-shadow:0 0 0 3px #FF4F9A}
-.pc.out{opacity:.55}
-.emptyg{color:#fff;font-weight:800;text-shadow:0 1px 3px rgba(0,30,80,.5);padding:20px 8px;text-align:center}
-@media (max-width:860px){.shop .wrapx{grid-template-columns:1fr}.stage{position:static}.secs{grid-auto-flow:column;grid-auto-columns:max-content;overflow-x:auto;scrollbar-width:none}.secs h2{display:none}.sec .c{display:none}}
+.arr{font-size:26px;cursor:pointer;display:grid;place-items:center;color:var(--ink)}
+/* builders (charm + dog collar) */
+.minibar{display:none}
+@media (max-width:860px){.minibar{display:flex;position:fixed;left:12px;right:12px;bottom:calc(52px + env(safe-area-inset-bottom,0px));z-index:20;align-items:center;justify-content:space-between;gap:10px;border-radius:999px;padding:8px 8px 8px 18px;font:700 15px var(--body);color:var(--ink);background:rgba(255,255,255,.8)}
+  .minibar button{border:0;border-radius:999px;background:#FF4F9A;color:#fff;font:700 14px var(--body);padding:10px 16px;cursor:pointer}}
+.bld{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 clamp(14px,3vw,40px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
+@media (max-width:860px){.bld{grid-template-columns:1fr}}
+.prev{border-radius:28px;padding:18px;position:sticky;top:80px;min-height:60svh;display:grid;align-content:start;justify-items:center;gap:10px}
+.prev .hook{width:46px;height:70px;border:6px solid #9aa3b2;border-radius:24px;box-shadow:inset 0 0 0 2px #e6e9ef,0 3px 6px rgba(0,0,0,.25)}
+.prev .chain{width:6px;height:28px;background:repeating-linear-gradient(#c9ced8 0 6px,#8a92a1 6px 9px);margin-top:-4px}
+.prev .hang{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:440px}
+.prev .hang img{height:clamp(90px,14vh,150px);width:auto;max-width:150px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,.6);padding:4px;animation:pop .4s cubic-bezier(.3,1.5,.5,1)}
+.prev .tot{font:600 24px var(--mono);color:#fff;text-shadow:0 1px 4px rgba(10,40,100,.5)}
+.prev h2{margin:0;font:400 clamp(28px,3vw,40px)/1 "Abril Fatface",Georgia,serif;color:#fff;text-shadow:0 2px 10px rgba(10,40,100,.45)}
+.prev .hint{color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
+.pick{border-radius:24px;padding:16px;display:grid;gap:12px}
+.pick h3{margin:0;font:600 13px var(--mono);color:#fff;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,30,80,.5)}
+.steps2{display:flex;gap:6px;flex-wrap:wrap}
+.steps2 button{border:1.5px solid rgba(255,255,255,.9);border-radius:999px;background:rgba(255,255,255,.4);padding:7px 14px;font:700 13px var(--body);cursor:pointer;color:var(--ink)}
+.steps2 button[aria-selected="true"]{background:#fff;box-shadow:0 4px 10px rgba(10,40,100,.2)}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.opt2{border:2px solid rgba(255,255,255,.85);border-radius:16px;background:rgba(255,255,255,.55);padding:10px;cursor:pointer;display:grid;gap:4px;text-align:left;color:var(--ink);font:600 13px/1.25 var(--body)}
+.opt2 b{font:700 15px var(--body)} .opt2 small{opacity:.75} .opt2 .p{font:600 12px var(--mono);color:#B4235F}
+.opt2 .ph{aspect-ratio:1;border-radius:12px;background:#fff;display:grid;place-items:center;overflow:hidden}
+.opt2 .ph img{width:100%;height:100%;object-fit:contain} .opt2 .ph svg{width:60%;height:60%}
+.opt2[aria-pressed="true"]{background:#fff;border-color:#FF4F9A;box-shadow:0 0 0 2px #FF4F9A}
+.opt2.off{opacity:.45;cursor:not-allowed}
+.sw2{width:100%;height:28px;border-radius:999px;border:2px solid #fff}
+.inpt{width:100%;border:2px solid rgba(255,255,255,.9);border-radius:14px;padding:12px 14px;font:700 20px var(--body);letter-spacing:.06em;background:rgba(255,255,255,.75);color:var(--ink)}
+.collar{width:min(320px,80%);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative}
+.collar .cord{position:absolute;inset:0;border-radius:50%;padding:18px;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 22px),#000 calc(100% - 21px));mask:radial-gradient(farthest-side,transparent calc(100% - 22px),#000 calc(100% - 21px));box-shadow:inset 0 0 0 2px rgba(0,0,0,.08)}
+.collar .beads{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:70%;position:absolute;bottom:4%}
+.collar .bead{min-width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font:800 18px var(--body);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);box-shadow:inset 0 2px 1px rgba(255,255,255,.5),0 3px 6px rgba(0,0,0,.25)}
+.collar .tag{position:absolute;bottom:-6%;background:rgba(255,255,255,.9);border-radius:18px;padding:10px 16px;font:400 22px "Abril Fatface",Georgia,serif;box-shadow:0 6px 14px rgba(0,0,0,.2)}
+.collar .chs{position:absolute;top:24%;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:70%}
+.collar .chs img,.collar .chs svg{width:54px;height:54px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,.7);padding:3px}
+.lines{list-style:none;margin:0;padding:0;display:grid;gap:4px;color:#fff;font:600 13px var(--mono);text-shadow:0 1px 3px rgba(0,30,80,.6);width:100%}
+.lines li{display:flex;justify-content:space-between;gap:8px}
 /* cart */
 .cart{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);z-index:96;border-radius:24px 0 0 24px;padding:18px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:12px;background:rgba(255,255,255,.75)}
 .cart h3{margin:0;font:400 30px "Abril Fatface",Georgia,serif}
@@ -312,6 +343,7 @@ const SCHEMAS = {
       { k: "nombre", t: "text", label: "Nombre", req: true },
       { k: "tipo", t: "select", label: "Tipo", opts: () => [["Liso", "Liso (un color)"], ["Mezclado", "Mezclado (varios colores)"]] },
       { k: "colores", t: "colors", label: "Colores", help: "Toca un círculo para cambiar el color." },
+      { k: "fotoId", t: "photo", label: "Foto del cordón (opcional)", help: "Si no subes foto, se dibuja con los colores." },
       { k: "stock", t: "number", label: "Stock (metros o rollos)", help: "En 0 no se ofrece en “Arma tu collar”." },
       { k: "disponible", t: "toggle", label: "Visible en “Arma tu collar”" }
     ],
@@ -329,6 +361,21 @@ const SCHEMAS = {
       { k: "disponible", t: "toggle", label: "Visible en “Arma tu collar”" }
     ],
     nuevo: () => ({ nombre: "", tipo: "Charm Up", precio: 2, stock: null, icono: "estrella", disponible: true })
+  },
+  estilos: {
+    title: "tipo de collar", empty: "Aún no hay tipos de collar.",
+    fields: [
+      { k: "nombre", t: "text", label: "Nombre", req: true },
+      { k: "detalle", t: "text", label: "Detalle corto" },
+      { k: "fotoId", t: "photo", label: "Foto de ejemplo", help: "Se muestra en el paso 1 de “Arma su collar”." },
+      { k: "base", t: "number", label: "Precio base ($)" },
+      { k: "porLetra", t: "number", label: "Precio por letra ($)" },
+      { k: "tallaL", t: "number", label: "Precio talla L ($)", help: "Vacío = mismo precio." },
+      { k: "maxLetras", t: "number", label: "Máx. letras" },
+      { k: "orden", t: "number", label: "Orden" },
+      { k: "disponible", t: "toggle", label: "Visible en “Arma tu collar”" }
+    ],
+    nuevo: () => ({ nombre: "", detalle: "", base: 10, porLetra: 0, tallaL: null, maxLetras: 10, orden: 9, disponible: true })
   },
   placas: {
     title: "placa", empty: "Aún no hay placas.",
@@ -403,7 +450,7 @@ function renderHeader() {
     sub.innerHTML = [["club", "Sugar Club"], ["doggy", "Doggy Pops"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
     tools.innerHTML = `<p class="note" style="flex:1;margin:0">${S.sub === "club" ? "Cada categoría de Sugar Club es un ícono del escritorio: imagen + texto." : "Doggy Pops es el botón grande del escritorio; estas son sus categorías por dentro."} Toca una para editarla y ver sus productos.</p><button type="button" class="btn pri" data-new="categorias">+ Nueva</button>`;
   } else if (S.tab === "collar") {
-    sub.innerHTML = [["cordones", "Cordones"], ["charms", "Charms"], ["placas", "Placas"], ["precios", "Precios"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
+    sub.innerHTML = [["estilos", "Tipos"], ["cordones", "Cordones"], ["charms", "Charms"], ["placas", "Placas"], ["precios", "Precios"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
     tools.innerHTML = S.sub !== "precios" ? `<input type="search" id="q" placeholder="Buscar…" value="${esc(S.q)}" aria-label="Buscar"><button type="button" class="btn pri" data-new="${S.sub}">+ Nuevo</button>` : "";
   } else { sub.innerHTML = ""; tools.innerHTML = ""; }
   const q = $("#q"); if (q) q.oninput = e => { S.q = e.target.value; renderMain(); };
@@ -470,6 +517,7 @@ function renderAjustes(m) {
     <div class="field">Fondo<div class="seg"><button type="button" class="btn" data-hbg="estrellas" aria-pressed="${!["pasto", "cuadros"].includes(h.fondo)}">Cielo con estrellas</button><button type="button" class="btn" data-hbg="pasto" aria-pressed="${h.fondo === "pasto"}">Windows</button><button type="button" class="btn" data-hbg="cuadros" aria-pressed="${h.fondo === "cuadros"}">Cuadros</button></div></div>
     <h2>Información de compra (se ve en la canasta)</h2>
     <label class="field">Envíos, tiempos de espera y pagos<textarea id="infoCompra" rows="7" placeholder="Envíos: …&#10;Tiempo de espera: …&#10;Pagos: …">${esc(A.infoCompra || "")}</textarea><small>Escríbelo como quieras que lo lea la clienta. Los saltos de línea se respetan.</small></label>
+    <label class="field">“Crea el tuyo”: precio del gancho y cadena ($)<input id="creaBase" type="number" step="0.5" min="0" value="${A.creaBase ?? ""}"><small>Se suma a los charms que elija. Vacío = “se confirma por WhatsApp”.</small></label><label hidden></label>
     <label class="field">Texto de abajo<input id="hPie" value="${esc(h.pie ?? "Hecho con todo el amor del mundo 💖")}"></label>
     <h2>🐶 Logo de Doggy Pops</h2>
     ${ajPhoto("Logo de Doggy Pops (va encima de la foto)", "dogLogo", h.doggyLogoId, "img/logo-doggy.png")}
@@ -486,7 +534,7 @@ function renderAjustes(m) {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, headerId: up.header, pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, fondo, headerId: up.header, pie: $("#hPie").value, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 function ajPhoto(label, k, id, fallback) {
@@ -642,83 +690,232 @@ document.addEventListener("click", e => {
 
 /* ---------- public site preview: hero + shop (built from Categorías + Productos + Ajustes) ---------- */
 const prodImg = p => p?.fotoId ? blob(p.fotoId) : (p?.fotoSrc || "");
-let shopCat = null, shopProd = null, cart = [];
+const itemImg = it => it?.fotoId ? blob(it.fotoId) : (it?.fotoSrc || "");
+const CHARM_CAT = "Charms";
+let shopCat = null, shopProd = null, cart = [], shopBrand = "club", view = "hero";
 function openHome() { const hp = $("#hp"); hp.hidden = false; document.body.style.overflow = "hidden"; renderHero(); }
 function closeHome() { $("#hp").hidden = true; document.body.style.overflow = ""; }
 function cartCount() { return cart.reduce((a, c) => a + c.q, 0); }
+const homeCfgX = () => S.ajustes?.home || {};
+const doggyLogo = () => homeCfgX().doggyLogoId ? blob(homeCfgX().doggyLogoId) : "img/logo-doggy.png";
+const cartBtn = () => `<button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button>`;
+const closeBtn = `<button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>`;
+const topBar = (brand, title) => `<div class="top"><img class="lg" src="${esc(brand === "doggy" ? doggyLogo() : "img/logo-club.png")}" alt="Inicio" data-go="hero"><span class="tt">${esc(title)}</span>${cartBtn()}</div>`;
+const live = arr => arr.filter(x => x.disponible !== false);
+const inStock = x => x.disponible !== false && x.stock !== 0;
+
 function renderHero() {
-  const h = homeCfgX();
+  view = "hero";
   $("#hp").innerHTML = `<section class="hero" aria-label="Sugar Club">
     <div class="logo gl"><img src="img/logo-club.png" alt="Sugar Club"></div>
-    <nav class="nav"><button type="button" class="pill gl" data-go="shop">Ver productos</button><button type="button" class="iconbtn gl" data-go="shop" aria-label="Buscar">🔍</button><button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button></nav>
+    <nav class="nav"><button type="button" class="pill gl" data-go="shop">Ver productos</button><button type="button" class="iconbtn gl" data-go="shop" aria-label="Buscar">🔍</button>${cartBtn()}</nav>
     <div class="ctas"><button type="button" class="pill w gl" data-go="crea">Crea el tuyo</button><button type="button" class="pill w gl" data-go="shop">Compra ahora</button></div>
-    <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, para tu mascota"><img src="${esc(h.doggyLogoId ? blob(h.doggyLogoId) : "img/logo-doggy.png")}" alt=""><span class="dcap">para tu mascota 🐾</span></button>
-  </section><button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>`;
+    <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, para tu mascota"><img src="${esc(doggyLogo())}" alt=""><span class="dcap">para tu mascota 🐾</span></button>
+  </section>${closeBtn}`;
 }
-const homeCfgX = () => S.ajustes?.home || {};
-let shopBrand = "club";
+
+/* shop: sections as photo bubbles, product shown at its own shape */
+function bubbles(brand, cats) {
+  const make = brand === "doggy"
+    ? `<button type="button" class="bub2 make" data-go="collar"><span class="ring"><span>🎨</span></span>Arma su collar</button>`
+    : `<button type="button" class="bub2 make" data-go="crea"><span class="ring"><span>✨</span></span>Crea el tuyo</button>`;
+  return `<nav class="bubbles" aria-label="Secciones">${make}${cats.map(c => { const ic = catIcon(c); return `<button type="button" class="bub2" data-cat="${esc(c.id)}" aria-pressed="${c === shopCat}"><span class="ring"><span>${ic ? `<img src="${esc(ic)}" alt="">` : esc(c.nombre.charAt(0))}</span></span>${esc(c.nombre)}</button>`; }).join("")}${brand === "doggy"
+    ? `<button type="button" class="bub2" data-go="shop"><span class="ring"><span><img src="img/logo-club.png" alt="" style="object-fit:contain;padding:8px"></span></span>Sugar Club</button>`
+    : `<button type="button" class="bub2" data-go="doggy"><span class="ring"><span><img src="${esc(doggyLogo())}" alt="" style="object-fit:contain;padding:8px"></span></span>Doggy Pops</button>`}</nav>`;
+}
 function renderShop(brand = shopBrand) {
-  shopBrand = brand;
+  view = "shop"; shopBrand = brand;
   const cats = catsDe(brand).filter(c => c.disponible !== false && !c.bloqueada);
   if (!shopCat || !cats.some(c => c.id === shopCat.id)) shopCat = cats[0] || null;
-  const ps = shopCat ? prodsDe(shopCat).filter(p => p.disponible !== false) : [];
+  const ps = shopCat ? live(prodsDe(shopCat)) : [];
   if (!shopProd || !ps.some(p => p.id === shopProd.id)) shopProd = ps[0] || null;
   const p = shopProd, out = p && p.stock === 0;
-  $("#hp").innerHTML = `<section class="shop">
-    <div class="top"><img class="lg" src="img/logo-club.png" alt="Sugar Club — inicio" data-go="hero"><button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button></div>
-    <div class="wrapx">
-      <article class="stage gl" aria-live="polite">${p ? `
-        <div class="big">${ps.length > 1 ? `<button type="button" class="arr l" data-step="-1" aria-label="Producto anterior">‹</button>` : ""}${prodImg(p) ? `<img src="${esc(prodImg(p))}" alt="${esc(p.nombre)}">` : `<span style="font-size:60px">🍒</span>`}${ps.length > 1 ? `<button type="button" class="arr r" data-step="1" aria-label="Producto siguiente">›</button><span class="idx">${ps.indexOf(p) + 1} / ${ps.length}</span>` : ""}</div>
-        ${out ? `<span class="sold">Sold out</span>` : ""}<h1>${esc(p.nombre)}</h1><div class="pr">${esc(p.precioTexto || money(p.precio))}</div>
+  $("#hp").innerHTML = `<section class="shop">${topBar(brand, brand === "doggy" ? "Doggy Pops" : "Tienda")}${bubbles(brand, cats)}
+    <div class="shopgrid">
+      <div class="stage gl" aria-live="polite"><div class="big">${p && ps.length > 1 ? `<button type="button" class="arr l" data-step="-1" aria-label="Producto anterior">‹</button>` : ""}${p ? (prodImg(p) ? `<img src="${esc(prodImg(p))}" alt="${esc(p.nombre)}">` : `<span style="font-size:60px">🍒</span>`) : `<span class="emptyg">Pronto ✨</span>`}${p && ps.length > 1 ? `<button type="button" class="arr r" data-step="1" aria-label="Producto siguiente">›</button><span class="idx">${ps.indexOf(p) + 1} / ${ps.length}</span>` : ""}${out ? `<span class="sold">Sold out</span>` : ""}</div></div>
+      <div class="info gl">${p ? `<h1>${esc(p.nombre)}</h1><div class="pr">${esc(p.precioTexto || money(p.precio))}</div>
         ${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}
         <div class="stk">${out ? "Agotado" : typeof p.stock === "number" ? `Quedan ${p.stock}` : "Hecho a pedido"}</div>
         <div class="row2"><button type="button" class="btnp" data-add="${esc(p.id)}" ${out ? "disabled" : ""}>Agregar a la canasta</button><button type="button" class="btnp wa" data-wa1="${esc(p.id)}" ${out ? "disabled" : ""}>Pedir por WhatsApp</button></div>` : `<div class="emptyg">Esta sección todavía no tiene productos.</div>`}
-      </article>
-      <div class="side">
-        <nav class="secs gl" aria-label="Secciones"><h2>Secciones</h2>${brand === "doggy" ? `<button type="button" class="sec make" data-go="armacollar"><span class="ph">🎨</span>Arma su collar</button>` : ""}${cats.map(c => { const n = prodsDe(c).filter(x => x.disponible !== false).length, ic = catIcon(c); return `<button type="button" class="sec" data-cat="${esc(c.id)}" aria-pressed="${c === shopCat}">${ic ? `<img src="${esc(ic)}" alt="">` : `<span class="ph">${esc(c.nombre.charAt(0))}</span>`}${esc(c.nombre)}<span class="c">${n}</span></button>`; }).join("")}</nav>
-        <div class="prods gl"><h2>${esc(shopCat?.nombre || "")}</h2>${ps.length ? `<div class="pgrid">${ps.map(x => `<button type="button" class="pc ${x.stock === 0 ? "out" : ""}" data-prod="${esc(x.id)}" aria-pressed="${x === p}"><span class="im">${prodImg(x) ? `<img src="${esc(prodImg(x))}" alt="">` : "🍒"}</span><b>${esc(x.nombre)}</b><span>${esc(x.precioTexto || money(x.precio))}</span></button>`).join("")}</div>` : `<div class="emptyg">Pronto ✨</div>`}</div>
+        ${ps.length > 1 ? `<div class="thumbs">${ps.map(x => `<button type="button" class="th ${x.stock === 0 ? "out" : ""}" data-prod="${esc(x.id)}" aria-pressed="${x === p}"><span class="im">${prodImg(x) ? `<img src="${esc(prodImg(x))}" alt="" loading="lazy">` : "🍒"}</span><b>${esc(x.nombre)}</b><span>${esc(x.precioTexto || money(x.precio))}</span></button>`).join("")}</div>` : ""}
       </div>
-    </div></section><button type="button" class="hp-close" id="hpClose">✕ Volver al admin</button>`;
+    </div></section>${closeBtn}`;
 }
+
+/* cart: each line is a snapshot so custom builds fit too */
+function addToCart(line) { const l = cart.find(x => x.key === line.key); l ? l.q++ : cart.push({ ...line, q: 1 }); toast("Agregado a la canasta 🛒"); }
+const prodLine = p => ({ key: p.id, nombre: p.nombre, precio: +p.precio || 0, precioTexto: p.precioTexto || money(p.precio), img: prodImg(p), marca: p.marca });
 function renderCart() {
   let c = $("#hpCart"); if (!c) { c = document.createElement("aside"); c.id = "hpCart"; c.className = "cart gl"; $("#hp").appendChild(c); }
-  const lines = cart.map(l => ({ ...l, p: S.data.productos.find(x => x.id === l.id) })).filter(l => l.p);
-  const total = lines.reduce((a, l) => a + (+l.p.precio || 0) * l.q, 0);
+  const total = cart.reduce((a, l) => a + l.precio * l.q, 0);
   c.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><h3>Tu canasta</h3><button type="button" class="iconbtn" data-go="closecart" aria-label="Cerrar">✕</button></div>
-    <ul>${lines.map(l => `<li><img src="${esc(prodImg(l.p))}" alt=""><div><b>${esc(l.p.nombre)}</b><div style="font:600 12px var(--mono)">${esc(l.p.precioTexto || money(l.p.precio))}</div></div><div class="q"><button type="button" data-q="${esc(l.id)}" data-d="-1">−</button>${l.q}<button type="button" data-q="${esc(l.id)}" data-d="1">+</button></div></li>`).join("") || `<li style="grid-template-columns:1fr">Tu canasta está vacía.</li>`}</ul>
-    <div style="display:grid;gap:10px"><div class="tot"><span>Total</span><span>${money(total)}</span></div><button type="button" class="btnp wa" data-go="wa" ${lines.length ? "" : "disabled"}>Enviar pedido por WhatsApp</button>
+    <ul>${cart.map((l, i) => `<li>${l.img ? `<img src="${esc(l.img)}" alt="">` : `<span style="font-size:28px;text-align:center">${l.marca === "doggy" ? "🐶" : "✨"}</span>`}<div><b>${esc(l.nombre)}</b>${l.detalle ? `<div style="font-size:12px">${esc(l.detalle)}</div>` : ""}<div style="font:600 12px var(--mono)">${esc(l.precioTexto)}</div></div><div class="q"><button type="button" data-q="${i}" data-d="-1" aria-label="Quitar uno">−</button>${l.q}<button type="button" data-q="${i}" data-d="1" aria-label="Agregar uno">+</button></div></li>`).join("") || `<li style="grid-template-columns:1fr">Tu canasta está vacía.</li>`}</ul>
+    <div style="display:grid;gap:10px"><div class="tot"><span>Total</span><span>${money(total)}</span></div><button type="button" class="btnp wa" data-go="wa" ${cart.length ? "" : "disabled"}>Enviar pedido por WhatsApp</button>
     <div class="cinfo"><b>Información importante</b>${esc(S.ajustes?.infoCompra || "Envíos, tiempos de espera y formas de pago: pronto 💖")}</div></div>`;
 }
-function sendWa(lines) {
+function sendWa(lines, brand = shopBrand) {
   const wa = (S.ajustes?.whatsapp || "").replace(/\D/g, "");
   if (!wa) return toast("Pon tu número de WhatsApp en Ajustes");
-  const marca = shopBrand === "doggy" ? "Sugar Doggy Pops 🐶" : "Sugar Club 🍒";
+  const marca = brand === "doggy" ? "Sugar Doggy Pops 🐶" : brand === "mix" ? "Sugar 💖" : "Sugar Club 🍒";
   const msg = [`Hola ${marca}, quiero pedir:`, ...lines].join("\n");
   const a = document.createElement("a"); a.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(msg); a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
 }
+
+/* ---------- “Crea el tuyo”: build a bag charm from the individual charms ---------- */
+const crea = { sel: [] };
+const creaCharms = () => S.data.productos.filter(p => p.marca === "club" && p.categoria === CHARM_CAT && p.disponible !== false);
+const creaMax = () => S.ajustes?.maxCharmsCrea || 6;
+function creaTotal() { const ch = creaCharms(); return (S.ajustes?.creaBase || 0) + crea.sel.reduce((a, id) => a + (+ch.find(c => c.id === id)?.precio || 0), 0); }
+function renderCrea() {
+  view = "crea"; shopBrand = "club";
+  const ch = creaCharms(), base = S.ajustes?.creaBase;
+  crea.sel = crea.sel.filter(id => ch.some(c => c.id === id && c.stock !== 0));
+  const picked = crea.sel.map((id, i) => ({ c: ch.find(c => c.id === id), i }));
+  $("#hp").innerHTML = `<section class="shop">${topBar("club", "Crea el tuyo")}
+    <div class="bld">
+      <div class="prev gl" aria-live="polite"><h2>Tu bag charm</h2>
+        <div class="hook" aria-hidden="true"></div><div class="chain" aria-hidden="true"></div>
+        <div class="hang">${picked.map(({ c, i }) => `<button type="button" data-rm="${i}" style="border:0;background:none;padding:0;cursor:pointer" aria-label="Quitar ${esc(c.nombre)}"><img src="${esc(prodImg(c))}" alt="${esc(c.nombre)}"></button>`).join("")}</div>
+        ${picked.length ? `<p class="hint">Toca un charm para quitarlo</p>` : `<p class="hint">Elige tus charms de la derecha 👉<br>hasta ${creaMax()}</p>`}
+        <ul class="lines">${base != null ? `<li><span>Gancho metálico + cadena</span><span>${money(base)}</span></li>` : `<li><span>Gancho metálico + cadena</span><span>se confirma</span></li>`}${picked.map(({ c }) => `<li><span>${esc(c.nombre)}</span><span>${money(c.precio)}</span></li>`).join("")}</ul>
+        <div class="tot">Total ${money(creaTotal())}</div>
+        <div class="row2"><button type="button" class="btnp" data-go="creaAdd" ${picked.length ? "" : "disabled"}>Agregar a la canasta</button><button type="button" class="btnp wa" data-go="creaWa" ${picked.length ? "" : "disabled"}>Pedir por WhatsApp</button></div>
+      </div>
+      <div class="pick gl"><h3>Charms · ${crea.sel.length}/${creaMax()}</h3>
+        ${ch.length ? `<div class="opts">${ch.map(c => { const n = crea.sel.filter(x => x === c.id).length, off = c.stock === 0; return `<button type="button" class="opt2 ${off ? "off" : ""}" data-ch="${esc(c.id)}" aria-pressed="${n > 0}" ${off ? "disabled" : ""}><span class="ph">${prodImg(c) ? `<img src="${esc(prodImg(c))}" alt="" loading="lazy">` : "✨"}</span><b>${esc(c.nombre)}</b><span class="p">${off ? "Agotado" : money(c.precio)}</span></button>`; }).join("")}</div>` : `<div class="emptyg">Carga charms en la categoría “${CHARM_CAT}” de Sugar Club.</div>`}
+      </div>
+    </div><div class="minibar gl"><span>${crea.sel.length} charm${crea.sel.length === 1 ? "" : "s"} · ${money(creaTotal())}</span><button type="button" data-go="top">Ver mi charm ↑</button></div></section>${closeBtn}`;
+}
+function creaSummary() { const ch = creaCharms(); return crea.sel.map(id => ch.find(c => c.id === id)?.nombre).filter(Boolean).join(" + "); }
+
+/* ---------- Doggy “Arma su collar”: step by step, all options from the Arma collar tab ---------- */
+const col = { step: 1, estilo: null, talla: "M", cordones: [], nombre: "", charms: [], placa: null, numero: "", llavero: false, palabra: "DOG MOM" };
+const COL_STEPS = ["Collar y cuerda", "Nombre", "Charms", "Extras", "Resumen"];
+const cEstilos = () => live(S.data.estilos).sort((a, b) => (a.orden || 0) - (b.orden || 0));
+const cEstilo = () => cEstilos().find(e => e.id === col.estilo) || cEstilos()[0];
+const kindOf = e => !e ? "letras" : (e.id === "dije" || e.maxLetras === 1) ? "dije" : /placa/i.test(e.id + " " + e.nombre) ? "placa" : "letras";
+const cTallas = () => { const t = S.ajustes?.tallas; const def = [{ id: "S", cm: "20–30 cm", ejemplos: "Chihuahua, Yorkie, gatos" }, { id: "M", cm: "30–40 cm", ejemplos: "Frenchie, Pug, Schnauzer" }, { id: "L", cm: "40–55 cm", ejemplos: "Labrador, Golden, Husky" }]; return Array.isArray(t) && t.length ? t.map(x => typeof x === "string" ? { id: x } : x) : def; };
+const cCords = () => S.data.cordones.filter(inStock);
+const cCharms = () => S.data.charms.filter(inStock);
+const cPlacas = () => S.data.placas.filter(inStock);
+const maxCords = () => kindOf(cEstilo()) === "letras" ? 1 : (S.ajustes?.maxCordones || 2);
+const nombreUsado = () => { const e = cEstilo(), n = col.nombre.trim().toUpperCase(); return kindOf(e) === "dije" ? n.slice(0, 1) : n.slice(0, e?.maxLetras || 10); };
+const nLetras = s => s.replace(/\s/g, "").length;
+function colLines() {
+  const e = cEstilo(), A = S.ajustes || {}, L = []; if (!e) return L;
+  const base = col.talla === "L" && e.tallaL != null ? e.tallaL : (e.base || 0);
+  L.push({ t: `${e.nombre} · talla ${col.talla}`, v: base });
+  if (e.porLetra) L.push({ t: `${nLetras(nombreUsado())} letras (${nombreUsado() || "—"})`, v: e.porLetra * nLetras(nombreUsado()) });
+  col.charms.forEach(id => { const c = S.data.charms.find(x => x.id === id); if (c) L.push({ t: `Charm ${c.nombre}`, v: +c.precio || 0 }); });
+  if (kindOf(e) === "placa" && col.numero.trim()) L.push({ t: "Número atrás de la placa", v: A.numeroAtras?.precio || 0 });
+  if (col.llavero) { const ll = A.llavero || {}; L.push({ t: `Llavero match “${col.palabra.trim() || "—"}”`, v: kindOf(e) === "placa" ? (ll.conPlaca || 0) : (ll.base || 0) + (ll.porLetra || 0) * nLetras(col.palabra.trim()) }); }
+  return L;
+}
+const colTotal = () => colLines().reduce((a, l) => a + l.v, 0);
+const cordBg = ids => { const cs = ids.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []); const c = cs.length ? cs : ["#F5A3C7"]; return `conic-gradient(${c.map((x, i) => `${x} ${i * 100 / c.length}% ${(i + 1) * 100 / c.length}%`).join(",")})`; };
+const swBg = c => { const cs = c.colores?.length ? c.colores : ["#ddd"]; return `linear-gradient(135deg,${cs.map((x, i) => `${x} ${i * 100 / cs.length}% ${(i + 1) * 100 / cs.length}%`).join(",")})`; };
+const BEADS = ["#E63B2E", "#3E9AD6", "#F5D738", "#34A96A", "#7B3AF5", "#E66A92", "#F28A2E"];
+function colPreview() {
+  const e = cEstilo(), k = kindOf(e), name = nombreUsado();
+  const photo = col.step === 1 && e && itemImg(e);
+  const chs = col.charms.map(id => S.data.charms.find(x => x.id === id)).filter(Boolean);
+  const pl = S.data.placas.find(x => x.id === col.placa);
+  return `<h2>${esc(name || "Su collar")}</h2>
+    ${photo ? `<img src="${esc(photo)}" alt="${esc(e.nombre)}" style="max-width:100%;max-height:34svh;width:auto;object-fit:contain;border-radius:16px">` : ""}
+    <div class="collar"><div class="cord" style="background:${cordBg(col.cordones)}"></div>
+      ${chs.length ? `<div class="chs">${chs.map(c => itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="${esc(c.nombre)}">` : iconSvg(c.icono)).join("")}</div>` : ""}
+      ${k === "placa" ? `<div class="tag" ${pl && itemImg(pl) ? `style="background:url('${esc(itemImg(pl))}') center/cover;color:#fff;text-shadow:0 1px 3px #000"` : ""}>${esc(name || "NOMBRE")}</div>`
+        : `<div class="beads">${(name || (k === "dije" ? "R" : "NOMBRE")).replace(/\s/g, "").split("").map((ch, i) => `<span class="bead" style="background:${BEADS[i % BEADS.length]}">${esc(ch)}</span>`).join("")}</div>`}
+    </div>
+    <ul class="lines">${colLines().map(l => `<li><span>${esc(l.t)}</span><span>${l.v ? money(l.v) : "Incluido"}</span></li>`).join("")}</ul>
+    <div class="tot">Total ${money(colTotal())}</div>`;
+}
+function colPanel() {
+  const e = cEstilo(), k = kindOf(e), A = S.ajustes || {};
+  if (col.step === 1) return `<h3>Tipo de collar</h3><div class="opts">${cEstilos().map(x => `<button type="button" class="opt2" data-cset="estilo" data-v="${esc(x.id)}" aria-pressed="${x === e}">${itemImg(x) ? `<span class="ph"><img src="${esc(itemImg(x))}" alt="" loading="lazy"></span>` : ""}<b>${esc(x.nombre)}</b>${x.detalle ? `<small>${esc(x.detalle)}</small>` : ""}<span class="p">desde ${money(x.base)}${x.porLetra ? ` + ${money(x.porLetra)}/letra` : ""}</span></button>`).join("") || `<div class="emptyg">Crea los tipos en Arma collar → Tipos.</div>`}</div>
+    <h3>Talla</h3><div class="opts">${cTallas().map(t => `<button type="button" class="opt2" data-cset="talla" data-v="${esc(t.id)}" aria-pressed="${t.id === col.talla}"><b>${esc(t.id)}</b>${t.cm ? `<small>${esc(t.cm)}</small>` : ""}${t.ejemplos ? `<small>${esc(t.ejemplos)}</small>` : ""}</button>`).join("")}</div>
+    <p class="hint" style="text-align:left">¿No sabes su talla? Mide su cuello con un hilo y suma 2 dedos.${e?.tallaL != null ? ` Talla L de este collar: ${money(e.tallaL)}.` : ""}</p>
+    <h3>Cuerda${maxCords() > 1 ? ` · hasta ${maxCords()}` : ""}</h3><div class="opts">${cCords().map(c => `<button type="button" class="opt2" data-ctog="cordones" data-v="${esc(c.id)}" aria-pressed="${col.cordones.includes(c.id)}">${itemImg(c) ? `<span class="ph"><img src="${esc(itemImg(c))}" alt="" loading="lazy"></span>` : `<span class="sw2" style="background:${swBg(c)}"></span>`}<b>${esc(c.nombre)}</b></button>`).join("")}</div>`;
+  if (col.step === 2) return `<h3>${k === "dije" ? "Su inicial" : "Nombre de tu peludito"}</h3><input class="inpt" id="colName" maxlength="${k === "dije" ? 1 : e?.maxLetras || 10}" autocomplete="off" value="${esc(col.nombre)}" aria-label="Nombre">
+    <p class="hint" style="text-align:left">${k === "letras" && e?.porLetra ? `Cada letra suma ${money(e.porLetra)}. Hasta ${e.maxLetras || 10} letras.` : k === "placa" ? "Va grabado en la placa." : "El dije lleva una letra."}</p>`;
+  if (col.step === 3) { const ch = cCharms(); return `<h3>Charms · ${col.charms.length}/${A.maxCharms || 4}</h3>${ch.length ? `<div class="opts">${ch.map(c => `<button type="button" class="opt2" data-ctog="charms" data-v="${esc(c.id)}" aria-pressed="${col.charms.includes(c.id)}"><span class="ph">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy">` : iconSvg(c.icono)}</span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)}</span></button>`).join("")}</div>` : `<div class="emptyg">Pronto ✨</div>`}<p class="hint" style="text-align:left">Toca de nuevo para quitarlo. Los charms son opcionales.</p>`; }
+  if (col.step === 4) { const ll = A.llavero || {}; return `${k === "placa" ? `<h3>Placa</h3><div class="opts">${cPlacas().map(x => `<button type="button" class="opt2" data-cset="placa" data-v="${esc(x.id)}" aria-pressed="${x.id === col.placa}">${itemImg(x) ? `<span class="ph"><img src="${esc(itemImg(x))}" alt="" loading="lazy"></span>` : ""}<b>${esc(x.nombre)}</b></button>`).join("")}</div>
+    <h3>Número atrás (opcional${A.numeroAtras?.precio ? ` · ${money(A.numeroAtras.precio)}` : ""})</h3><input class="inpt" id="colNum" inputmode="tel" maxlength="14" placeholder="099 123 4567" value="${esc(col.numero)}" aria-label="Número atrás de la placa">` : ""}
+    <h3>Llavero match para ti · ${k === "placa" ? money(ll.conPlaca) : `${money(ll.base)} + ${money(ll.porLetra)}/letra`}</h3>
+    <div class="opts"><button type="button" class="opt2" data-go="colLlv" aria-pressed="${col.llavero}"><b>${col.llavero ? "✓ Llavero agregado" : "Agregar llavero"}</b></button></div>
+    ${col.llavero ? `<input class="inpt" id="colPal" maxlength="10" value="${esc(col.palabra)}" aria-label="Palabra del llavero"><div class="steps2">${["DOG MOM", "CAT MOM", "DOG DAD", nombreUsado()].filter(Boolean).map(w => `<button type="button" data-cset="palabra" data-v="${esc(w)}">${esc(w)}</button>`).join("")}</div>` : ""}
+    <p class="hint" style="text-align:left">El cierre lo elegimos nosotras para que combine con tus colores.</p>`; }
+  return `<h3>Tu pedido</h3><ul class="lines" style="font-size:14px">${colLines().map(l => `<li><span>${esc(l.t)}</span><b>${l.v ? money(l.v) : "Incluido"}</b></li>`).join("")}<li style="font-size:18px"><span>Total</span><b>${money(colTotal())}</b></li></ul>
+    <p class="hint" style="text-align:left">Cuerda: ${esc(col.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—")}</p>
+    <div class="row2"><button type="button" class="btnp" data-go="colAdd">Agregar a la canasta</button><button type="button" class="btnp wa" data-go="colWa">Enviar pedido por WhatsApp</button></div>`;
+}
+function colOrder() {
+  const e = cEstilo(), k = kindOf(e), pl = S.data.placas.find(x => x.id === col.placa);
+  return [`• Tipo: ${e?.nombre || "—"}`, `• Talla: ${col.talla}`, `• Cuerda: ${col.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—"}`,
+    `• ${k === "dije" ? "Inicial" : "Nombre"}: ${nombreUsado() || "—"}`, k === "placa" && pl ? `• Placa: ${pl.nombre}` : null, k === "placa" && col.numero.trim() ? `• Número atrás: ${col.numero.trim()}` : null,
+    `• Charms: ${col.charms.map(id => S.data.charms.find(c => c.id === id)?.nombre).filter(Boolean).join(", ") || "sin charms"}`, col.llavero ? `• Llavero match: ${col.palabra.trim()}` : null].filter(Boolean);
+}
+function renderCollar() {
+  view = "collar"; shopBrand = "doggy";
+  const E = cEstilos();
+  if (!col.estilo || !E.some(e => e.id === col.estilo)) col.estilo = E[0]?.id || null;
+  const cords = cCords(); col.cordones = col.cordones.filter(id => cords.some(c => c.id === id)); if (!col.cordones.length && cords[0]) col.cordones = [cords[0].id];
+  const pls = cPlacas(); if (!pls.some(p => p.id === col.placa)) col.placa = pls[0]?.id || null;
+  $("#hp").innerHTML = `<section class="shop">${topBar("doggy", "Arma su collar")}
+    <div class="bld">
+      <div class="prev gl" id="colPrev" aria-live="polite">${colPreview()}</div>
+      <div class="pick gl"><div class="steps2" role="tablist">${COL_STEPS.map((t, i) => `<button type="button" role="tab" data-cst="${i + 1}" aria-selected="${col.step === i + 1}">${i + 1} · ${t}</button>`).join("")}</div>
+        <div id="colPanel" style="display:grid;gap:12px">${colPanel()}</div>
+        ${col.step < 5 ? `<div class="row2"><button type="button" class="btnp" data-cst="${col.step + 1}">Siguiente →</button></div>` : ""}
+      </div>
+    </div><div class="minibar gl"><span id="colMini">Total ${money(colTotal())}</span><button type="button" data-go="top">Ver su collar ↑</button></div></section>${closeBtn}`;
+}
+const colRefresh = () => { const p = $("#colPrev"); if (p) p.innerHTML = colPreview(); const m = $("#colMini"); if (m) m.textContent = "Total " + money(colTotal()); };
+
 $("#homeBtn").addEventListener("click", openHome);
+$("#hp").addEventListener("input", e => {
+  const t = e.target;
+  if (t.id === "colName") { t.value = t.value.toUpperCase().replace(/[^A-ZÁÉÍÓÚÑÜ0-9 ]/g, ""); col.nombre = t.value; colRefresh(); }
+  if (t.id === "colNum") { col.numero = t.value; colRefresh(); }
+  if (t.id === "colPal") { t.value = t.value.toUpperCase(); col.palabra = t.value; colRefresh(); }
+});
 $("#hp").addEventListener("click", e => {
-  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],#hpClose"); if (!t) return;
+  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
   if (t.id === "hpClose") return closeHome();
-  if (t.dataset.step) { const ps = prodsDe(shopCat).filter(p => p.disponible !== false), i = ps.findIndex(p => p.id === shopProd?.id); shopProd = ps[(i + +t.dataset.step + ps.length) % ps.length]; return renderShop(); }
-  if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return sendWa([`• 1 × ${p.nombre} – ${p.precioTexto || money(p.precio)}`]); }
+  if (t.dataset.step) { const ps = live(prodsDe(shopCat)), i = ps.findIndex(p => p.id === shopProd?.id); shopProd = ps[(i + +t.dataset.step + ps.length) % ps.length]; return renderShop(); }
+  if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return sendWa([`• 1 × ${p.nombre} – ${p.precioTexto || money(p.precio)}`], p.marca); }
   if (t.dataset.cat) { shopCat = S.data.categorias.find(c => c.id === t.dataset.cat); shopProd = null; return renderShop(shopCat.marca); }
-  if (t.dataset.prod) { shopProd = S.data.productos.find(p => p.id === t.dataset.prod); return renderShop(shopCat?.marca); }
-  if (t.dataset.add) { const l = cart.find(x => x.id === t.dataset.add); l ? l.q++ : cart.push({ id: t.dataset.add, q: 1 }); toast("Agregado a la canasta 🛒"); renderShop(shopCat?.marca); return; }
-  if (t.dataset.q) { const l = cart.find(x => x.id === t.dataset.q); if (l) { l.q += +t.dataset.d; if (l.q <= 0) cart = cart.filter(x => x !== l); } return renderCart(); }
+  if (t.dataset.prod) { shopProd = S.data.productos.find(p => p.id === t.dataset.prod); renderShop(shopCat?.marca); $("#hp").scrollTo({ top: 0, behavior: "smooth" }); return; }
+  if (t.dataset.add) { addToCart(prodLine(S.data.productos.find(p => p.id === t.dataset.add))); return renderShop(); }
+  if (t.dataset.q) { const l = cart[+t.dataset.q]; if (l) { l.q += +t.dataset.d; if (l.q <= 0) cart.splice(+t.dataset.q, 1); } return renderCart(); }
+  if (t.dataset.ch) { const y = $("#hp").scrollTop; setTimeout(() => $("#hp").scrollTop = y); const i = crea.sel.indexOf(t.dataset.ch); if (i >= 0) crea.sel.splice(i, 1); else if (crea.sel.length < creaMax()) crea.sel.push(t.dataset.ch); else toast(`Máximo ${creaMax()} charms`); return renderCrea(); }
+  if (t.dataset.rm) { crea.sel.splice(+t.dataset.rm, 1); return renderCrea(); }
+  if (t.dataset.cst) { col.step = +t.dataset.cst; renderCollar(); $("#hp").scrollTo({ top: 0, behavior: "smooth" }); return; }
+  if (t.dataset.cset) { col[t.dataset.cset] = t.dataset.v; if (t.dataset.cset === "estilo") col.cordones = col.cordones.slice(0, maxCords()); return renderCollar(); }
+  if (t.dataset.ctog) {
+    const k = t.dataset.ctog, v = t.dataset.v, arr = col[k], i = arr.indexOf(v), max = k === "cordones" ? maxCords() : (S.ajustes?.maxCharms || 4);
+    if (i >= 0) { if (!(k === "cordones" && arr.length === 1)) arr.splice(i, 1); }
+    else if (max === 1 && k === "cordones") col.cordones = [v];
+    else if (arr.length < max) arr.push(v); else toast(`Máximo ${max}`);
+    return renderCollar();
+  }
   const g = t.dataset.go;
   if (g === "shop") { shopCat = null; return renderShop("club"); }
   if (g === "doggy") { shopCat = null; return renderShop("doggy"); }
   if (g === "hero") return renderHero();
-  if (g === "crea") return toast("Pronto podrás armar tu propio bag charm ✨");
-  if (g === "armacollar") { const d = document.createElement("div"); d.className = "cfg"; d.innerHTML = `<div class="box"><div class="bar"><span>🐶 Arma su collar · Doggy Pops</span><button type="button" class="iconbtn" data-go="closecfg" aria-label="Cerrar" style="background:#fff">✕</button></div><iframe src="doggy/arma-tu-collar.html" title="Arma su collar"></iframe></div>`; $("#hp").appendChild(d); return; }
-  if (g === "closecfg") return $("#hp .cfg")?.remove();
+  if (g === "top") return $("#hp").scrollTo({ top: 0, behavior: "smooth" });
+  if (g === "crea") return renderCrea();
+  if (g === "collar") return renderCollar();
+  if (g === "creaAdd") { addToCart({ key: "crea-" + crea.sel.join("+"), nombre: "Bag charm armado", detalle: creaSummary(), precio: creaTotal(), precioTexto: money(creaTotal()) + (S.ajustes?.creaBase == null ? " + gancho" : ""), img: prodImg(creaCharms().find(c => c.id === crea.sel[0])), marca: "club" }); crea.sel = []; return renderCrea(); }
+  if (g === "creaWa") return sendWa([`• Bag charm armado: ${creaSummary()}`, `Total: ${money(creaTotal())}${S.ajustes?.creaBase == null ? " + gancho y cadena (me confirmas)" : ""}`], "club");
+  if (g === "colLlv") { col.llavero = !col.llavero; return renderCollar(); }
+  if (g === "colAdd") { addToCart({ key: "col-" + Date.now(), nombre: `Collar ${cEstilo()?.nombre || ""} · ${nombreUsado() || "sin nombre"}`, detalle: colOrder().map(x => x.slice(2)).join(" · "), precio: colTotal(), precioTexto: money(colTotal()), img: itemImg(cEstilo()), marca: "doggy" }); return renderCollar(); }
+  if (g === "colWa") return sendWa(["Este collar 🐾", ...colOrder(), `Total: ${money(colTotal())}`], "doggy");
   if (g === "cart") return renderCart();
   if (g === "closecart") return $("#hpCart")?.remove();
   if (g === "wa") {
-    const lines = cart.map(l => { const p = S.data.productos.find(x => x.id === l.id); return p ? `• ${l.q} × ${p.nombre} – ${p.precioTexto || money(p.precio)}` : null; }).filter(Boolean);
-    const total = cart.reduce((a, l) => { const p = S.data.productos.find(x => x.id === l.id); return a + (+p?.precio || 0) * l.q; }, 0);
-    return sendWa([...lines, `Total: ${money(total)}`]);
+    const total = cart.reduce((a, l) => a + l.precio * l.q, 0), brands = new Set(cart.map(l => l.marca));
+    return sendWa([...cart.map(l => `• ${l.q} × ${l.nombre}${l.detalle ? ` (${l.detalle})` : ""} – ${l.precioTexto}`), `Total: ${money(total)}`], brands.size > 1 ? "mix" : [...brands][0]);
   }
 });
 
