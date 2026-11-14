@@ -1,0 +1,289 @@
+<title>Sugar Club Lockers</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Caveat:wght@700&family=Nunito:wght@700;800;900&display=swap">
+<style>
+/* Layout: a school hallway — sign on top, a wall of colored lockers standing on Sugar's red/pink checkered floor. Each locker is a section; its door swings open to show a real product photo. Single bold theme by choice. */
+:root{
+  --wall:#FBD3E1; --wall-2:#F7B9CF; --ink:#2A1638; --cherry:#E63B2E; --rosa:#F2A0C8; --cream:#FFF7FA;
+  --metal-dark:#3B2F3F;
+  --f-sign:"Bagel Fat One","Cooper Black","Arial Black",sans-serif;
+  --f-hand:"Caveat","Bradley Hand","Segoe Print",cursive;
+  --f-body:"Nunito","Avenir Next","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+html,body{overflow-x:clip}
+body{margin:0;font:800 15px/1.4 var(--f-body);color:var(--ink);background:var(--wall);
+  background-image:repeating-linear-gradient(90deg,transparent 0 118px,rgba(255,255,255,.35) 118px 121px,transparent 121px 124px),linear-gradient(var(--wall),var(--wall-2));
+  background-size:cover;background-attachment:fixed;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 40px}
+body.wallphoto{background:var(--wall) var(--wall-url) center/cover fixed}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.hall{max-width:1100px;margin:0 auto;display:grid;gap:18px}
+
+/* ---------- sign ---------- */
+.sign{justify-self:center;text-align:center;display:grid;gap:6px;justify-items:center}
+.sign .plate{background:var(--cherry);border-radius:22px;padding:12px 26px 16px;box-shadow:0 8px 0 #9E1D14,0 14px 24px rgba(120,20,40,.25);
+  background-image:repeating-conic-gradient(rgba(255,255,255,.08) 0 25%,transparent 0 50%) 0 0/28px 28px;position:relative}
+.sign .plate::before,.sign .plate::after{content:"";position:absolute;top:-34px;width:3px;height:34px;background:linear-gradient(#aaa,#666)}
+.sign .plate::before{left:26%} .sign .plate::after{right:26%}
+.sign h1{margin:0;font:400 clamp(44px,12vw,78px)/0.9 var(--f-sign);color:#fff;text-shadow:0 4px 0 #9E1D14;letter-spacing:.01em;text-wrap:balance}
+.sign img{max-width:min(380px,80vw);max-height:170px;display:block}
+.sign p{margin:6px 0 0;font:700 clamp(22px,5.5vw,30px)/1 var(--f-hand);color:var(--ink)}
+
+/* ---------- lockers ---------- */
+.wall{position:relative;padding:14px 12px 0;border-radius:18px 18px 0 0;background:rgba(255,255,255,.25)}
+.lockers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:700px){.lockers{grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}}
+.floor{height:86px;margin:0 -12px;background:repeating-conic-gradient(var(--cherry) 0 25%,var(--rosa) 0 50%) 0 0/56px 56px;
+  transform:perspective(320px) rotateX(46deg);transform-origin:top;border-top:6px solid #B5261C;box-shadow:inset 0 30px 30px -14px rgba(0,0,0,.35)}
+body.floorphoto .floor{background:var(--floor-url) center/cover}
+
+.locker{position:relative;aspect-ratio:1/2.05;perspective:1100px;cursor:pointer;border-radius:8px;
+  box-shadow:0 10px 14px -6px rgba(60,10,30,.45)}
+.locker:focus-visible{outline-offset:4px}
+.interior{position:absolute;inset:0;border-radius:8px;overflow:hidden;
+  background:linear-gradient(90deg,#1E1622,#3B2F3F 20%,#2E2432 80%,#1A131D);box-shadow:inset 0 0 0 5px #4A3C4F,inset 0 18px 30px rgba(0,0,0,.6)}
+.interior::before{content:"";position:absolute;left:8%;right:8%;top:16%;height:4px;background:linear-gradient(#BFB5C4,#6E6375);border-radius:2px;box-shadow:0 2px 3px rgba(0,0,0,.6)}
+.hook{position:absolute;left:50%;top:16%;width:16px;height:22px;margin-left:-8px;border:3px solid #CFC6D3;border-top:0;border-radius:0 0 10px 10px}
+.items{position:absolute;inset:18% 6% 24%;display:flex;justify-content:center;align-items:flex-start;gap:4%}
+.items img.hang{max-width:47%;max-height:100%;object-fit:contain;transform-origin:50% 0;filter:drop-shadow(0 8px 8px rgba(0,0,0,.55))}
+.items .polaroid{background:#fff;padding:7% 7% 18%;width:84%;transform:rotate(-3deg);box-shadow:0 8px 14px rgba(0,0,0,.5);position:relative;margin-top:6%}
+.items .polaroid img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.items .polaroid::before{content:"";position:absolute;top:-10px;left:50%;width:46%;height:20px;margin-left:-23%;background:rgba(255,236,170,.75);transform:rotate(4deg)}
+.items .polaroid span{position:absolute;left:0;right:0;bottom:3%;text-align:center;font:700 clamp(15px,3.6vw,20px)/1 var(--f-hand);color:var(--ink)}
+.items .soon{width:84%;aspect-ratio:1;margin-top:10%;border:3px dashed rgba(255,255,255,.5);border-radius:10px;display:grid;place-items:center;text-align:center;color:#fff;font:700 clamp(17px,4vw,22px)/1.05 var(--f-hand);padding:8px}
+.cta{position:absolute;left:8%;right:8%;bottom:6%;border:0;border-radius:999px;padding:9px 6px;background:#fff;color:var(--ink);font-weight:900;font-size:clamp(12px,3.2vw,14px);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.35);text-decoration:none;text-align:center;display:block}
+.locker.open .items img.hang{animation:swing 2.4s ease-in-out .35s infinite alternate}
+.locker.open .items .polaroid{animation:pop .5s cubic-bezier(.3,1.6,.5,1) .3s both}
+@keyframes swing{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+@keyframes pop{from{transform:rotate(-3deg) scale(.85);opacity:.4}to{transform:rotate(-3deg) scale(1);opacity:1}}
+
+.door{position:absolute;inset:0;transform-origin:left center;transition:transform .75s cubic-bezier(.5,-0.15,.25,1.25);transform-style:preserve-3d;z-index:2}
+.locker.open .door{transform:rotateY(-112deg)}
+.face{position:absolute;inset:0;border-radius:8px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.front{background-color:var(--c);
+  background-image:linear-gradient(90deg,rgba(255,255,255,.28),rgba(255,255,255,0) 18%,rgba(0,0,0,.06) 55%,rgba(255,255,255,.14) 85%,rgba(0,0,0,.12)),
+  linear-gradient(rgba(255,255,255,.18),rgba(0,0,0,.12));
+  box-shadow:inset 0 0 0 3px rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.45)}
+.front.photo{background:var(--door-url) center/cover}
+.front.photo::before,.front.photo::after,.front.photo .handle{display:none}
+.front::before,.front::after{content:"";position:absolute;left:22%;right:22%;height:12%;
+  background:repeating-linear-gradient(rgba(0,0,0,.42) 0 3px,rgba(255,255,255,.2) 3px 4px,transparent 4px 9px);border-radius:3px}
+.front::before{top:6%} .front::after{bottom:5%}
+.handle{position:absolute;right:11%;top:46%;width:9%;height:13%;border-radius:6px;background:linear-gradient(90deg,#8D8494,#F1ECF3 45%,#9A90A1);box-shadow:0 2px 3px rgba(0,0,0,.35)}
+.num{position:absolute;left:50%;top:22%;transform:translateX(-50%);font:900 11px var(--f-body);background:linear-gradient(#EEE,#BBB);color:#444;padding:2px 7px;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.tape{position:absolute;left:10%;right:18%;top:31%;background:#FFFDF6;padding:6px 6px 4px;transform:rotate(-4deg);box-shadow:0 2px 4px rgba(0,0,0,.25);
+  font:700 clamp(19px,4.8vw,26px)/0.95 var(--f-hand);color:var(--ink);text-align:center;overflow-wrap:anywhere}
+.sticker{position:absolute;right:8%;top:62%;width:34%;aspect-ratio:1;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:clamp(22px,6vw,32px);transform:rotate(10deg);box-shadow:0 3px 6px rgba(0,0,0,.3)}
+.sticker img{width:100%;height:100%;object-fit:contain;border-radius:50%}
+.back{transform:rotateY(180deg);background:linear-gradient(90deg,#6E6375,#B9AFC0 40%,#8B8092);box-shadow:inset 0 0 0 4px rgba(0,0,0,.2)}
+
+.locker.locked{cursor:not-allowed}
+.locker.locked .lock{position:absolute;right:9%;top:44%;width:24%;aspect-ratio:1/1.1;z-index:3}
+.lock::before{content:"";position:absolute;left:18%;right:18%;top:0;height:46%;border:5px solid #C9C0CE;border-bottom:0;border-radius:40px 40px 0 0}
+.lock::after{content:"";position:absolute;left:0;right:0;bottom:0;height:60%;border-radius:6px;background:linear-gradient(#F6D365,#C99A2E);box-shadow:0 3px 5px rgba(0,0,0,.35)}
+.locker.shake .door{animation:shake .45s}
+@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:translateX(-4px) rotate(-1deg)}75%{transform:translateX(4px) rotate(1deg)}}
+
+/* ---------- footer, toast, editor ---------- */
+.foot{text-align:center;font:700 22px/1.1 var(--f-hand);margin-top:6px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;padding:11px 16px;border-radius:14px;font-weight:900;max-width:calc(100vw - 32px);text-align:center}
+.editbar{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;gap:8px}
+.editbar button{border:3px solid var(--ink);border-radius:999px;background:#fff;padding:10px 16px;font-weight:900;cursor:pointer;box-shadow:0 4px 0 var(--ink)}
+.editbar button[aria-pressed="true"]{background:var(--ink);color:#fff}
+body.editing .locker{outline:3px dashed var(--ink);outline-offset:3px}
+.sheet{position:fixed;inset:0;z-index:50;background:rgba(42,22,56,.5);display:flex;align-items:flex-end;justify-content:center}
+.card{background:var(--cream);width:min(560px,100%);max-height:100%;overflow:auto;border-radius:22px 22px 0 0;display:grid;gap:12px;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+@media (min-width:700px){.sheet{align-items:center}.card{border-radius:22px}}
+.card h2{margin:0;font:400 26px var(--f-sign);color:var(--cherry)}
+.card p{margin:0;font-weight:700;font-size:13px;color:#6B5A78}
+.fld{display:grid;gap:4px;font-weight:900;font-size:13px}
+.fld input[type=text]{border:2px solid #E3D3E3;border-radius:12px;padding:10px 12px;font-weight:800;width:100%;min-width:0}
+.fld input[type=color]{width:56px;height:40px;border:2px solid var(--ink);border-radius:10px;padding:2px;background:#fff}
+.ph{display:flex;gap:10px;align-items:center}
+.ph .pv{width:72px;height:72px;border-radius:12px;background:#EFE2EC;display:grid;place-items:center;overflow:hidden;font-size:11px;font-weight:800;color:#6B5A78;text-align:center;flex:none}
+.ph .pv img{width:100%;height:100%;object-fit:contain}
+.ph input[type=file]{position:absolute;width:1px;height:1px;opacity:0}
+.b{border:2px solid var(--ink);border-radius:12px;padding:8px 12px;background:#fff;font-weight:900;cursor:pointer;font-size:13px}
+.b.pri{background:var(--ink);color:#fff}
+.seg{display:flex;gap:6px}
+.seg button{flex:1}
+.seg button[aria-pressed="true"]{background:var(--rosa)}
+.acts{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<main class="hall">
+  <div class="sign" id="sign">
+    <div class="plate" id="plate"><h1>Sugar Club</h1></div>
+    <p>Abre un locker ✨</p>
+  </div>
+  <section class="wall" aria-label="Secciones de Sugar Club">
+    <div class="lockers" id="lockers"></div>
+    <div class="floor" aria-hidden="true"></div>
+  </section>
+  <p class="foot">Hecho a mano en Cuenca · envíos a todo Ecuador 🍒</p>
+</main>
+<div class="editbar" id="editbar" hidden>
+  <button type="button" id="globalBtn">Fondo y logo</button>
+  <button type="button" id="editBtn" aria-pressed="false">✏️ Editar fotos</button>
+</div>
+<div class="sheet" id="sheet" hidden><div class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const DOGGY_URL = "https://claude.ai/artifact/FkpBLWsjSidFPE8sWrbeUh";
+const WHATSAPP = ""; // se completa cuando definas el número
+
+/* Default lockers. Real Sugar photos where we have them; owner can replace every photo. */
+const LOCKERS = [
+  { id: "bagcharms", label: "Bag charms", color: "#E63B2E", sticker: "🍒", items: [{ src: "img/bagcharm-perlas.webp", style: "hang" }, { src: "img/bagcharm-jackpot.webp", style: "hang" }] },
+  { id: "minifiguras", label: "Minifiguras", color: "#F28A2E", sticker: "⭐", items: [] },
+  { id: "rings", label: "Rings Pets", color: "#F590BA", sticker: "🐾", items: [{ src: "img/rings-pets.webp", style: "polaroid", caption: "tu peludito" }] },
+  { id: "aretes", label: "Aretes", color: "#E6407F", sticker: "💖", items: [] },
+  { id: "lazos", label: "Lazos", color: "#F5B8CF", sticker: "🎀", items: [] },
+  { id: "llaveros", label: "Llaveros", color: "#8B5CF6", sticker: "🔑", items: [] },
+  { id: "collares", label: "Collares", color: "#C81D25", sticker: "✨", items: [] },
+  { id: "doggy", label: "Doggy Pops", color: "#F5D738", sticker: "🐶", items: [{ src: "img/doggy-rocco.webp", style: "polaroid", caption: "Rocco" }], link: DOGGY_URL, cta: "Ir a Doggy Pops 🐶" },
+  { id: "arma", label: "Arma tu charm", color: "#9AA8F5", sticker: "🧷", locked: true },
+  { id: "whatsapp", label: "Escríbenos", color: "#FFFFFF", sticker: "💬", wa: true, cta: "Abrir WhatsApp" }
+];
+let cfg = { lockers: {}, global: {} };
+let db = null, assets = null, ref = null, editing = false;
+const blob = id => "/_blob/" + id;
+const L = id => ({ ...LOCKERS.find(l => l.id === id), ...(cfg.lockers[id] || {}) });
+
+let tt; function toast(m) { let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); } t.textContent = m; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 3000); }
+
+function itemsHtml(l) {
+  let items = l.items || [];
+  if (l.productId) items = [{ src: blob(l.productId), style: l.style || "hang", caption: l.caption || "" }];
+  if (!items.length) return `<div class="soon">Foto<br>pronto ✨</div>`;
+  return items.map(it => it.style === "polaroid"
+    ? `<div class="polaroid"><img src="${esc(it.src)}" alt="" loading="lazy">${it.caption ? `<span>${esc(it.caption)}</span>` : ""}</div>`
+    : `<img class="hang" src="${esc(it.src)}" alt="" loading="lazy">`).join("");
+}
+function render() {
+  $("#lockers").innerHTML = LOCKERS.map((base, i) => {
+    const l = L(base.id);
+    const sticker = l.stickerId ? `<img src="${esc(blob(l.stickerId))}" alt="">` : esc(l.sticker || "");
+    const cta = l.locked ? "" : l.link ? `<a class="cta" href="${esc(l.link)}" target="_blank" rel="noopener" data-cta>${esc(l.cta)}</a>` : `<button type="button" class="cta" data-cta>${esc(l.cta || "Ver todo →")}</button>`;
+    return `<div class="locker ${l.locked ? "locked" : ""}" role="button" tabindex="0" aria-label="${esc(l.label)}${l.locked ? " (próximamente)" : ""}" aria-expanded="false" data-id="${base.id}" style="--c:${esc(l.color)}">
+      <div class="interior"><div class="hook"></div><div class="items">${l.locked ? "" : itemsHtml(l)}</div>${cta}</div>
+      <div class="door"><div class="face front ${l.doorId ? "photo" : ""}" ${l.doorId ? `style="--door-url:url('${esc(blob(l.doorId))}')"` : ""}>
+        <span class="num">${String(i + 1).padStart(2, "0")}</span><div class="handle"></div>
+        <div class="tape">${esc(l.label)}</div>${sticker ? `<div class="sticker">${sticker}</div>` : ""}</div>
+        <div class="face back"></div></div>
+      ${l.locked ? `<div class="lock" aria-hidden="true"></div>` : ""}
+    </div>`;
+  }).join("");
+  const g = cfg.global || {};
+  $("#plate").innerHTML = g.logoId ? `<img src="${esc(blob(g.logoId))}" alt="Sugar Club">` : `<h1>Sugar Club</h1>`;
+  $("#plate").style.background = g.logoId ? "transparent" : ""; $("#plate").style.boxShadow = g.logoId ? "none" : "";
+  document.body.classList.toggle("wallphoto", !!g.wallId); if (g.wallId) document.body.style.setProperty("--wall-url", `url('${blob(g.wallId)}')`);
+  document.body.classList.toggle("floorphoto", !!g.floorId); if (g.floorId) document.body.style.setProperty("--floor-url", `url('${blob(g.floorId)}')`);
+}
+
+/* ---------- interaction ---------- */
+function toggle(el) {
+  const l = L(el.dataset.id);
+  if (editing) return openEditor(el.dataset.id);
+  if (l.locked) { el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake"); return toast("Arma tu charm llega muy pronto ✨"); }
+  const open = !el.classList.contains("open");
+  document.querySelectorAll(".locker.open").forEach(o => { if (o !== el) { o.classList.remove("open"); o.setAttribute("aria-expanded", "false"); } });
+  el.classList.toggle("open", open); el.setAttribute("aria-expanded", open);
+}
+$("#lockers").addEventListener("click", e => {
+  const cta = e.target.closest("[data-cta]"), el = e.target.closest(".locker"); if (!el) return;
+  if (cta && el.classList.contains("open")) {
+    const l = L(el.dataset.id);
+    if (l.link) return;
+    e.preventDefault();
+    if (l.wa) { if (!WHATSAPP) return toast("Falta poner el número de WhatsApp"); window.open("https://wa.me/" + WHATSAPP, "_blank"); return; }
+    return toast(`Siguiente paso: el catálogo de ${l.label}`);
+  }
+  toggle(el);
+});
+$("#lockers").addEventListener("keydown", e => { const el = e.target.closest(".locker"); if (el && e.target === el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggle(el); } });
+
+/* ---------- owner photo editor ---------- */
+let draft = null;
+function phField(label, key, val, hint) {
+  return `<div class="fld">${label}<div class="ph"><div class="pv">${val ? `<img src="${esc(blob(val))}" alt="">` : "Sin foto"}</div>
+    <div style="display:grid;gap:6px"><label class="b" for="up-${key}">${val ? "Cambiar" : "Subir foto"}</label><input type="file" id="up-${key}" data-up="${key}" accept="image/png,image/jpeg,image/webp">
+    ${val ? `<button type="button" class="b" data-clear="${key}">Quitar</button>` : ""}</div></div>${hint ? `<p>${hint}</p>` : ""}</div>`;
+}
+function openEditor(id) {
+  const l = L(id);
+  draft = { scope: "locker", id, data: { label: l.label, color: l.color, doorId: l.doorId || null, productId: l.productId || null, style: l.style || "hang", caption: l.caption || "", stickerId: l.stickerId || null } };
+  drawEditor(); $("#sheet").hidden = false;
+}
+function openGlobal() {
+  draft = { scope: "global", data: { logoId: cfg.global?.logoId || null, wallId: cfg.global?.wallId || null, floorId: cfg.global?.floorId || null } };
+  drawEditor(); $("#sheet").hidden = false;
+}
+function drawEditor() {
+  const d = draft.data;
+  $("#card").innerHTML = draft.scope === "global" ? `<h2 id="sheetTitle">Fondo y logo</h2>
+    ${phField("Logo Sugar Club", "logoId", d.logoId, "PNG sin fondo.")}
+    ${phField("Pared del pasillo", "wallId", d.wallId, "Foto vertical, se ve detrás de los lockers.")}
+    ${phField("Piso", "floorId", d.floorId, "Foto del piso visto desde arriba.")}
+    <div class="acts"><button type="button" class="b" data-close>Cancelar</button><button type="button" class="b pri" id="saveBtn">Guardar</button></div>`
+  : `<h2 id="sheetTitle">Locker: ${esc(d.label)}</h2>
+    <label class="fld">Texto de la etiqueta<input type="text" id="fLabel" maxlength="22" value="${esc(d.label)}"></label>
+    <label class="fld">Color de la puerta<input type="color" id="fColor" value="${esc(d.color)}"></label>
+    ${phField("Foto de la puerta (Gemini)", "doorId", d.doorId, "Puerta de locker de frente, vertical. Reemplaza la puerta dibujada.")}
+    ${phField("Foto del producto de adentro", "productId", d.productId, "PNG sin fondo para colgarlo, o cualquier foto en modo polaroid.")}
+    <div class="fld">Cómo se muestra el producto<div class="seg"><button type="button" class="b" data-style="hang" aria-pressed="${d.style === "hang"}">Colgado</button><button type="button" class="b" data-style="polaroid" aria-pressed="${d.style === "polaroid"}">Polaroid</button></div></div>
+    <label class="fld">Texto de la polaroid (opcional)<input type="text" id="fCap" maxlength="20" value="${esc(d.caption)}"></label>
+    ${phField("Sticker de la puerta", "stickerId", d.stickerId, "PNG de tu sticker (cereza, logo…).")}
+    <div class="acts"><button type="button" class="b" data-reset>Volver al original</button><span style="display:flex;gap:8px"><button type="button" class="b" data-close>Cancelar</button><button type="button" class="b pri" id="saveBtn">Guardar</button></span></div>`;
+}
+$("#card").addEventListener("input", e => {
+  if (e.target.id === "fLabel") draft.data.label = e.target.value;
+  if (e.target.id === "fColor") draft.data.color = e.target.value;
+  if (e.target.id === "fCap") draft.data.caption = e.target.value;
+});
+$("#card").addEventListener("change", async e => {
+  const k = e.target.dataset.up; if (!k || !e.target.files[0]) return;
+  const f = e.target.files[0]; if (f.size > 20 * 1024 * 1024) return toast("La foto pesa demasiado (máx. 20 MB)");
+  toast("Subiendo foto…");
+  try { const r = await assets.upload(f); draft.data[k] = r.id; drawEditor(); toast("Foto lista, toca Guardar"); }
+  catch (err) { toast(err?.code === "unsupported_type" ? "Usa JPG, PNG o WebP" : "No se pudo subir la foto"); }
+});
+$("#card").addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.clear) { draft.data[b.dataset.clear] = null; drawEditor(); }
+  if (b.dataset.style) { draft.data.style = b.dataset.style; drawEditor(); }
+  if (b.dataset.close !== undefined) { draft = null; $("#sheet").hidden = true; }
+  if (b.dataset.reset !== undefined) { await saveCfg(c => { delete c.lockers[draft.id]; }); }
+  if (b.id === "saveBtn") await saveCfg(c => { if (draft.scope === "global") c.global = { ...c.global, ...draft.data }; else c.lockers[draft.id] = { ...draft.data }; });
+});
+async function saveCfg(mut) {
+  const next = structuredClone(cfg); next.lockers ||= {}; next.global ||= {}; mut(next);
+  try { await ref.set({ ...next, actualizado: Date.now() }); cfg = next; render(); draft = null; $("#sheet").hidden = true; toast("Guardado ✓"); }
+  catch (err) { toast(err?.code === "not_granted" ? "No tienes permiso para editar" : "No se pudo guardar. Inténtalo otra vez."); }
+}
+$("#sheet").addEventListener("click", e => { if (e.target.id === "sheet") { draft = null; $("#sheet").hidden = true; } });
+$("#editBtn").addEventListener("click", () => { editing = !editing; $("#editBtn").setAttribute("aria-pressed", editing); document.body.classList.toggle("editing", editing); document.querySelectorAll(".locker.open").forEach(o => o.classList.remove("open")); toast(editing ? "Toca un locker para cambiar sus fotos" : "Modo vista"); });
+$("#globalBtn").addEventListener("click", openGlobal);
+
+/* ---------- boot ---------- */
+render();
+(async () => {
+  db = await window.claude?.use?.("db");
+  if (db) {
+    ref = db.doc("home/config");
+    ref.onSnapshot(s => { const d = s.exists ? s.data() : null; cfg = { lockers: d?.lockers || {}, global: d?.global || {} }; if (!draft) render(); }, () => {});
+  }
+  assets = await window.claude?.use?.("assets");
+  if (assets && db) $("#editbar").hidden = false;
+})();
+</script>
