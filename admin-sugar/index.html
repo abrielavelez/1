@@ -240,6 +240,7 @@ h1 span{color:var(--pink)}
 .collar2 .cu.dona{background:radial-gradient(circle,transparent 26%,var(--c) 28%)}
 .collar2 .cu.tallarin{border-radius:1.2cqw;background:repeating-linear-gradient(90deg,var(--c) 0 .9cqw,rgba(255,255,255,.55) .9cqw 1.2cqw)}
 .collar2 .cu.ruedita{border-radius:40%}
+.collar2 .cu.corazon,.llv .cu.corazon{border-radius:0;clip-path:polygon(50% 96%,6% 50%,2% 26%,14% 6%,32% 2%,50% 18%,68% 2%,86% 6%,98% 26%,94% 50%)}
 .llv{display:grid;justify-items:center;padding:6px 0 10px;min-height:300px}
 .llv .lg2 img{width:86px;height:86px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
 .llv .lg2 .ring{display:block;width:56px;height:56px;border-radius:50%;border:7px solid #b9c0cc;box-shadow:inset 0 0 0 2px #e6e9ef,0 3px 6px rgba(0,0,0,.25)}
@@ -458,7 +459,7 @@ const SCHEMAS = {
     fields: [
       { k: "nombre", t: "text", label: "Nombre", req: true },
       { k: "forma", t: "select", label: "¿Cómo va en el collar?", opts: () => [["colgante", "Colgante (cuelga del collar)"], ["cuenta", "Cuentita: bolita, donita o tallarín (va en el hilo, en pares)"]] },
-      { k: "figura", t: "select", label: "Forma de la cuentita", opts: () => [["bolita", "Bolita"], ["dona", "Donita"], ["tallarin", "Tallarín (espiral)"], ["ruedita", "Ruedita"]], when: d => d.forma === "cuenta", help: "Para dibujarla en el collar. El color no lo elige la clienta: se combina con su collar." },
+      { k: "figura", t: "select", label: "Forma de la cuentita", opts: () => [["bolita", "Bolita"], ["dona", "Donita"], ["tallarin", "Tallarín (espiral)"], ["ruedita", "Ruedita"], ["corazon", "Corazoncito"]], when: d => d.forma === "cuenta", help: "Para dibujarla en el collar. El color no lo elige la clienta: se combina con su collar." },
       { k: "grupo", t: "text", label: "Grupo", help: "Ej.: Navidad, Frutas, Animalitos, Clásicos. Los charms del mismo grupo se muestran juntos." },
       { k: "popular", t: "toggle", label: "⭐ Más usado (sale primero)" },
       { k: "tipo", t: "select", label: "Tipo", opts: () => [["Charm Up", "Charm Up (normal)"], ["Sugar Premium", "Sugar Premium (hecho a mano)"]] },
