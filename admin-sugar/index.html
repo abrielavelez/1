@@ -141,8 +141,8 @@ h1 span{color:var(--pink)}
 .shop .top .lg{height:58px;width:auto;cursor:pointer;filter:drop-shadow(0 3px 6px rgba(10,40,100,.35))}
 .shop .top .tt{flex:1;min-width:0;text-align:center;font:400 clamp(22px,3vw,36px)/1 "Abril Fatface",Georgia,serif;color:#fff;text-shadow:0 2px 10px rgba(10,40,100,.45)}
 .bubbles{position:relative;z-index:1;display:flex;gap:clamp(10px,1.6vw,22px);overflow-x:auto;padding:6px clamp(14px,3vw,40px) 14px;scrollbar-width:none;max-width:1280px;margin:0 auto}
-.bub2{flex:none;display:grid;justify-items:center;gap:6px;background:none;border:0;cursor:pointer;width:clamp(74px,8vw,104px);color:#fff;font:700 13px/1.15 var(--body);text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
-.bub2 .ring{width:100%;aspect-ratio:1;border-radius:50%;padding:4px;background:linear-gradient(140deg,rgba(255,255,255,.9),rgba(255,255,255,.35));box-shadow:0 8px 16px rgba(10,40,100,.25)}
+.bub2{--s:clamp(70px,8vw,104px);flex:none;display:grid;justify-items:center;align-content:start;gap:6px;background:none;border:0;cursor:pointer;width:var(--s);color:#fff;font:700 13px/1.15 var(--body);text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
+.bub2 .ring{width:var(--s);height:var(--s);flex:none;box-sizing:border-box;border-radius:50%;padding:4px;background:linear-gradient(140deg,rgba(255,255,255,.9),rgba(255,255,255,.35));box-shadow:0 8px 16px rgba(10,40,100,.25)}
 .bub2 .ring span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#fff;font:400 26px var(--sign);color:#E63B2E}
 .bub2 .ring img{width:100%;height:100%;object-fit:cover}
 .bub2[aria-pressed="true"] .ring{background:conic-gradient(#FF4F9A,#FFD23F,#3EC6FF,#B57BFF,#FF4F9A)}
@@ -203,7 +203,8 @@ h1 span{color:var(--pink)}
 @media (max-width:860px){.minibar{display:flex;position:fixed;left:12px;right:12px;bottom:calc(52px + env(safe-area-inset-bottom,0px));z-index:20;align-items:center;justify-content:space-between;gap:10px;border-radius:999px;padding:8px 8px 8px 18px;font:700 15px var(--body);color:var(--ink);background:rgba(255,255,255,.8)}
   .minibar button{border:0;border-radius:999px;background:#FF4F9A;color:#fff;font:700 14px var(--body);padding:10px 16px;cursor:pointer}}
 .bld{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 clamp(14px,3vw,40px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
-@media (max-width:860px){.bld{grid-template-columns:1fr}}
+@media (max-width:860px){.bld{grid-template-columns:1fr}.prev{min-height:0;position:static}.bub2{--s:68px}.brandsw img{height:40px}}
+.lines li > span:first-child{min-width:0;overflow-wrap:anywhere}.lines li > span:last-child{white-space:nowrap}
 .prev{border-radius:28px;padding:18px;position:sticky;top:80px;min-height:60svh;display:grid;align-content:start;justify-items:center;gap:10px}
 .prev .hook{width:46px;height:70px;border:6px solid #9aa3b2;border-radius:24px;box-shadow:inset 0 0 0 2px #e6e9ef,0 3px 6px rgba(0,0,0,.25)}
 .prev .chain{width:6px;height:28px;background:repeating-linear-gradient(#c9ced8 0 6px,#8a92a1 6px 9px);margin-top:-4px}
@@ -234,7 +235,10 @@ h1 span{color:var(--pink)}
 .collar2 .cu img,.collar2 .cu svg{width:100%;height:100%;object-fit:cover}
 .collar2 .hang{transform:translate(-50%,0);display:grid;justify-items:center}
 .collar2 .pend::before{content:"";width:.5cqw;height:1.6cqw;background:#b9c0cc;border-radius:1cqw}
-.collar2 .pend img,.collar2 .pend svg{width:100%;aspect-ratio:1;object-fit:contain;border-radius:2cqw;background:rgba(255,255,255,.8);padding:.4cqw;box-shadow:0 .6cqw 1.2cqw rgba(0,0,0,.2)}
+.collar2 .pend img,.collar2 .pend svg{width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 .5cqw .8cqw rgba(0,0,0,.28))}
+.collar2 [data-dk]{cursor:grab;touch-action:none}
+.collar2 .dragging{cursor:grabbing;z-index:5;filter:drop-shadow(0 0 1cqw #fff)}
+.linkb{border:0;background:none;color:inherit;text-decoration:underline;font:inherit;cursor:pointer;padding:0}
 .collar2 .tag2{z-index:3;border-radius:2.6cqw;background:rgba(255,255,255,.94);padding:0 0 1cqw;box-shadow:0 1cqw 2.4cqw rgba(0,0,0,.2);overflow:hidden;min-width:16cqw;margin-top:1cqw}
 .collar2 .tag2 img{width:100%;height:5cqw;object-fit:cover}
 .collar2 .tag2 b{padding:.8cqw 2.4cqw 0;font-family:"Abril Fatface",Georgia,serif;font-weight:400}
@@ -249,7 +253,8 @@ h1 span{color:var(--pink)}
 .llv .loop{width:44px;height:28px;border:6px solid var(--c1,#d8dbe2);border-top:0;border-radius:0 0 22px 22px;margin-top:-14px}
 .llv .tiras{display:flex;gap:18px;align-items:flex-start;margin-top:-4px}
 .llv .knot{width:14px;height:14px;border-radius:50%;background:var(--cord);box-shadow:0 2px 3px rgba(0,0,0,.25)}
-.llv .strand{position:relative;display:grid;justify-items:center;gap:5px;padding:18px 0 22px;margin-top:-6px;isolation:isolate}
+.llv .strand{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 0 0;isolation:isolate;height:var(--len,300px)}
+.llv .strand .knot{margin-top:auto}
 .llv .strand::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 4px);width:8px;border-radius:4px;background:var(--cord);box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
 .llv .strand-old{background:linear-gradient(90deg,transparent calc(50% - 2px),#d8dbe2 calc(50% - 2px) calc(50% + 2px),transparent calc(50% + 2px))}
 .llv .lt{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;font:800 20px var(--body);box-shadow:inset 0 2px 1px rgba(255,255,255,.55),0 3px 6px rgba(0,0,0,.25)}
@@ -260,8 +265,8 @@ h1 span{color:var(--pink)}
 .llv .fan span{display:grid;justify-items:center}
 .llv .fan span::before{content:"";width:2px;height:10px;background:#b9c0cc}
 .llv .fan img,.llv .fan svg{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
-.swg{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px}
-.swc{aspect-ratio:1;border-radius:50%;border:2px solid rgba(255,255,255,.9);padding:0;overflow:hidden;cursor:pointer;box-shadow:0 2px 5px rgba(10,40,100,.2)}
+.swg{display:grid;grid-template-columns:repeat(auto-fill,38px);gap:7px;justify-content:start}
+.swc{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.9);padding:0;overflow:hidden;cursor:pointer;box-shadow:0 2px 5px rgba(10,40,100,.2)}
 .swc img{width:100%;height:100%;object-fit:cover;display:block}
 .swc[aria-pressed="true"]{outline:3px solid #FF4F9A;outline-offset:2px;transform:scale(1.08)}
 .palg{display:flex;flex-wrap:wrap;gap:6px}
@@ -697,10 +702,12 @@ function renderAjustes(m) {
     <label class="field" style="display:flex;flex-direction:row;align-items:center;gap:8px;font-weight:600"><input type="checkbox" id="creaActivo" ${A.creaActivo ? "checked" : ""} style="width:auto"> “Crea el tuyo” abierto al público <small>(apagado = dice “Próximamente”)</small></label>
     <label class="field">“Crea el tuyo”: precio del gancho y cadena ($)<input id="creaBase" type="number" step="0.5" min="0" value="${A.creaBase ?? ""}"><small>Se suma a los charms que elija. Vacío = “se confirma por WhatsApp”.</small></label><label hidden></label>
     
+    <h2>Fotos de los botones “Crea el tuyo”, “Arma su collar” y “Arma tu llavero”</h2><p>Se ven en el círculo de cada botón en la tienda. Si no subes nada, se queda el dibujito.</p>
+    <div class="grid3">${ajPhoto("Crea el tuyo", "creaFoto", h.creaFotoId, "")}${ajPhoto("Arma su collar", "collarFoto", h.collarFotoId, "")}${ajPhoto("Arma tu llavero", "llaveroFoto", h.llaveroFotoId, "")}</div>
     <h2>🐶 Logo de Doggy Pops</h2>
     ${ajPhoto("Logo de Doggy Pops (va encima de la foto)", "dogLogo", h.doggyLogoId, "img/logo-doggy.png")}
     <button type="submit" class="btn pri">Guardar ajustes</button></form>`;
-  const up = { hero: h.heroId || null, dogFoto: h.doggyFotoId || null, dogLogo: h.doggyLogoId || null, header: h.headerId || null };
+  const up = { creaFoto: h.creaFotoId || null, collarFoto: h.collarFotoId || null, llaveroFoto: h.llaveroFotoId || null, hero: h.heroId || null, dogFoto: h.doggyFotoId || null, dogLogo: h.doggyLogoId || null, header: h.headerId || null };
   m.querySelectorAll("[data-ajup]").forEach(inp => inp.onchange = async () => {
     const f = inp.files[0]; if (!f) return; const k = inp.dataset.ajup;
     try { const r = await saving(assets.upload(f)); up[k] = r.id; const pv = m.querySelector(`[data-ajpv="${k}"]`); if (pv) pv.innerHTML = `<img src="${esc(blob(r.id))}" alt="">`; toast("Foto lista, toca Guardar ajustes"); } catch (e) {}
@@ -710,7 +717,7 @@ function renderAjustes(m) {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, heroId: up.hero, headerId: up.header, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, creaFotoId: up.creaFoto, collarFotoId: up.collarFoto, llaveroFotoId: up.llaveroFoto, heroId: up.hero, headerId: up.header, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 function ajPhoto(label, k, id, fallback) {
@@ -971,12 +978,13 @@ function renderHero() {
 }
 
 /* shop: sections as photo bubbles, product shown at its own shape */
+const mkPic = (k, emo) => homeCfgX()[k] ? `<img src="${esc(blob(homeCfgX()[k]))}" alt="">` : emo;
 const shopCats = brand => catsDe(brand).filter(c => c.disponible !== false && !c.bloqueada);
 function bubbles(brand, active) {
   const cats = shopCats(brand), isMake = active === "make";
   const make = brand === "doggy"
-    ? `<button type="button" class="bub2 make" data-go="collar" aria-pressed="${isMake && view === "collar"}"><span class="ring"><span>🎨</span></span>Arma su collar</button><button type="button" class="bub2 make" data-go="llavero" aria-pressed="${isMake && view === "llavero"}"><span class="ring"><span>🔑</span></span>Arma tu llavero</button>`
-    : `<button type="button" class="bub2 make" data-go="crea" aria-pressed="${isMake}"><span class="ring"><span>✨</span></span>Crea el tuyo${S.ajustes?.creaActivo ? "" : `<small style="display:block;font:600 10px var(--mono)">pronto</small>`}</button>`;
+    ? `<button type="button" class="bub2 make" data-go="collar" aria-pressed="${isMake && view === "collar"}"><span class="ring"><span>${mkPic("collarFotoId", "🎨")}</span></span>Arma su collar</button><button type="button" class="bub2 make" data-go="llavero" aria-pressed="${isMake && view === "llavero"}"><span class="ring"><span>${mkPic("llaveroFotoId", "🔑")}</span></span>Arma tu llavero</button>`
+    : `<button type="button" class="bub2 make" data-go="crea" aria-pressed="${isMake}"><span class="ring"><span>${mkPic("creaFotoId", "✨")}</span></span>Crea el tuyo${S.ajustes?.creaActivo ? "" : `<small style="display:block;font:600 10px var(--mono)">pronto</small>`}</button>`;
   const other = brand === "doggy"
     ? `<button type="button" class="brandsw gl" data-go="shop" aria-label="Ir a Sugar Club"><img src="img/logo-club.png" alt=""><span>Sugar Club 🍒<br>para ti</span></button>`
     : `<button type="button" class="brandsw gl" data-go="doggy" aria-label="Ir a Sugar Doggy Pops"><img src="${esc(doggyLogo())}" alt=""><span>para tu<br>mascota 🐾</span></button>`;
@@ -1115,7 +1123,7 @@ function renderCrea() {
 function creaSummary() { const ch = creaCharms(); return crea.sel.map(id => ch.find(c => c.id === id)?.nombre).filter(Boolean).join(" + "); }
 
 /* ---------- Doggy “Arma su collar”: step by step, all options from the Arma collar tab ---------- */
-const col = { step: 1, estilo: null, talla: "M", cordones: [], nombre: "", charms: [], placa: null, numero: "", llavero: false, palabra: "DOG MOM", regalo: null, matchy: null, humano: "", cuentas: [], cq: {}, colores: [], sub3: "cuenta", grp: {} };
+const col = { step: 1, estilo: null, talla: "M", cordones: [], nombre: "", charms: [], placa: null, numero: "", llavero: false, palabra: "DOG MOM", regalo: null, matchy: null, humano: "", cuentas: [], cq: {}, pos: {}, colores: [], sub3: "cuenta", grp: {} };
 const COL_STEPS = ["Collar", "Nombre", "Charms", "Extras", "Resumen"];
 const cEstilos = () => live(S.data.estilos).sort((a, b) => (a.orden || 0) - (b.orden || 0));
 const cEstilo = () => cEstilos().find(e => e.id === col.estilo) || cEstilos()[0];
@@ -1158,7 +1166,7 @@ const BEADS = ["#E63B2E", "#3E9AD6", "#F5D738", "#34A96A", "#7B3AF5", "#E66A92",
 const RX = 40, RY = 34, TOP = 3, H = 58; // units: % of width; box is 100 × 52
 const ell = a => { const r = a * Math.PI / 180; return { x: 50 + RX * Math.cos(r), y: TOP + RY * Math.sin(r), rot: Math.atan2(-RY * Math.cos(r), RX * Math.sin(r)) * 180 / Math.PI }; };
 const dsda = a => { const r = a * Math.PI / 180; return Math.hypot(RX * Math.sin(r), RY * Math.cos(r)) * Math.PI / 180; };
-function walk(a0, dist, dir) { let a = a0, d = 0; while (d < dist && a > 6 && a < 174) { d += dsda(a) * 0.25; a += 0.25 * dir; } return a; }
+function walk(a0, dist, dir) { let a = a0, d = 0; while (d < dist && a > 1 && a < 179) { d += dsda(a) * 0.25; a += 0.25 * dir; } return a; }
 const pos = (a, y0 = 0) => { const p = ell(a); return `left:${p.x.toFixed(2)}%;top:${((p.y + y0) / H * 100).toFixed(2)}%`; };
 function collarParts(k, name, pl) {
   const cu = cqList().flatMap(({ c, n }) => Array.from({ length: n * 2 }, () => c));
@@ -1183,15 +1191,25 @@ function collarParts(k, name, pl) {
     const kd = placaKind(pl); h += `<span class="hang tagb" style="${pos(90)};width:${cqw(24 * Math.max(sc, .8))}">${boneSvg(kd === "color" ? placaHex(pl) : kd === "plateada" ? "silver" : "clear", name || "NOMBRE")}</span>`;
   } else { h += `<span class="hang bead" style="${pos(90)};width:${cqw(LW)};height:${cqw(LW * 1.1)};font-size:${cqw(LW * 0.62)};background:${BEADS[0]}">${esc((name || "R").charAt(0))}</span>`; }
   const edge = { 1: walk(90, centerW / 2, -1), [-1]: walk(90, centerW / 2, 1) }; // 1 = right side (angles < 90)
-  const place = (w, side) => { const dir = side === 1 ? -1 : 1; const c = walk(edge[side], GAP + w / 2, dir); edge[side] = walk(c, w / 2, dir); return c; };
-  cu.forEach((c, i) => { const fig = c.figura || "bolita", w = fig === "tallarin" ? CW * 1.35 : CW; const a = place(w, i % 2 ? -1 : 1); const p = ell(a); const colr = pc[Math.floor(i / 2) % pc.length]; h += `<span class="on cu ${fig}" style="${pos(a)};width:${cqw(w)};height:${cqw(fig === "ruedita" ? CW * 1.15 : CW)};--c:${colr};transform:translate(-50%,-50%) rotate(${p.rot.toFixed(1)}deg)"></span>`; });
-  cg.forEach((c, i) => { const a = place(PW, i % 2 ? 1 : -1); h += `<span class="hang pend" style="${pos(a, 1.2)};width:${cqw(PW)}">${pic(c)}</span>`; });
+  const place = (w, side, key) => { if (col.pos[key] != null) return col.pos[key]; const dir = side === 1 ? -1 : 1; const c = walk(edge[side], GAP + w / 2, dir); edge[side] = walk(c, w / 2, dir); return c; };
+  const seen = {};
+  cu.forEach((c, i) => { const key = "u:" + c.id + ":" + (seen[c.id] = (seen[c.id] ?? -1) + 1); const fig = c.figura || "bolita", w = fig === "tallarin" ? CW * 1.35 : CW; const a = place(w, i % 2 ? -1 : 1, key); const p = ell(a); const colr = pc[Math.floor(i / 2) % pc.length]; h += `<span class="on cu ${fig}" data-dk="${esc(key)}" style="${pos(a)};width:${cqw(w)};height:${cqw(fig === "ruedita" ? CW * 1.15 : CW)};--c:${colr};transform:translate(-50%,-50%) rotate(${p.rot.toFixed(1)}deg)"></span>`; });
+  cg.forEach((c, i) => { const key = "c:" + c.id; const a = place(PW, i % 2 ? 1 : -1, key); h += `<span class="hang pend" data-dk="${esc(key)}" style="${pos(a, 1.2)};width:${cqw(PW)}">${pic(c)}</span>`; });
   return h;
 }
-function cordSvg() {
+function cordSvg(k) {
   const cs = col.cordones.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []), c = cs.length ? cs : ["#F5A3C7"];
   const d = `M${50 - RX} ${TOP} A${RX} ${RY} 0 0 0 ${50 + RX} ${TOP}`;
-  return `<svg class="cord2" viewBox="0 0 100 ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="4.6" stroke-linecap="round"/>${c.map((col2, i) => `<path d="${d}" fill="none" stroke="${col2}" stroke-width="3.8" stroke-linecap="round" ${c.length > 1 ? `stroke-dasharray="2.4 ${(2.4 * (c.length - 1)).toFixed(1)}" stroke-dashoffset="${(-2.4 * i).toFixed(1)}"` : ""}/>`).join("")}<path d="${d}" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="0.8" transform="translate(0 -0.9)"/></svg>`;
+  const out = `<path d="${d}" fill="none" stroke="#2A1638" stroke-width="${k === "letras" ? 4.6 : 7.6}" stroke-linecap="round"/>`;
+  if (k === "letras") return `<svg class="cord2" viewBox="0 0 100 ${H}" aria-hidden="true">${out}${c.map((col2, i) => `<path d="${d}" fill="none" stroke="${col2}" stroke-width="3.6" stroke-linecap="butt" ${c.length > 1 ? `stroke-dasharray="2.4 ${(2.4 * (c.length - 1)).toFixed(1)}" stroke-dashoffset="${(-2.4 * i).toFixed(1)}"` : ""}/>`).join("")}</svg>`;
+  // braided: two rows of leaf-shaped strands crossing along the arc
+  let leaves = "", a = 178, n = 0;
+  while (a > 0) {
+    const p = ell(a), r = a * Math.PI / 180, tx = -RX * Math.sin(r), ty = RY * Math.cos(r), L = Math.hypot(tx, ty), nx = -ty / L, ny = tx / L, ang = Math.atan2(ty, tx) * 180 / Math.PI;
+    [-1, 1].forEach(side => { const col2 = c[(n + (side > 0 ? 1 : 0)) % c.length]; leaves += `<ellipse cx="${(p.x + nx * side * 1.45).toFixed(2)}" cy="${(p.y + ny * side * 1.45).toFixed(2)}" rx="2.3" ry="1.15" transform="rotate(${(ang + side * 40).toFixed(1)} ${(p.x + nx * side * 1.45).toFixed(2)} ${(p.y + ny * side * 1.45).toFixed(2)})" fill="${col2}" stroke="rgba(42,22,56,.55)" stroke-width=".22"/>`; });
+    const na = walk(a, 2.5, -1); if (na >= a - 0.01) break; a = na; n++;
+  }
+  return `<svg class="cord2" viewBox="0 0 100 ${H}" aria-hidden="true">${out}<path d="${d}" fill="none" stroke="${c[0]}" stroke-width="6.2"/>${leaves}</svg>`;
 }
 function colPreview() {
   const e = cEstilo(), k = kindOf(e), name = nombreUsado();
@@ -1200,8 +1218,8 @@ function colPreview() {
   const pl = S.data.placas.find(x => x.id === col.placa);
   return `<h2>${esc(name || "Su collar")}</h2>
     ${photo ? `<img src="${esc(photo)}" alt="${esc(e.nombre)}" style="max-width:100%;max-height:34svh;width:auto;object-fit:contain;border-radius:16px">` : ""}
-    <div class="collar2">${cordSvg()}${collarParts(k, name, pl)}
-    </div>
+    <div class="collar2" id="collarBox">${cordSvg(k)}${collarParts(k, name, pl)}
+    </div>${col.charms.length || cqPieces() ? `<p class="hint" style="margin:-4px 0 0">✋ Arrastra los charms y cuentitas para moverlos${Object.keys(col.pos).length ? ` · <button type="button" class="linkb" data-go="posReset">ordenar solos</button>` : ""}</p>` : ""}
     <ul class="lines">${colLines().map(l => `<li><span>${esc(l.t)}</span><span>${l.gratis ? "Gratis" : l.conf ? "por confirmar" : l.v < 0 ? "−" + money(-l.v) : l.v ? money(l.v) : "Incluido"}</span></li>`).join("")}</ul>
     <div class="tot">Total ${money(colTotal())}</div>`;
 }
@@ -1292,8 +1310,9 @@ function llPreview() {
   const g = S.data.colgadores.find(x => x.id === ll.colg), pc = llPrefCols(), cs = llCord()?.colores || ["#d8dbe2"];
   const cord = `repeating-linear-gradient(180deg,${cs.map((c, i) => `${c} ${i * 8}px ${(i + 1) * 8}px`).join(",")})`;
   let k = 0;
+  const need = Math.max(...[0, 1].map(i => llWord(i).replace(/\s/g, "").length * 43 + llPieces(i) * 25 + 40)), len = Math.max(300, need);
   const tira = i => { const w = llWord(i).replace(/\s/g, ""), cu = llCq(i).flatMap(({ c, n }) => Array.from({ length: n }, () => c));
-    return `<div class="strand" style="--cord:${cord}">${w.split("").filter(Boolean).map(ch => { const col = pc[k++ % pc.length]; return `<span class="lt" style="background:${col};color:${["#FFFFFF", "#F5D738", "#8FE3C2", "#F7A8C9", "#8FD3F5", "#F5E07A"].includes(col) ? "#2a3550" : "#fff"}">${esc(ch)}</span>`; }).join("")}${cu.map((c, j) => `<span class="cu ${c.figura || "bolita"}" style="--c:${pc[j % pc.length]}"></span>`).join("")}<span class="knot"></span></div>`; };
+    return `<div class="strand" style="--cord:${cord};--len:${len}px">${w.split("").filter(Boolean).map(ch => { const col = pc[k++ % pc.length]; return `<span class="lt" style="background:${col};color:${["#FFFFFF", "#F5D738", "#8FE3C2", "#F7A8C9", "#8FD3F5", "#F5E07A"].includes(col) ? "#2a3550" : "#fff"}">${esc(ch)}</span>`; }).join("")}${cu.map((c, j) => `<span class="cu ${c.figura || "bolita"}" style="--c:${pc[j % pc.length]}"></span>`).join("")}<span class="knot"></span></div>`; };
   const chs = ll.charms.map(id => S.data.charms.find(x => x.id === id)).filter(Boolean);
   const title = [llWord(0), llWord(1)].filter(Boolean).join(" · ");
   return `<h2>${esc(title || "Tu llavero")}</h2>
@@ -1377,6 +1396,17 @@ function renderCollar() {
 const colRefresh = () => { const p = $("#colPrev"); if (p) p.innerHTML = colPreview(); const m = $("#colMini"); if (m) m.textContent = "Total " + money(colTotal()); };
 
 $("#homeBtn").addEventListener("click", openHome);
+/* drag charms / beads along the collar */
+let drag = null;
+$("#hp").addEventListener("pointerdown", e => { const el = e.target.closest("#collarBox [data-dk]"); if (!el) return; e.preventDefault(); drag = { el, box: $("#collarBox").getBoundingClientRect(), hang: el.classList.contains("hang") }; el.setPointerCapture?.(e.pointerId); el.classList.add("dragging"); });
+$("#hp").addEventListener("pointermove", e => {
+  if (!drag) return; const r = drag.box, x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * H;
+  let a = Math.atan2((y - TOP) / RY, (x - 50) / RX) * 180 / Math.PI; if (a < 0) a = x < 50 ? 170 : 10; a = Math.max(10, Math.min(170, a));
+  drag.a = a; const p = ell(a); drag.el.style.left = p.x.toFixed(2) + "%"; drag.el.style.top = ((p.y + (drag.hang ? 1.2 : 0)) / H * 100).toFixed(2) + "%";
+  if (!drag.hang) drag.el.style.transform = `translate(-50%,-50%) rotate(${p.rot.toFixed(1)}deg)`;
+});
+const endDrag = () => { if (!drag) return; if (drag.a != null) col.pos[drag.el.dataset.dk] = drag.a; drag.el.classList.remove("dragging"); drag = null; colRefresh(); };
+$("#hp").addEventListener("pointerup", endDrag); $("#hp").addEventListener("pointercancel", endDrag);
 $("#hp").addEventListener("submit", e => { if (e.target.id === "ckForm") { e.preventDefault(); submitCheckout(); } });
 $("#hp").addEventListener("input", e => {
   const t = e.target;
@@ -1434,6 +1464,7 @@ $("#hp").addEventListener("click", e => {
   if (g === "hero") return renderHero();
   if (g === "top") return $("#hp").scrollTo({ top: 0, behavior: "smooth" });
   if (g === "crea") return renderCrea();
+  if (g === "posReset") { col.pos = {}; return colRefresh(); }
   if (g === "llavero") { ll.marca = "doggy"; ll.step = 1; renderLlavero(); $("#hp").scrollTo({ top: 0 }); return; }
   if (g === "collar") { col.matchy = null; return renderCollar(); }
   if (g === "creaAdd") { addToCart({ key: "crea-" + crea.sel.join("+"), nombre: "Bag charm armado", detalle: creaSummary(), precio: creaTotal(), precioTexto: money(creaTotal()) + (S.ajustes?.creaBase == null ? " + gancho" : ""), img: prodImg(creaCharms().find(c => c.id === crea.sel[0])), marca: "club" }); crea.sel = []; return renderCrea(); }
