@@ -943,7 +943,7 @@ async function upload(k, file) {
 function closeEditor() {
   if (ed) for (const x of ed.added || []) assets?.delete(x).catch(() => {});
   if (ed) for (const [k, v] of Object.entries(ed.newPhotos || {})) if (v && v !== ed.oldPhotos[k]) assets?.delete(v).catch(() => {});
-  ed = null; $("#sheet").hidden = true;
+  ed = null; $("#sheet").hidden = true; document.activeElement?.blur?.(); renderMain();
 }
 async function save() {
   const d = ed.data, col = ed.col;
@@ -966,12 +966,12 @@ async function save() {
     if (col === "categorias" && !ed.isNew && ed.oldName && ed.oldName !== d.nombre) {
       for (const p of S.data.productos.filter(p => p.marca === d.marca && p.categoria === ed.oldName)) await saving(db.doc("productos/" + p.id).update({ categoria: d.nombre }));
     }
-    ed.newPhotos = {}; ed = null; $("#sheet").hidden = true; toast("Guardado");
+    ed.newPhotos = {}; ed = null; $("#sheet").hidden = true; document.activeElement?.blur?.(); renderMain(); toast("Guardado");
   } catch (e) { const b = $("#saveBtn"); if (b) b.disabled = false; }
 }
 async function remove() {
   const { col, id, oldPhotos } = ed;
-  try { await saving(db.doc(col + "/" + id).delete()); for (const v of Object.values(oldPhotos)) if (v) assets?.delete(v).catch(() => {}); for (const v of ed.data.fotos || []) assets?.delete(v).catch(() => {}); ed.added = []; ed = null; $("#sheet").hidden = true; toast("Eliminado"); } catch (e) {}
+  try { await saving(db.doc(col + "/" + id).delete()); for (const v of Object.values(oldPhotos)) if (v) assets?.delete(v).catch(() => {}); for (const v of ed.data.fotos || []) assets?.delete(v).catch(() => {}); ed.added = []; ed = null; $("#sheet").hidden = true; document.activeElement?.blur?.(); renderMain(); toast("Eliminado"); } catch (e) {}
 }
 $("#sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeEditor(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") { if (!$("#sheet").hidden) closeEditor(); else if (!$("#hp").hidden) closeHome(); } });
