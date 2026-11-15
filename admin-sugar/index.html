@@ -150,7 +150,7 @@ h1 span{color:var(--pink)}
 .brandsw{flex:none;align-self:center;display:flex;align-items:center;gap:8px;border-radius:20px;padding:8px 14px 8px 8px;cursor:pointer;color:#fff;font:700 13px/1.15 var(--mono);text-align:left;text-shadow:0 1px 3px rgba(0,30,80,.6);background:linear-gradient(135deg,rgba(255,225,77,.45),rgba(255,141,192,.45))}
 .brandsw img{height:52px;width:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
 @media (max-width:860px){.brandsw{order:-2}.bsep{order:-1}.brandsw img{height:44px}}
-@media (max-width:480px){.shop .top .tt{font-size:20px}.shop .top .lg{height:46px}}
+@media (max-width:480px){.shop .top .tt{visibility:hidden}.collar .pend img,.collar .pend svg{width:38px;height:38px}.shop .top .lg{height:46px}}
 .back{border-radius:999px;padding:9px 14px;font:600 13px var(--mono);color:#10223f;cursor:pointer;flex:none}
 .bub2.make .ring span{background:linear-gradient(140deg,#FFE14D,#FF8DC0);font-size:30px}
 .shopgrid{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 clamp(14px,3vw,40px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
@@ -224,13 +224,39 @@ h1 span{color:var(--pink)}
 .opt2.off{opacity:.45;cursor:not-allowed}
 .sw2{width:100%;height:28px;border-radius:999px;border:2px solid #fff}
 .inpt{width:100%;border:2px solid rgba(255,255,255,.9);border-radius:14px;padding:12px 14px;font:700 20px var(--body);letter-spacing:.06em;background:rgba(255,255,255,.75);color:var(--ink)}
-.collar{width:min(320px,80%);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative}
-.collar .cord{position:absolute;inset:0;border-radius:50%;padding:18px;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 22px),#000 calc(100% - 21px));mask:radial-gradient(farthest-side,transparent calc(100% - 22px),#000 calc(100% - 21px));box-shadow:inset 0 0 0 2px rgba(0,0,0,.08)}
-.collar .beads{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:70%;position:absolute;bottom:4%}
-.collar .bead{min-width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font:800 18px var(--body);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);box-shadow:inset 0 2px 1px rgba(255,255,255,.5),0 3px 6px rgba(0,0,0,.25)}
-.collar .tag{position:absolute;bottom:-6%;background:rgba(255,255,255,.9);border-radius:18px;padding:10px 16px;font:400 22px "Abril Fatface",Georgia,serif;box-shadow:0 6px 14px rgba(0,0,0,.2)}
-.collar .chs{position:absolute;top:24%;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:70%}
-.collar .chs img,.collar .chs svg{width:54px;height:54px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,.7);padding:3px}
+.collar{width:min(300px,74%);aspect-ratio:1;border-radius:50%;position:relative;margin:4px auto 70px}
+.collar .cord{position:absolute;inset:0;border-radius:50%;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 22px),#000 calc(100% - 21px));mask:radial-gradient(farthest-side,transparent calc(100% - 22px),#000 calc(100% - 21px));box-shadow:inset 0 0 0 2px rgba(0,0,0,.08)}
+.collar .on,.collar .hang{position:absolute;z-index:2}
+.collar .on{transform:translate(-50%,-50%)}
+.collar .bead{min-width:26px;height:28px;padding:0 3px;border-radius:8px;display:grid;place-items:center;font:800 15px var(--body);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);box-shadow:inset 0 2px 1px rgba(255,255,255,.5),0 2px 4px rgba(0,0,0,.25)}
+.collar .cu{width:22px;height:22px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.3);display:grid;place-items:center}
+.collar .cu img,.collar .cu svg{width:100%;height:100%;object-fit:cover}
+.collar .hang{transform:translate(-50%,0);display:grid;justify-items:center}
+.collar .hang::before{content:"";width:2px;height:8px;background:#c9ced8}
+.collar .pend img,.collar .pend svg{width:46px;height:46px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,.75);padding:2px;box-shadow:0 3px 6px rgba(0,0,0,.2)}
+.collar .hang.bead::before{display:none}
+.collar .tag2{z-index:3;border-radius:14px;background:rgba(255,255,255,.92);padding:0 0 6px;box-shadow:0 6px 14px rgba(0,0,0,.2);overflow:hidden;min-width:70px}
+.collar .tag2::before{display:none}
+.collar .tag2 img{width:100%;height:26px;object-fit:cover}
+.collar .tag2 b{padding:4px 12px 0;font:400 18px "Abril Fatface",Georgia,serif}
+.stepper{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);position:relative}
+.stepper li{position:relative;display:grid;justify-items:center}
+.stepper li:not(:last-child)::after{content:"";position:absolute;top:17px;left:calc(50% + 20px);right:calc(-50% + 20px);height:3px;border-radius:3px;background:rgba(255,255,255,.55)}
+.stepper li.done:not(:last-child)::after{background:#FF4F9A}
+.stepper button{border:0;background:none;cursor:pointer;display:grid;justify-items:center;gap:4px;padding:0;color:#fff}
+.stepper .dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:800 15px var(--body);background:rgba(255,255,255,.55);color:#2a3550;border:2px solid rgba(255,255,255,.9);box-shadow:0 3px 8px rgba(10,40,100,.15)}
+.stepper .done .dot{background:#FF4F9A;color:#fff;border-color:#fff}
+.stepper .now .dot{background:#fff;color:#FF4F9A;border-color:#FF4F9A;box-shadow:0 0 0 4px rgba(255,79,154,.25)}
+.stepper .lb{font:700 12px var(--body);text-shadow:0 1px 3px rgba(0,30,80,.6)}
+.stepper .now .lb{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg2 button{border:2px solid rgba(255,255,255,.85);border-radius:16px;background:rgba(255,255,255,.4);padding:10px;cursor:pointer;display:grid;gap:2px;text-align:left;color:var(--ink)}
+.seg2 button b{font:800 14px var(--body)} .seg2 button small{font:600 11px var(--mono);opacity:.8}
+.seg2 button[aria-selected="true"]{background:#fff;border-color:#FF4F9A;box-shadow:0 0 0 2px #FF4F9A}
+.chipsg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chipsg button{flex:none;border:1.5px solid rgba(255,255,255,.9);border-radius:999px;background:rgba(255,255,255,.35);padding:6px 12px;font:700 13px var(--body);color:var(--ink);cursor:pointer}
+.chipsg button[aria-pressed="true"]{background:#2a3550;color:#fff;border-color:#2a3550}
+.opt2 .ph.sm img,.opt2 .ph.sm svg{width:60%;height:60%}
 .lines{list-style:none;margin:0;padding:0;display:grid;gap:4px;color:#fff;font:600 13px var(--mono);text-shadow:0 1px 3px rgba(0,30,80,.6);width:100%}
 .lines li{display:flex;justify-content:space-between;gap:8px}
 /* cart */
@@ -399,6 +425,9 @@ const SCHEMAS = {
     title: "charm", empty: "Aún no hay charms.",
     fields: [
       { k: "nombre", t: "text", label: "Nombre", req: true },
+      { k: "forma", t: "select", label: "¿Cómo va en el collar?", opts: () => [["colgante", "Colgante (cuelga del collar)"], ["cuenta", "Bolita / tallarín (se mete en el hilo)"]] },
+      { k: "grupo", t: "text", label: "Grupo", help: "Ej.: Navidad, Frutas, Animalitos, Clásicos. Los charms del mismo grupo se muestran juntos." },
+      { k: "popular", t: "toggle", label: "⭐ Más usado (sale primero)" },
       { k: "tipo", t: "select", label: "Tipo", opts: () => [["Charm Up", "Charm Up (normal)"], ["Sugar Premium", "Sugar Premium (hecho a mano)"]] },
       { k: "precio", t: "number", label: "Precio ($)" },
       { k: "stock", t: "number", label: "Stock", help: "En 0 no se ofrece en “Arma tu collar”." },
@@ -406,7 +435,7 @@ const SCHEMAS = {
       { k: "icono", t: "select", label: "Dibujo si no hay foto", opts: () => ICONS.map(i => [i, i]) },
       { k: "disponible", t: "toggle", label: "Visible en “Arma tu collar”" }
     ],
-    nuevo: () => ({ nombre: "", tipo: "Charm Up", precio: 2, stock: null, icono: "estrella", disponible: true })
+    nuevo: () => ({ nombre: "", forma: "colgante", grupo: "", popular: false, tipo: "Charm Up", precio: 2, stock: null, icono: "estrella", disponible: true })
   },
   estilos: {
     title: "tipo de collar", empty: "Aún no hay tipos de collar.",
@@ -565,7 +594,7 @@ function renderPrecios(m) {
     ${E.map(e => `<b>${esc(e.nombre)}</b><div style="display:flex;gap:4px"><input aria-label="Base ${esc(e.nombre)}" data-e="${e.id}" data-k="base" type="number" step="0.5" min="0" value="${e.base ?? ""}"><input aria-label="Por letra ${esc(e.nombre)}" data-e="${e.id}" data-k="porLetra" type="number" step="0.5" min="0" value="${e.porLetra ?? ""}"></div><input aria-label="Talla L ${esc(e.nombre)}" data-e="${e.id}" data-k="tallaL" type="number" step="0.5" min="0" value="${e.tallaL ?? ""}">`).join("")}</div>
     <h2>Llavero match</h2>
     <div class="grid3"><label class="field">Con collar de placa<input id="llPlaca" type="number" step="0.5" min="0" value="${L.conPlaca ?? ""}"></label><label class="field">Base<input id="llBase" type="number" step="0.5" min="0" value="${L.base ?? ""}"></label><label class="field">Por letra<input id="llLetra" type="number" step="0.5" min="0" value="${L.porLetra ?? ""}"></label></div>
-    <div class="grid3"><label class="field">Número atrás<input id="numAtras" type="number" step="0.5" min="0" value="${N.precio ?? ""}"></label><label class="field">Máx. charms<input id="maxCh" type="number" min="1" value="${A.maxCharms ?? 4}"></label><label class="field">Máx. cordones<input id="maxCo" type="number" min="1" value="${A.maxCordones ?? 2}"></label></div>
+    <div class="grid3"><label class="field">Número atrás<input id="numAtras" type="number" step="0.5" min="0" value="${N.precio ?? ""}"></label><label class="field">Máx. colgantes<input id="maxCh" type="number" min="1" value="${A.maxCharms ?? 6}"></label><label class="field">Máx. bolitas en el hilo<input id="maxCu" type="number" min="0" value="${A.maxCuentas ?? 10}"></label><label class="field">Máx. cordones<input id="maxCo" type="number" min="1" value="${A.maxCordones ?? 2}"></label></div>
     <button type="submit" class="btn pri">Guardar precios</button></form>`;
   $("#preciosForm").onsubmit = async ev => {
     ev.preventDefault();
@@ -576,7 +605,7 @@ function renderPrecios(m) {
         if (upd.base == null) upd.base = 0; if (upd.porLetra == null) upd.porLetra = 0;
         if (JSON.stringify(upd) !== JSON.stringify({ base: e.base, porLetra: e.porLetra, tallaL: e.tallaL ?? null })) await saving(db.doc("estilos/" + e.id).update(upd));
       }
-      await saving(db.doc("ajustes/general").update({ llavero: { conPlaca: num($("#llPlaca").value), base: num($("#llBase").value), porLetra: num($("#llLetra").value) }, numeroAtras: { precio: num($("#numAtras").value) ?? 0, soloEn: "placa" }, maxCharms: num($("#maxCh").value) || 4, maxCordones: num($("#maxCo").value) || 2 }));
+      await saving(db.doc("ajustes/general").update({ llavero: { conPlaca: num($("#llPlaca").value), base: num($("#llBase").value), porLetra: num($("#llLetra").value) }, numeroAtras: { precio: num($("#numAtras").value) ?? 0, soloEn: "placa" }, maxCharms: num($("#maxCh").value) || 6, maxCuentas: num($("#maxCu").value) ?? 10, maxCordones: num($("#maxCo").value) || 2 }));
       toast("Precios guardados");
     } catch (e) {}
   };
@@ -948,8 +977,8 @@ function renderCrea() {
 function creaSummary() { const ch = creaCharms(); return crea.sel.map(id => ch.find(c => c.id === id)?.nombre).filter(Boolean).join(" + "); }
 
 /* ---------- Doggy “Arma su collar”: step by step, all options from the Arma collar tab ---------- */
-const col = { step: 1, estilo: null, talla: "M", cordones: [], nombre: "", charms: [], placa: null, numero: "", llavero: false, palabra: "DOG MOM", regalo: null, matchy: null, humano: "" };
-const COL_STEPS = ["Collar y cuerda", "Nombre", "Charms", "Extras y promos", "Resumen"];
+const col = { step: 1, estilo: null, talla: "M", cordones: [], nombre: "", charms: [], placa: null, numero: "", llavero: false, palabra: "DOG MOM", regalo: null, matchy: null, humano: "", cuentas: [], sub3: "cuenta", grp: {} };
+const COL_STEPS = ["Collar", "Nombre", "Charms", "Extras", "Resumen"];
 const cEstilos = () => live(S.data.estilos).sort((a, b) => (a.orden || 0) - (b.orden || 0));
 const cEstilo = () => cEstilos().find(e => e.id === col.estilo) || cEstilos()[0];
 const kindOf = e => !e ? "letras" : (e.id === "dije" || e.maxLetras === 1) ? "dije" : /placa/i.test(e.id + " " + e.nombre) ? "placa" : "letras";
@@ -965,7 +994,8 @@ function colLines() {
   const base = col.talla === "L" && e.tallaL != null ? e.tallaL : (e.base || 0);
   L.push({ t: `${e.nombre} · talla ${col.talla}`, v: base });
   if (e.porLetra) L.push({ t: `${nLetras(nombreUsado())} letras (${nombreUsado() || "—"})`, v: e.porLetra * nLetras(nombreUsado()) });
-  col.charms.forEach(id => { const c = S.data.charms.find(x => x.id === id); if (c) L.push({ t: `Charm ${c.nombre}`, v: +c.precio || 0 }); });
+  col.cuentas.forEach(id => { const c = S.data.charms.find(x => x.id === id); if (c) L.push({ t: `En el hilo: ${c.nombre}`, v: +c.precio || 0 }); });
+  col.charms.forEach(id => { const c = S.data.charms.find(x => x.id === id); if (c) L.push({ t: `Colgante: ${c.nombre}`, v: +c.precio || 0 }); });
   if (kindOf(e) === "placa" && col.numero.trim()) L.push({ t: "Número atrás de la placa", v: A.numeroAtras?.precio || 0 });
   if (col.matchy) L.push({ t: `💞 Collar humano a juego${col.humano.trim() ? ` “${col.humano.trim().toUpperCase()}”` : ""}`, v: +col.matchy.precioHumano || 0, conf: col.matchy.precioHumano == null || col.matchy.precioHumano === "" });
   const rg = regaloSel(); if (rg) L.push({ t: `🎁 ${rg.nombre} (promo)`, v: 0, gratis: true });
@@ -975,10 +1005,34 @@ function colLines() {
 const giftOpts = () => promosDe("regalo").flatMap(p => p.cat ? S.data.productos.filter(x => x.marca === "doggy" && x.categoria === p.cat && inStock(x)).map(x => ({ key: "p:" + x.id, nombre: x.nombre, img: prodImg(x), desc: p.nombre })) : [{ key: "r:" + p.id, nombre: p.nombre, img: itemImg(p), desc: p.descripcion }]);
 const regaloSel = () => giftOpts().find(o => o.key === col.regalo) || null;
 const promosDe = t => S.data.promos.filter(p => p.disponible !== false && p.tipo === t);
+const formaDe = c => c.forma === "cuenta" ? "cuenta" : "colgante";
+const maxColg = () => S.ajustes?.maxCharms || 6, maxCuent = () => S.ajustes?.maxCuentas ?? 10;
 const colTotal = () => colLines().reduce((a, l) => a + l.v, 0);
 const cordBg = ids => { const cs = ids.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []); const c = cs.length ? cs : ["#F5A3C7"]; return `conic-gradient(${c.map((x, i) => `${x} ${i * 100 / c.length}% ${(i + 1) * 100 / c.length}%`).join(",")})`; };
 const swBg = c => { const cs = c.colores?.length ? c.colores : ["#ddd"]; return `linear-gradient(135deg,${cs.map((x, i) => `${x} ${i * 100 / cs.length}% ${(i + 1) * 100 / cs.length}%`).join(",")})`; };
 const BEADS = ["#E63B2E", "#3E9AD6", "#F5D738", "#34A96A", "#7B3AF5", "#E66A92", "#F28A2E"];
+/* everything sits on the lower half of the cord: name, threaded beads, then hanging charms */
+const R = 46.5, at = (a, r = R) => `left:${(50 + r * Math.cos(a * Math.PI / 180)).toFixed(2)}%;top:${(50 + r * Math.sin(a * Math.PI / 180)).toFixed(2)}%`;
+function collarParts(k, name, pl) {
+  const cu = col.cuentas.map(id => S.data.charms.find(x => x.id === id)).filter(Boolean);
+  const cg = col.charms.map(id => S.data.charms.find(x => x.id === id)).filter(Boolean);
+  const pic = c => itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="${esc(c.nombre)}">` : iconSvg(c.icono);
+  let h = "", span = 0;
+  if (k === "letras") {
+    const L = (name || "NOMBRE").replace(/\s/g, "").split(""), st = 9.5; span = L.length * st;
+    L.forEach((ch, i) => { const a = 90 + (L.length - 1) / 2 * st - i * st; h += `<span class="on bead" style="${at(a)};background:${BEADS[i % BEADS.length]};transform:translate(-50%,-50%) rotate(${a - 90}deg)">${esc(ch)}</span>`; });
+  } else if (k === "placa") {
+    h += `<span class="hang tag2" style="${at(90, R + 3)}" ${pl && itemImg(pl) ? `data-bg` : ""}>${pl && itemImg(pl) ? `<img src="${esc(itemImg(pl))}" alt="">` : ""}<b>${esc(name || "NOMBRE")}</b></span>`; span = 8;
+  } else { h += `<span class="hang bead" style="${at(90, R + 4)};background:${BEADS[0]}">${esc((name || "R").charAt(0))}</span>`; span = 8; }
+  // threaded beads: alternate right / left of the name, each 6.5°
+  cu.forEach((c, i) => { const side = i % 2 ? -1 : 1, n = Math.floor(i / 2); const a = 90 + side * (span / 2 + 4 + n * 6.5); h += `<span class="on cu" style="${at(a)}">${pic(c)}</span>`; });
+  // hanging charms: spread over 28°–152°, never above the middle of the cord
+  const n = cg.length;
+  const spread = (cnt, from, to) => cnt === 1 ? [(from + to) / 2] : Array.from({ length: cnt }, (_, i) => from - i * (from - to) / (cnt - 1));
+  const angs = k === "letras" ? spread(n, 152, 28) : [...spread(Math.ceil(n / 2), 154, 120), ...spread(Math.floor(n / 2), 60, 26)];
+  cg.forEach((c, i) => { h += `<span class="hang pend" style="${at(angs[i], R + (k === "letras" ? 6 : 3))}">${pic(c)}</span>`; });
+  return h;
+}
 function colPreview() {
   const e = cEstilo(), k = kindOf(e), name = nombreUsado();
   const photo = col.step === 1 && e && itemImg(e);
@@ -986,10 +1040,7 @@ function colPreview() {
   const pl = S.data.placas.find(x => x.id === col.placa);
   return `<h2>${esc(name || "Su collar")}</h2>
     ${photo ? `<img src="${esc(photo)}" alt="${esc(e.nombre)}" style="max-width:100%;max-height:34svh;width:auto;object-fit:contain;border-radius:16px">` : ""}
-    <div class="collar"><div class="cord" style="background:${cordBg(col.cordones)}"></div>
-      ${chs.length ? `<div class="chs">${chs.map(c => itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="${esc(c.nombre)}">` : iconSvg(c.icono)).join("")}</div>` : ""}
-      ${k === "placa" ? `<div class="tag" ${pl && itemImg(pl) ? `style="background:url('${esc(itemImg(pl))}') center/cover;color:#fff;text-shadow:0 1px 3px #000"` : ""}>${esc(name || "NOMBRE")}</div>`
-        : `<div class="beads">${(name || (k === "dije" ? "R" : "NOMBRE")).replace(/\s/g, "").split("").map((ch, i) => `<span class="bead" style="background:${BEADS[i % BEADS.length]}">${esc(ch)}</span>`).join("")}</div>`}
+    <div class="collar"><div class="cord" style="background:${cordBg(col.cordones)}"></div>${collarParts(k, name, pl)}
     </div>
     <ul class="lines">${colLines().map(l => `<li><span>${esc(l.t)}</span><span>${l.gratis ? "Gratis" : l.conf ? "por confirmar" : l.v < 0 ? "−" + money(-l.v) : l.v ? money(l.v) : "Incluido"}</span></li>`).join("")}</ul>
     <div class="tot">Total ${money(colTotal())}</div>`;
@@ -1002,7 +1053,18 @@ function colPanel() {
     <h3>Cuerda${maxCords() > 1 ? ` · hasta ${maxCords()}` : ""}</h3><div class="opts">${cCords().map(c => `<button type="button" class="opt2" data-ctog="cordones" data-v="${esc(c.id)}" aria-pressed="${col.cordones.includes(c.id)}">${itemImg(c) ? `<span class="ph"><img src="${esc(itemImg(c))}" alt="" loading="lazy"></span>` : `<span class="sw2" style="background:${swBg(c)}"></span>`}<b>${esc(c.nombre)}</b></button>`).join("")}</div>`;
   if (col.step === 2) return `<h3>${k === "dije" ? "Su inicial" : "Nombre de tu peludito"}</h3><input class="inpt" id="colName" maxlength="${k === "dije" ? 1 : e?.maxLetras || 10}" autocomplete="off" value="${esc(col.nombre)}" aria-label="Nombre">
     <p class="hint" style="text-align:left">${k === "letras" && e?.porLetra ? `Cada letra suma ${money(e.porLetra)}. Hasta ${e.maxLetras || 10} letras.` : k === "placa" ? "Va grabado en la placa." : "El dije lleva una letra."}</p>`;
-  if (col.step === 3) { const ch = cCharms(); return `<h3>Charms · ${col.charms.length}/${A.maxCharms || 4}</h3>${ch.length ? `<div class="opts">${ch.map(c => `<button type="button" class="opt2" data-ctog="charms" data-v="${esc(c.id)}" aria-pressed="${col.charms.includes(c.id)}"><span class="ph">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy">` : iconSvg(c.icono)}</span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)}</span></button>`).join("")}</div>` : `<div class="emptyg">Pronto ✨</div>`}<p class="hint" style="text-align:left">Toca de nuevo para quitarlo. Los charms son opcionales.</p>`; }
+  if (col.step === 3) {
+    const f = col.sub3, all = cCharms().filter(c => formaDe(c) === f), sel = f === "cuenta" ? col.cuentas : col.charms, max = f === "cuenta" ? maxCuent() : maxColg();
+    const groups = [...new Set(all.map(c => c.grupo?.trim() || "Clásicos"))];
+    const tabs = [...(all.some(c => c.popular) ? [["__pop", "⭐ Más usados"]] : []), ...groups.map(g => [g, g]), ["__all", "Todos"]];
+    const g = tabs.some(([k]) => k === col.grp[f]) ? col.grp[f] : tabs[0][0];
+    const list = g === "__all" ? all : g === "__pop" ? all.filter(c => c.popular) : all.filter(c => (c.grupo?.trim() || "Clásicos") === g);
+    return `<div class="seg2" role="tablist"><button type="button" role="tab" data-sub3="cuenta" aria-selected="${f === "cuenta"}"><b>① Bolitas y tallarines</b><small>van metidas en el hilo · ${col.cuentas.length}/${maxCuent()}</small></button><button type="button" role="tab" data-sub3="colgante" aria-selected="${f === "colgante"}"><b>② Colgantes</b><small>cuelgan del collar · ${col.charms.length}/${maxColg()}</small></button></div>
+    <p class="hint" style="text-align:left">${f === "cuenta" ? "Primero elige las bolitas o tallarines: son pequeñitos y se ensartan en el hilo, junto a su nombre." : "Ahora los colgantes: cuelgan de la mitad de abajo del collar, hasta " + maxColg() + "."} Toca de nuevo para quitar.</p>
+    ${all.length ? `<div class="chipsg">${tabs.map(([k, v]) => `<button type="button" data-grp="${esc(k)}" aria-pressed="${k === g}">${esc(v)}</button>`).join("")}</div>
+    <div class="opts">${list.map(c => `<button type="button" class="opt2" data-ctog="${f === "cuenta" ? "cuentas" : "charms"}" data-v="${esc(c.id)}" aria-pressed="${sel.includes(c.id)}"><span class="ph${f === "cuenta" ? " sm" : ""}">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy">` : iconSvg(c.icono)}</span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)}</span></button>`).join("")}</div>` : `<div class="emptyg">${f === "cuenta" ? "Pronto habrá bolitas ✨" : "Pronto ✨"}</div>`}
+    ${f === "cuenta" ? `<div class="row2"><button type="button" class="btnp" data-sub3="colgante">Seguir con los colgantes →</button></div>` : ""}`;
+  }
   if (col.step === 4) { const ll = A.llavero || {}; return `${col.matchy ? `<h3>💞 Tu collar a juego (Matchy)</h3><p class="hint" style="text-align:left">Hacemos el tuyo con los mismos colores${col.matchy.precioHumano != null && col.matchy.precioHumano !== "" ? ` · ${money(col.matchy.precioHumano)}` : ""}. ¿Qué palabra o nombre lleva? (opcional)</p><input class="inpt" id="colHum" maxlength="12" placeholder="Ej. tu nombre o DOG MOM" value="${esc(col.humano)}" aria-label="Palabra del collar humano">` : ""}${k === "placa" ? `<h3>Placa</h3><div class="opts">${cPlacas().map(x => `<button type="button" class="opt2" data-cset="placa" data-v="${esc(x.id)}" aria-pressed="${x.id === col.placa}">${itemImg(x) ? `<span class="ph"><img src="${esc(itemImg(x))}" alt="" loading="lazy"></span>` : ""}<b>${esc(x.nombre)}</b></button>`).join("")}</div>
     <h3>Número atrás (opcional${A.numeroAtras?.precio ? ` · ${money(A.numeroAtras.precio)}` : ""})</h3><input class="inpt" id="colNum" inputmode="tel" maxlength="14" placeholder="099 123 4567" value="${esc(col.numero)}" aria-label="Número atrás de la placa">` : ""}
     <h3>Llavero match para ti · ${k === "placa" ? money(ll.conPlaca) : `${money(ll.base)} + ${money(ll.porLetra)}/letra`}</h3>
@@ -1018,7 +1080,7 @@ function colOrder() {
   const e = cEstilo(), k = kindOf(e), pl = S.data.placas.find(x => x.id === col.placa);
   return [`• Tipo: ${e?.nombre || "—"}`, `• Talla: ${col.talla}`, `• Cuerda: ${col.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—"}`,
     `• ${k === "dije" ? "Inicial" : "Nombre"}: ${nombreUsado() || "—"}`, k === "placa" && pl ? `• Placa: ${pl.nombre}` : null, k === "placa" && col.numero.trim() ? `• Número atrás: ${col.numero.trim()}` : null,
-    `• Charms: ${col.charms.map(id => S.data.charms.find(c => c.id === id)?.nombre).filter(Boolean).join(", ") || "sin charms"}`, col.llavero ? `• Llavero match: ${col.palabra.trim()}` : null, col.matchy ? `• 💞 Matchy: collar humano a juego${col.humano.trim() ? ` “${col.humano.trim().toUpperCase()}”` : ""}` : null, regaloSel() ? `• 🎁 Regalo de promo: ${regaloSel().nombre} ($0)` : null].filter(Boolean);
+    `• Bolitas en el hilo: ${col.cuentas.map(id => S.data.charms.find(c => c.id === id)?.nombre).filter(Boolean).join(", ") || "ninguna"}`, `• Colgantes: ${col.charms.map(id => S.data.charms.find(c => c.id === id)?.nombre).filter(Boolean).join(", ") || "ninguno"}`, col.llavero ? `• Llavero match: ${col.palabra.trim()}` : null, col.matchy ? `• 💞 Matchy: collar humano a juego${col.humano.trim() ? ` “${col.humano.trim().toUpperCase()}”` : ""}` : null, regaloSel() ? `• 🎁 Regalo de promo: ${regaloSel().nombre} ($0)` : null].filter(Boolean);
 }
 function renderCollar() {
   view = "collar"; shopBrand = "doggy";
@@ -1029,7 +1091,7 @@ function renderCollar() {
   $("#hp").innerHTML = `<section class="shop" ${heroBg()}>${topBar("doggy", col.matchy ? "Arma tu Matchy 💞" : "Arma su collar", "doggy")}${bubbles("doggy", "make")}
     <div class="bld">
       <div class="prev gl" id="colPrev" aria-live="polite">${colPreview()}</div>
-      <div class="pick gl"><div class="steps2" role="tablist">${COL_STEPS.map((t, i) => `<button type="button" role="tab" data-cst="${i + 1}" aria-selected="${col.step === i + 1}">${i + 1} · ${t}</button>`).join("")}</div>
+      <div class="pick gl"><ol class="stepper">${COL_STEPS.map((t, i) => `<li class="${col.step === i + 1 ? "now" : col.step > i + 1 ? "done" : ""}"><button type="button" data-cst="${i + 1}" ${col.step === i + 1 ? 'aria-current="step"' : ""}><span class="dot">${col.step > i + 1 ? "✓" : i + 1}</span><span class="lb">${t}</span></button></li>`).join("")}</ol>
         <div id="colPanel" style="display:grid;gap:12px">${colPanel()}</div>
         ${col.step < 5 ? `<div class="row2"><button type="button" class="btnp" data-cst="${col.step + 1}">Siguiente →</button></div>` : ""}
       </div>
@@ -1047,7 +1109,7 @@ $("#hp").addEventListener("input", e => {
   if (t.id === "colPal") { t.value = t.value.toUpperCase(); col.palabra = t.value; colRefresh(); }
 });
 $("#hp").addEventListener("click", e => {
-  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-hit],[data-pf],[data-perso],[data-gift],[data-opt],[data-addopt],[data-waopt],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
+  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-hit],[data-pf],[data-sub3],[data-grp],[data-perso],[data-gift],[data-opt],[data-addopt],[data-waopt],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
   if (t.id === "hpClose") return closeHome();
   if (t.dataset.step) { const ps = live(prodsDe(shopCat)), i = ps.findIndex(p => p.id === shopProd?.id); shopProd = ps[(i + +t.dataset.step + ps.length) % ps.length]; const y = $("#hp").scrollTop; renderShop(); $("#hp").scrollTop = y; return; }
   if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return sendWa([`• 1 × ${p.nombre} – ${p.precioTexto || money(p.precio)}`], p.marca); }
@@ -1059,6 +1121,8 @@ $("#hp").addEventListener("click", e => {
   if (t.dataset.opt) { const p = S.data.productos.find(x => x.id === t.dataset.opt), sel = optSel[p.id] || (optSel[p.id] = []); if (t.dataset.i === "all") optSel[p.id] = sel.length === p.opciones.length ? [] : p.opciones.map((_, i) => i); else { const i = +t.dataset.i, k = sel.indexOf(i); k >= 0 ? sel.splice(k, 1) : sel.push(i); } const y = $("#hp").scrollTop; renderShop(); $("#hp").scrollTop = y; return; }
   if (t.dataset.addopt) { const p = S.data.productos.find(x => x.id === t.dataset.addopt), names = optNames(p); addToCart({ key: p.id + ":" + names.join("+"), nombre: `${p.nombre} (${names.length} par${names.length > 1 ? "es" : ""})`, detalle: names.join(", "), precio: names.length * (+p.precio || 0), precioTexto: money(names.length * (+p.precio || 0)), img: prodImg(p), marca: p.marca }); optSel[p.id] = []; return renderShop(); }
   if (t.dataset.waopt) { const p = S.data.productos.find(x => x.id === t.dataset.waopt), names = optNames(p); return sendWa([`• ${p.nombre}: ${names.join(", ")}`, `Total: ${money(names.length * (+p.precio || 0))} (${names.length} × ${money(p.precio)})`], p.marca); }
+  if (t.dataset.sub3) { col.sub3 = t.dataset.sub3; return renderCollar(); }
+  if (t.dataset.grp) { col.grp[col.sub3] = t.dataset.grp; return renderCollar(); }
   if (t.dataset.pf) { shopFoto = +t.dataset.pf; const im = $("#hp .stage .big img"), u = t.querySelector("img")?.getAttribute("src"); if (im && u) im.src = u; $("#hp").querySelectorAll("[data-pf]").forEach(x => x.setAttribute("aria-selected", x === t)); return; }
   if (t.dataset.hit) { const p = S.data.productos.find(x => x.id === t.dataset.hit); shopCat = S.data.categorias.find(c => c.marca === p.marca && c.nombre === p.categoria) || null; shopProd = p; $("#hpSearch")?.remove(); renderShop(p.marca); $("#hp").scrollTo({ top: 0 }); return; }
   if (t.dataset.gift) { col.regalo = col.regalo === t.dataset.gift ? null : t.dataset.gift; return renderCollar(); }
@@ -1067,7 +1131,7 @@ $("#hp").addEventListener("click", e => {
   if (t.dataset.cst) { col.step = +t.dataset.cst; renderCollar(); $("#hp").scrollTo({ top: 0, behavior: "smooth" }); return; }
   if (t.dataset.cset) { col[t.dataset.cset] = t.dataset.v; if (t.dataset.cset === "estilo") col.cordones = col.cordones.slice(0, maxCords()); return renderCollar(); }
   if (t.dataset.ctog) {
-    const k = t.dataset.ctog, v = t.dataset.v, arr = col[k], i = arr.indexOf(v), max = k === "cordones" ? maxCords() : (S.ajustes?.maxCharms || 4);
+    const k = t.dataset.ctog, v = t.dataset.v, arr = col[k], i = arr.indexOf(v), max = k === "cordones" ? maxCords() : k === "cuentas" ? maxCuent() : maxColg();
     if (i >= 0) { if (!(k === "cordones" && arr.length === 1)) arr.splice(i, 1); }
     else if (max === 1 && k === "cordones") col.cordones = [v];
     else if (arr.length < max) arr.push(v); else toast(`Máximo ${max}`);
