@@ -1022,9 +1022,10 @@ const cEstilos = () => live(S.data.estilos).sort((a, b) => (a.orden || 0) - (b.o
 const cEstilo = () => cEstilos().find(e => e.id === col.estilo) || cEstilos()[0];
 const kindOf = e => !e ? "letras" : (e.id === "dije" || e.maxLetras === 1) ? "dije" : /placa/i.test(e.id + " " + e.nombre) ? "placa" : "letras";
 const cTallas = () => { const t = S.ajustes?.tallas; const def = [{ id: "S", cm: "20–30 cm", ejemplos: "Chihuahua, Yorkie, gatos" }, { id: "M", cm: "30–40 cm", ejemplos: "Frenchie, Pug, Schnauzer" }, { id: "L", cm: "40–55 cm", ejemplos: "Labrador, Golden, Husky" }]; return Array.isArray(t) && t.length ? t.map(x => typeof x === "string" ? { id: x } : x) : def; };
-const cCords = () => S.data.cordones.filter(inStock);
+const cCords = () => S.data.cordones.filter(inStock).sort((a, b) => (a.orden ?? 999) - (b.orden ?? 999));
 const cCharms = () => S.data.charms.filter(inStock);
-const cPlacas = () => S.data.placas.filter(inStock);
+const byOrden = (a, b) => (a.orden ?? 999) - (b.orden ?? 999) || (a.nombre || "").localeCompare(b.nombre || "");
+const cPlacas = () => S.data.placas.filter(inStock).sort(byOrden);
 const maxCords = () => kindOf(cEstilo()) === "letras" ? 1 : (S.ajustes?.maxCordones || 2);
 const nombreUsado = () => { const e = cEstilo(), n = col.nombre.trim().toUpperCase(); return kindOf(e) === "dije" ? n.slice(0, 1) : n.slice(0, e?.maxLetras || 10); };
 const nLetras = s => s.replace(/\s/g, "").length;
