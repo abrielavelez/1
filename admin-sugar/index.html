@@ -860,7 +860,7 @@ function fieldHtml(f, d) {
       const pid = f.k in ed.newPhotos ? ed.newPhotos[f.k] : v;
       const fb = !pid && f.fallback && d[f.fallback] ? d[f.fallback] : "";
       const src = pid ? blob(pid) : fb;
-      const ps = d[f.k + "Pos"] || "50% 50%", catFb = !src && ed.col === "categorias" ? catIcon({ ...d, iconoId: null }) : "", shown = src || catFb, fp = !!shown && f.k === "fotoId" || (ed.col !== "productos" && shown);
+      const ps = d[f.k + "Pos"] || "50% 50%", catFb = !src && ed.col === "categorias" ? catIcon({ ...d, iconoId: null }) : "", shown = src || catFb, fp = ed.col !== "productos" && shown;
       return `<div class="field">${f.label}${f.help ? `<small>${esc(f.help)}</small>` : ""}${fp ? `<small>✋ Arrastra el <b>recuadro blanco</b> con el dedo: lo que queda adentro es lo que se ve${ed.col === "productos" ? " en el círculo de la categoría y en las miniaturas (en la página del producto se ve la foto completa)" : " en la tienda"}.</small>` : ""}<div class="photo">${fp ? cropHtml(shown, ps, `data-fk="${f.k}"`) : `<div class="pv ${f.round ? "round" : ""}" style="${f.round ? `background:${esc(d.color || "#eee")}` : ""}">${src ? `<img src="${esc(src)}" alt="">` : "Sin foto"}</div>`}
       ${assets ? `<div style="display:grid;gap:6px"><label class="btn" for="up_${f.k}">${src ? "Cambiar foto" : "Subir foto"}</label><input type="file" id="up_${f.k}" data-up="${f.k}" accept="image/jpeg,image/png,image/webp">${src ? `<button type="button" class="btn" data-nophoto="${f.k}">Quitar foto</button>` : ""}</div>` : `<small>Las fotos solo se pueden subir con tu cuenta.</small>`}</div></div>`;
     }
