@@ -133,7 +133,7 @@ h1 span{color:var(--pink)}
 .hero .doggy img{width:100%;display:block}
 .hero .doggy .dcap{display:block;margin-top:6px;font:600 12px/1.1 var(--mono);color:#fff;text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
 @media (max-width:760px){.hero{background-image:url("img/hero-m.jpg")} .hero .ctas{left:50%;transform:translateX(-50%);justify-content:center;width:calc(100% - 32px);bottom:70px}
-  .hero .ctas .pill{flex:1;padding:14px 10px;text-align:center;font-size:15px} .hero .nav .pill{display:none} .hero .doggy{top:clamp(14px,4vh,40px);bottom:auto;right:auto;left:auto;right:16px;transform:none;width:92px;padding:6px;border-radius:18px}}
+  .hero .ctas .pill{flex:1;padding:14px 10px;text-align:center;font-size:15px} .hero .nav .pill{display:none} .hero .doggy{top:auto;bottom:150px;left:50%;right:auto;transform:translateX(-50%);width:120px;padding:8px;border-radius:18px}}
 /* shop */
 .shop{min-height:100svh;background:url("img/hero.jpg") center/cover fixed;position:relative;padding-bottom:70px}
 .shop::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,.12);pointer-events:none}
@@ -1066,7 +1066,7 @@ function renderHero() {
     <div class="logo gl"><img src="img/logo-club.png" alt="Sugar Club"></div>
     <nav class="nav"><button type="button" class="pill gl" data-go="shop">Ver productos</button><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</nav>
     <div class="ctas"><button type="button" class="pill w gl" data-go="collar">Arma tu collar 🐾</button><button type="button" class="pill w gl" data-go="shop">Compra ahora</button></div>
-    <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, arma tu collar"><img src="${esc(doggyLogo())}" alt=""><span class="dcap">Arma tu collar 🐾</span></button>
+    <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, arma tu collar"><img src="${esc(doggyLogo())}" alt=""></button>
   </section>${footer()}${closeBtn}`;
 }
 
