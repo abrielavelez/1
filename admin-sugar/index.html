@@ -186,6 +186,11 @@ h1 span{color:var(--pink)}
 .pstrip button img{width:100%;height:100%;object-fit:cover;border-radius:9px}
 .pstrip button[aria-selected="true"]{border-color:#FF4F9A;box-shadow:0 0 0 2px #FF4F9A}
 .ckf{max-width:440px;color:var(--ink)}
+.ptab{display:grid;grid-template-columns:1.4fr repeat(5,minmax(70px,1fr)) 1.3fr;gap:6px 8px;align-items:center;overflow-x:auto}
+.ptab .h{font:600 11px var(--body);color:var(--soft);text-transform:uppercase;letter-spacing:.04em}
+.ptab input,.ptab select{width:100%;min-width:0;border:1px solid var(--line);border-radius:8px;padding:7px 8px;font:inherit}
+@media (max-width:760px){.ptab{grid-template-columns:repeat(7,110px)}}
+.warnbox{background:#FFF4E5;color:#7A4300;border:1.5px solid #FAD7A0;border-radius:14px;padding:10px 12px;font:600 13px var(--body)}
 .ocard{width:100%;box-sizing:border-box;background:rgba(255,255,255,.92);border-radius:16px;padding:6px 10px;display:grid;color:#2a3550;box-shadow:0 6px 16px rgba(10,40,100,.15)}
 .ocard .ol{display:grid;grid-template-columns:30px 1fr auto 26px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #e3e6ee;font:600 13px var(--body)}
 .ocard .ol:last-child{border-bottom:0}
@@ -698,22 +703,25 @@ function groupByCat(items) {
 function renderPrecios(m) {
   const E = S.data.estilos.slice().sort((a, b) => (a.orden || 0) - (b.orden || 0)), A = S.ajustes || {};
   const L = A.llavero || {}, N = A.numeroAtras || {};
+  const inp = (e, k, ph = "") => `<input aria-label="${k} ${esc(e.nombre)}" data-e="${e.id}" data-k="${k}" type="number" step="0.5" min="0" placeholder="${ph}" value="${e[k] ?? ""}">`;
   m.innerHTML = `<form class="panel" id="preciosForm">
-    <h2>Precios de los collares</h2><p>Lo que cobra “Arma tu collar”. Talla L vacío = mismo precio.</p>
-    <div class="grid3"><span class="h">Collar</span><span class="h">Base · por letra</span><span class="h">Talla L</span>
-    ${E.map(e => `<b>${esc(e.nombre)}</b><div style="display:flex;gap:4px"><input aria-label="Base ${esc(e.nombre)}" data-e="${e.id}" data-k="base" type="number" step="0.5" min="0" value="${e.base ?? ""}"><input aria-label="Por letra ${esc(e.nombre)}" data-e="${e.id}" data-k="porLetra" type="number" step="0.5" min="0" value="${e.porLetra ?? ""}"></div><input aria-label="Talla L ${esc(e.nombre)}" data-e="${e.id}" data-k="tallaL" type="number" step="0.5" min="0" value="${e.tallaL ?? ""}">`).join("")}</div>
-    <h2>Llavero match</h2>
-    <div class="grid3"><label class="field">Con collar de placa<input id="llPlaca" type="number" step="0.5" min="0" value="${L.conPlaca ?? ""}"></label><label class="field">Base<input id="llBase" type="number" step="0.5" min="0" value="${L.base ?? ""}"></label><label class="field">Por letra<input id="llLetra" type="number" step="0.5" min="0" value="${L.porLetra ?? ""}"></label></div>
-    <div class="grid3"><input id="numAtras" type="hidden" value="${N.precio ?? ""}"><label class="field">Máx. colgantes<input id="maxCh" type="number" min="1" value="${A.maxCharms ?? 6}"></label><label class="field">Máx. bolitas en el hilo<input id="maxCu" type="number" min="0" value="${A.maxCuentas ?? 10}"></label><label class="field">Máx. cordones<input id="maxCo" type="number" min="1" value="${A.maxCordones ?? 2}"></label></div>
+    <h2>Collares de perro</h2><p>Cada tipo empieza con su <b>precio inicial</b> (ya incluye el hilo). Lo demás que elijan se suma.</p>
+    <div class="ptab"><span class="h">Tipo</span><span class="h">Precio inicial</span><span class="h">Talla L</span><span class="h">+ por letra</span><span class="h">Mín. cuentitas</span><span class="h">Mín. charms</span><span class="h">Si hay los dos mínimos</span>
+    ${E.map(e => `<b>${esc(e.nombre)}</b>${inp(e, "base")}${inp(e, "tallaL", "igual")}${inp(e, "porLetra", "0")}${inp(e, "minCuentas", "0")}${inp(e, "minCharms", "0")}<select data-e="${e.id}" data-k="minModo" aria-label="Regla ${esc(e.nombre)}"><option value="ambos" ${e.minModo !== "cualquiera" ? "selected" : ""}>pedir los dos</option><option value="cualquiera" ${e.minModo === "cualquiera" ? "selected" : ""}>basta uno de los dos</option></select>`).join("")}</div>
+    <p class="note">Ejemplo: “Trenzado con placa” → mín. cuentitas 2, mín. charms 2, “basta uno de los dos” = la clienta debe poner 2 charms <b>o</b> 2 cuentitas. El nombre o la inicial siempre es obligatorio.</p>
+    <h2>Llaveros</h2><p>El llavero empieza con el precio del <b>hilo</b>. El colgador se cobra aparte (su precio está en Colgadores).</p>
+    <div class="grid3"><label class="field">Hilo (precio inicial)<input id="llBase" type="number" step="0.5" min="0" value="${L.base ?? 2}"></label><label class="field">+ por letra<input id="llLetra" type="number" step="0.5" min="0" value="${L.porLetra ?? ""}"></label><label class="field">Llavero match con collar de placa<input id="llPlaca" type="number" step="0.5" min="0" value="${L.conPlaca ?? ""}"></label></div>
+    <h2>Límites</h2>
+    <div class="grid3"><input id="numAtras" type="hidden" value="${N.precio ?? ""}"><label class="field">Máx. charms en el collar<input id="maxCh" type="number" min="1" value="${A.maxCharms ?? 6}"></label><label class="field">Máx. cuentitas en el collar<input id="maxCu" type="number" min="0" value="${A.maxCuentas ?? 10}"></label><label class="field">Máx. hilos en el collar<input id="maxCo" type="number" min="1" value="${A.maxCordones ?? 2}"></label></div>
     <button type="submit" class="btn pri">Guardar precios</button></form>`;
   $("#preciosForm").onsubmit = async ev => {
     ev.preventDefault();
     const num = v => v === "" ? null : +v;
     try {
       for (const e of E) {
-        const upd = {}; m.querySelectorAll(`[data-e="${e.id}"]`).forEach(i => upd[i.dataset.k] = num(i.value));
-        if (upd.base == null) upd.base = 0; if (upd.porLetra == null) upd.porLetra = 0;
-        if (JSON.stringify(upd) !== JSON.stringify({ base: e.base, porLetra: e.porLetra, tallaL: e.tallaL ?? null })) await saving(db.doc("estilos/" + e.id).update(upd));
+        const upd = {}; m.querySelectorAll(`[data-e="${e.id}"]`).forEach(i => upd[i.dataset.k] = i.tagName === "SELECT" ? i.value : num(i.value));
+        ["base", "porLetra", "minCuentas", "minCharms"].forEach(k => { if (upd[k] == null) upd[k] = 0; });
+        if (Object.keys(upd).some(k => (upd[k] ?? null) !== (e[k] ?? null))) await saving(db.doc("estilos/" + e.id).update(upd));
       }
       await saving(db.doc("ajustes/general").update({ llavero: { conPlaca: num($("#llPlaca").value), base: num($("#llBase").value), porLetra: num($("#llLetra").value) }, numeroAtras: { precio: num($("#numAtras").value) ?? 0, soloEn: "placa" }, maxCharms: num($("#maxCh").value) || 6, maxCuentas: num($("#maxCu").value) ?? 10, maxCordones: num($("#maxCo").value) || 2 }));
       toast("Precios guardados");
@@ -1194,7 +1202,7 @@ const nLetras = s => s.replace(/\s/g, "").length;
 function colLines() {
   const e = cEstilo(), A = S.ajustes || {}, L = []; if (!e) return L;
   const base = col.talla === "L" && e.tallaL != null ? e.tallaL : (e.base || 0);
-  L.push({ t: `${e.nombre} · talla ${col.talla}`, v: base });
+  L.push({ t: `${e.nombre} · talla ${col.talla} (precio inicial, incluye el hilo)`, v: base });
   if (e.porLetra) L.push({ t: `${nLetras(nombreUsado())} letras (${nombreUsado() || "—"})`, v: e.porLetra * nLetras(nombreUsado()) });
   cqList().forEach(({ c, n }) => L.push({ t: `Cuentitas ${c.nombre} × ${n * 2}`, v: (+c.precio || 0) * n * 2, img: itemImg(c), rm: "cq|" + c.id }));
   col.charms.forEach(id => { const c = S.data.charms.find(x => x.id === id); if (c) L.push({ t: c.nombre, v: +c.precio || 0, img: itemImg(c), ic: c.icono, rm: "ch|" + id }); });
@@ -1322,7 +1330,7 @@ function boneSvg(fill, text) {
 }
 function colPanel() {
   const e = cEstilo(), k = kindOf(e), A = S.ajustes || {};
-  if (col.step === 1) return `<h3>Tipo de collar</h3><div class="opts">${cEstilos().map(x => `<button type="button" class="opt2" data-cset="estilo" data-v="${esc(x.id)}" aria-pressed="${x === e}">${itemImg(x) ? `<span class="ph cov"><img src="${esc(itemImg(x))}" alt="" loading="lazy" style="object-position:${posOf(x)}"></span>` : ""}<b>${esc(x.nombre)}</b>${x.detalle ? `<small>${esc(x.detalle)}</small>` : ""}<span class="p">desde ${money(x.base)}${x.porLetra ? ` + ${money(x.porLetra)}/letra` : ""}</span></button>`).join("") || `<div class="emptyg">Crea los tipos en Arma collar → Tipos.</div>`}</div>
+  if (col.step === 1) return `<h3>Tipo de collar</h3><div class="opts">${cEstilos().map(x => `<button type="button" class="opt2" data-cset="estilo" data-v="${esc(x.id)}" aria-pressed="${x === e}">${itemImg(x) ? `<span class="ph cov"><img src="${esc(itemImg(x))}" alt="" loading="lazy" style="object-position:${posOf(x)}"></span>` : ""}<b>${esc(x.nombre)}</b>${x.detalle ? `<small>${esc(x.detalle)}</small>` : ""}<span class="p">desde ${money(x.base)}${x.porLetra ? ` + ${money(x.porLetra)}/letra` : ""}</span>${minTxt(x) ? `<small>${esc(minTxt(x))}</small>` : ""}</button>`).join("") || `<div class="emptyg">Crea los tipos en Arma collar → Tipos.</div>`}</div>
     <h3>Talla</h3><div class="opts">${cTallas().map(t => `<button type="button" class="opt2" data-cset="talla" data-v="${esc(t.id)}" aria-pressed="${t.id === col.talla}"><b>${esc(t.id)}</b>${t.cm ? `<small>${esc(t.cm)}</small>` : ""}${t.ejemplos ? `<small>${esc(t.ejemplos)}</small>` : ""}</button>`).join("")}</div>
     <p class="hint" style="text-align:left">¿No sabes su talla? Mide su cuello con un hilo y suma 2 dedos.${e?.tallaL != null ? ` Talla L de este collar: ${money(e.tallaL)}.` : ""}</p>
     <h3>Cuerda${maxCords() > 1 ? ` · hasta ${maxCords()}` : ""}</h3>${["Liso", "Mezclado"].map(tp => { const L = cCords().filter(c => (c.tipo || "Liso") === tp); return L.length ? `<p class="hint" style="text-align:left;margin:0">${tp === "Liso" ? "Colores enteros" : "Mezclados"} · ${L.length}</p><div class="swg">${L.map(c => `<button type="button" class="swc" data-ctog="cordones" data-v="${esc(c.id)}" aria-pressed="${col.cordones.includes(c.id)}" title="${esc(c.nombre)}" aria-label="${esc(c.nombre)}" style="background:${swBg(c)}">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy" style="object-position:${posOf(c)}">` : ""}</button>`).join("")}</div>` : (tp === "Mezclado" ? `<p class="hint" style="text-align:left;margin:0">Mezclados · pronto</p>` : ""); }).join("")}
@@ -1349,10 +1357,21 @@ function colPanel() {
     ${col.llavero ? `<input class="inpt" id="colPal" maxlength="10" value="${esc(col.palabra)}" aria-label="Palabra del llavero"><div class="steps2">${["DOG MOM", "CAT MOM", "DOG DAD", nombreUsado()].filter(Boolean).map(w => `<button type="button" data-cset="palabra" data-v="${esc(w)}">${esc(w)}</button>`).join("")}</div>` : ""}
     <p class="hint" style="text-align:left">El cierre lo elegimos nosotras para que combine con tus colores.</p>`; }
   const gifts = giftOpts();
-  return `${gifts.length ? `<h3>🎁 Elige tu regalo de promo</h3><p class="hint" style="text-align:left">Con tu collar te llevas uno de estos gratis:</p><div class="opts">${gifts.map(o => `<button type="button" class="opt2" data-gift="${esc(o.key)}" aria-pressed="${o.key === col.regalo}">${o.img ? `<span class="ph"><img src="${esc(o.img)}" alt="" loading="lazy"></span>` : `<span class="ph" style="font-size:34px">🎁</span>`}<b>${esc(o.nombre)}</b>${o.desc ? `<small>${esc(o.desc)}</small>` : ""}<span class="p">$0 · Gratis</span></button>`).join("")}</div>` : ""}<h3>Tu pedido</h3>${orderCard(colLines(), colTotal())}
+  return `${gifts.length ? `<h3>🎁 Elige tu regalo de promo</h3><p class="hint" style="text-align:left">Con tu collar te llevas uno de estos gratis:</p><div class="opts">${gifts.map(o => `<button type="button" class="opt2" data-gift="${esc(o.key)}" aria-pressed="${o.key === col.regalo}">${o.img ? `<span class="ph"><img src="${esc(o.img)}" alt="" loading="lazy"></span>` : `<span class="ph" style="font-size:34px">🎁</span>`}<b>${esc(o.nombre)}</b>${o.desc ? `<small>${esc(o.desc)}</small>` : ""}<span class="p">$0 · Gratis</span></button>`).join("")}</div>` : ""}${colFaltan().length ? `<div class="warnbox">Para este collar falta: <b>${esc(colFaltan().join(" · "))}</b></div>` : ""}<h3>Tu pedido</h3>${orderCard(colLines(), colTotal())}
     <p class="hint" style="text-align:left">Cuerda: ${esc(col.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—")}</p>
     <p class="hint" style="text-align:left">${FOTO_NOTE}</p>
-    <div class="row2"><button type="button" class="btnp" data-go="colAdd">Agregar a la canasta</button><button type="button" class="btnp wa" data-go="colWa">Hacer mi pedido</button></div>`;
+    <div class="row2"><button type="button" class="btnp" data-go="colAdd" ${colFaltan().length ? "disabled" : ""}>Agregar a la canasta</button><button type="button" class="btnp wa" data-go="colWa" ${colFaltan().length ? "disabled" : ""}>Hacer mi pedido</button></div>`;
+}
+/* what the chosen collar still needs before it can be ordered (set per type in Arma collar → Precios) */
+const minTxt = e => { const mc = +e.minCuentas || 0, mh = +e.minCharms || 0; if (!mc && !mh) return ""; if (mc && mh) return `Mínimo ${mh} charms ${e.minModo === "cualquiera" ? "o" : "y"} ${mc} cuentitas`; return mc ? `Mínimo ${mc} cuentitas` : `Mínimo ${mh} charms`; };
+function colFaltan() {
+  const e = cEstilo(); if (!e) return [];
+  const k = kindOf(e), F = [], mc = +e.minCuentas || 0, mh = +e.minCharms || 0, cu = cqPieces(), ch = col.charms.length;
+  if (!nombreUsado()) F.push(k === "dije" ? "su inicial" : "su nombre");
+  const okCu = cu >= mc, okCh = ch >= mh;
+  if (mc && mh && e.minModo === "cualquiera") { if (!okCu && !okCh) F.push(`mínimo ${mh} charms o ${mc} cuentitas`); }
+  else { if (!okCu) F.push(`mínimo ${mc} cuentitas`); if (!okCh) F.push(`mínimo ${mh} charms`); }
+  return F;
 }
 function colOrder() {
   const e = cEstilo(), k = kindOf(e), pl = S.data.placas.find(x => x.id === col.placa);
@@ -1372,8 +1391,8 @@ const llPrefCols = () => { const c = ll.colores.map(n => PALETA.find(p => p[0] =
 const llCord = () => S.data.cordones.find(c => c.id === ll.cordon);
 function llLines() {
   const A = S.ajustes?.llavero || {}, L = [], g = S.data.colgadores.find(x => x.id === ll.colg);
-  L.push({ t: "Llavero base", v: +A.base || 0 });
-  if (llCord()) L.push({ t: `Hilo: ${llCord().nombre}`, v: S.ajustes?.llavero?.hilo ?? 2 });
+
+  L.push({ t: `Hilo${llCord() ? ": " + llCord().nombre : ""} (precio inicial)`, v: A.base ?? 2 });
   if (g) L.push({ t: `Colgador: ${g.nombre}`, v: +g.precio || 0, img: itemImg(g) });
   [0, 1].forEach(i => {
     const w = llWord(i); if (nLetras(w)) L.push({ t: `Tira ${i + 1}: ${nLetras(w)} letras (${w})`, v: (+A.porLetra || 0) * nLetras(w) });
@@ -1533,6 +1552,7 @@ $("#hp").addEventListener("click", e => {
   if (t.dataset.gift) { col.regalo = col.regalo === t.dataset.gift ? null : t.dataset.gift; return renderCollar(); }
   if (t.dataset.ch) { const y = $("#hp").scrollTop; setTimeout(() => $("#hp").scrollTop = y); const i = crea.sel.indexOf(t.dataset.ch); if (i >= 0) crea.sel.splice(i, 1); else if (crea.sel.length < creaMax()) crea.sel.push(t.dataset.ch); else toast(`Máximo ${creaMax()} charms`); return renderCrea(); }
   if (t.dataset.rm) { crea.sel.splice(+t.dataset.rm, 1); return renderCrea(); }
+  if (t.dataset.cst && +t.dataset.cst === 5 && colFaltan().length) toast("Falta: " + colFaltan().join(" · "));
   if (t.dataset.cst) { col.step = +t.dataset.cst; renderCollar(); $("#hp").scrollTo({ top: 0, behavior: "smooth" }); return; }
   if (t.dataset.cset) { col[t.dataset.cset] = t.dataset.v; if (t.dataset.cset === "estilo") col.cordones = col.cordones.slice(0, maxCords()); return renderCollar(); }
   if (t.dataset.ctog) {
