@@ -373,6 +373,11 @@ header{border-bottom:1px solid var(--line);margin-bottom:6px}
 .subrow{display:flex;gap:6px;align-items:center;overflow-x:auto;scrollbar-width:none;min-width:0}
 .subrow .lbl{flex:none;width:76px;font:600 11px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--soft)}
 .gal{display:flex;flex-wrap:wrap;gap:8px}
+.cropw{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.cpv{display:grid;justify-items:center;gap:4px;font-size:11px;color:var(--soft)}
+.cpv span{display:block;width:90px;overflow:hidden;border-radius:10px;border:2px solid var(--ink);background:#eee}
+.cpv span.round{border-radius:50%}
+.cpv img{width:100%;height:100%;object-fit:cover;display:block}
 .crop{position:relative;width:260px;max-width:100%;border-radius:10px;overflow:hidden;touch-action:none;cursor:grab;background:#ddd;line-height:0;user-select:none}
 .crop img{width:100%;height:auto;display:block;pointer-events:none}
 .crop .win{position:absolute;border:4px solid #fff;outline:2px dashed #6D28D9;outline-offset:-8px;border-radius:6px;box-shadow:0 0 0 9999px rgba(255,255,255,.62),0 0 0 4px rgba(0,0,0,.25);pointer-events:none}
@@ -763,7 +768,7 @@ function renderAjustes(m) {
 let ajPos = {};
 function focalFromOld(e, el) { const r = el.getBoundingClientRect(); const x = Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * 100), y = Math.round(Math.max(0, Math.min(1, (e.clientY - r.top) / r.height)) * 100); const v = `${x}% ${y}%`; const im = el.querySelector("img"), dot = el.querySelector(".fdot"); if (im) im.style.objectPosition = v; if (dot) { dot.style.left = x + "%"; dot.style.top = y + "%"; } return v; }
 /* crop frame: the whole photo is shown, a white frame marks what will be visible; drag to move it */
-const cropHtml = (src, pos, attr, ratio = 1) => `<div class="crop" ${attr} data-ratio="${ratio}" data-pos="${esc(pos)}"><img src="${esc(src)}" alt="" draggable="false" onload="layoutCrop(this.parentNode)"><i class="win"></i></div>`;
+const cropHtml = (src, pos, attr, ratio = 1) => `<div class="cropw"><div class="crop" ${attr} data-ratio="${ratio}" data-pos="${esc(pos)}"><img src="${esc(src)}" alt="" draggable="false" onload="layoutCrop(this.parentNode)"><i class="win"></i></div><div class="cpv"><span class="${ratio === 1 ? "round" : ""}" style="height:${Math.round(90 / ratio)}px"><img src="${esc(src)}" alt="" style="object-position:${esc(pos)}"></span><small>Así se verá</small></div></div>`;
 function cropGeo(el) {
   const im = el.querySelector("img"), nw = im.naturalWidth, nh = im.naturalHeight; if (!nw) return null;
   const r = +el.dataset.ratio || 1, cw = nw / nh > r ? nh * r : nw, ch = nw / nh > r ? nh : nw / r, sc = el.clientWidth / nw;
@@ -778,7 +783,7 @@ document.addEventListener("pointerdown", e => { const el = e.target.closest(".cr
 document.addEventListener("pointermove", e => {
   if (!fdrag) return; const { el, g } = fdrag, mx = (g.nw - g.cw) * g.sc, my = (g.nh - g.ch) * g.sc;
   const x = mx ? Math.max(0, Math.min(100, fdrag.x + (e.clientX - fdrag.x0) / mx * 100)) : 50, y = my ? Math.max(0, Math.min(100, fdrag.y + (e.clientY - fdrag.y0) / my * 100)) : 50;
-  const v = `${Math.round(x)}% ${Math.round(y)}%`; el.dataset.pos = v; layoutCrop(el);
+  const v = `${Math.round(x)}% ${Math.round(y)}%`; el.dataset.pos = v; layoutCrop(el); const pv = el.parentNode.querySelector(".cpv img"); if (pv) pv.style.objectPosition = v;
   if (el.dataset.fk && ed) ed.data[el.dataset.fk + "Pos"] = v; if (el.dataset.afk) ajPos[el.dataset.afk] = v;
 });
 document.addEventListener("pointerup", () => { if (fdrag) fdrag.el.classList.remove("moving"); fdrag = null; });
