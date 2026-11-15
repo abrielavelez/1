@@ -185,6 +185,8 @@ h1 span{color:var(--pink)}
 .pstrip button{width:62px;height:62px;border-radius:12px;border:2px solid rgba(255,255,255,.8);background:rgba(255,255,255,.6);padding:2px;cursor:pointer;overflow:hidden}
 .pstrip button img{width:100%;height:100%;object-fit:cover;border-radius:9px}
 .pstrip button[aria-selected="true"]{border-color:#FF4F9A;box-shadow:0 0 0 2px #FF4F9A}
+.ckf{max-width:440px;color:var(--ink)}
+.ckl{display:grid;gap:4px;font:700 13px var(--body);color:var(--ink)}
 /* footer + search */
 .foot{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 20px;padding:14px 16px 64px}
 .hero + .foot{background:#2E8BE0}
@@ -244,6 +246,9 @@ h1 span{color:var(--pink)}
 .llv{display:grid;justify-items:center;padding:6px 0 10px;min-height:300px}
 .llv .lg2 img{width:86px;height:86px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,.25))}
 .llv .lg2 .ring{display:block;width:56px;height:56px;border-radius:50%;border:7px solid #b9c0cc;box-shadow:inset 0 0 0 2px #e6e9ef,0 3px 6px rgba(0,0,0,.25)}
+.llv .loop{width:44px;height:28px;border:6px solid var(--c1,#d8dbe2);border-top:0;border-radius:0 0 22px 22px;margin-top:-14px}
+.llv .tiras{display:flex;gap:18px;align-items:flex-start;margin-top:-4px}
+.llv .knot{width:14px;height:14px;border-radius:50%;background:var(--cord);box-shadow:0 2px 3px rgba(0,0,0,.25)}
 .llv .strand{position:relative;display:grid;justify-items:center;gap:5px;padding:18px 0 22px;margin-top:-6px;isolation:isolate}
 .llv .strand::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 4px);width:8px;border-radius:4px;background:var(--cord);box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
 .llv .strand-old{background:linear-gradient(90deg,transparent calc(50% - 2px),#d8dbe2 calc(50% - 2px) calc(50% + 2px),transparent calc(50% + 2px))}
@@ -350,6 +355,22 @@ header{border-bottom:1px solid var(--line);margin-bottom:6px}
 .gi .ga{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;background:rgba(0,0,0,.45)}
 .gi .ga button{flex:1;border:0;background:none;color:#fff;font-size:13px;padding:3px 0;cursor:pointer}
 .gi.add small{font-size:10px}
+.pbadge{margin-left:6px;background:#E11D48;color:#fff;border-radius:999px;padding:0 6px;font:700 11px/18px var(--body)}
+.pedl{display:grid;gap:10px}
+.ped{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;display:grid;gap:8px}
+.ped .ph1{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ped .pc{font:700 16px var(--mono, monospace);letter-spacing:.04em}
+.ped .pd{margin-left:auto;color:var(--soft);font-size:12px}
+.ped .ph2{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:14px}
+.ped .ph2 a{color:#15803D;font-weight:600}
+.ped .ptot{margin-left:auto;font:700 16px var(--body)}
+.ped .pit{margin:0;padding:8px 10px;list-style:none;background:#F7F8FA;border-radius:8px;display:grid;gap:6px;font-size:13px}
+.ped .pit > li > span{float:right;font-weight:600}
+.ped .pit ul{margin:4px 0 0;padding-left:16px;color:#3B4252}
+.ped .pacts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ped .pacts input{flex:1;min-width:180px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:inherit}
+.ped .pacts select{border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit}
+.badge.st-nuevo{background:#FEE2E2;color:#B91C1C}.badge.st-confirmado{background:#DBEAFE;color:#1D4ED8}.badge.st-haciendo{background:#FEF3C7;color:#92400E}.badge.st-listo{background:#E0E7FF;color:#4338CA}.badge.st-entregado{background:#DCFCE7;color:#166534}.badge.st-cancelado{background:#F3F4F6;color:#6B7280}
 .pinfo{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .pinfo span{font:500 11px var(--body);padding:2px 7px;border-radius:6px;background:#F1F3F6;color:#3B4252;border:1px solid var(--line)}
 .pinfo span.warn{background:#FFF4E5;color:#9A5B00;border-color:#FAD7A0}
@@ -365,6 +386,7 @@ header{border-bottom:1px solid var(--line);margin-bottom:6px}
       <button type="button" role="tab" data-tab="productos" aria-selected="true">Productos</button>
       <button type="button" role="tab" data-tab="categorias" aria-selected="false">Categorías</button>
       <button type="button" role="tab" data-tab="collar" aria-selected="false">Arma collar</button>
+      <button type="button" role="tab" data-tab="pedidos" aria-selected="false">Pedidos<span class="pbadge" id="pBadge" hidden></span></button>
       <button type="button" role="tab" data-tab="ajustes" aria-selected="false">Ajustes</button>
     </nav>
     <div class="sub" id="subnav"></div>
@@ -603,12 +625,16 @@ function renderHeader() {
   } else if (S.tab === "collar") {
     sub.innerHTML = [["estilos", "Tipos"], ["cordones", "Cordones"], ["charms", "Charms"], ["placas", "Placas"], ["colgadores", "Colgadores 🔑"], ["promos", "Promos 🎁"], ["precios", "Precios"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
     tools.innerHTML = S.sub !== "precios" ? `<input type="search" id="q" placeholder="Buscar…" value="${esc(S.q)}" aria-label="Buscar"><button type="button" class="btn pri" data-new="${S.sub}">+ Nuevo</button>` : "";
+  } else if (S.tab === "pedidos") {
+    sub.innerHTML = [["activos", "Por atender"], ...ESTADOS.map(([k, v]) => [k, v]), ["todos", "Todos"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v} <span style="opacity:.6">${pedidosDe(k).length}</span></button>`).join("");
+    tools.innerHTML = `<input type="search" id="q" placeholder="Buscar por código, nombre o número…" value="${esc(S.q)}" aria-label="Buscar pedido">`;
   } else { sub.innerHTML = ""; tools.innerHTML = ""; }
   const q = $("#q"); if (q) q.oninput = e => { S.q = e.target.value; renderMain(); };
 }
 function renderMain() {
   const m = $("#main");
   if (S.tab === "ajustes") return renderAjustes(m);
+  if (S.tab === "pedidos") return renderPedidos(m);
   if (S.tab === "collar" && S.sub === "precios") return renderPrecios(m);
   if (S.tab === "categorias") {
     if (!S.loaded.has("categorias")) { m.innerHTML = `<div class="empty">Cargando…</div>`; return; }
@@ -696,9 +722,41 @@ function viewCols() {
   if (S.tab === "productos") return ["productos"];
   if (S.tab === "categorias") return ["categorias", "productos"];
   if (S.tab === "ajustes") return ["ajustes"];
+  if (S.tab === "pedidos") return ["pedidos"];
   return S.sub === "precios" ? ["estilos", "ajustes"] : [S.sub];
 }
 function render() { renderHeader(); renderMain(); }
+/* ---------- Pedidos ---------- */
+const ESTADOS = [["nuevo", "Nuevo"], ["confirmado", "Confirmado"], ["haciendo", "Haciéndose"], ["listo", "Listo / enviado"], ["entregado", "Entregado"], ["cancelado", "Cancelado"]];
+const pedidosDe = f => (S.data.pedidos || []).filter(p => f === "todos" ? true : f === "activos" ? !["entregado", "cancelado"].includes(p.estado) : p.estado === f).sort((a, b) => (b.fecha || 0) - (a.fecha || 0));
+const waNum = t => { let d = String(t || "").replace(/\D/g, ""); if (d.startsWith("0")) d = "593" + d.slice(1); else if (d.length === 9) d = "593" + d; return d; };
+function renderPedidos(m) {
+  if (!S.loaded.has("pedidos")) { m.innerHTML = `<div class="empty">Cargando pedidos…</div>`; return; }
+  const q = norm(S.q), L = pedidosDe(S.sub || "activos").filter(p => !q || norm([p.codigo, p.nombre, p.telefono].join(" ")).includes(q));
+  m.innerHTML = L.length ? `<div class="pedl">${L.map(p => `<article class="ped" data-ped="${esc(p.id)}">
+    <div class="ph1"><b class="pc">${esc(p.codigo || p.id)}</b><span class="badge st-${esc(p.estado)}">${esc((ESTADOS.find(e => e[0] === p.estado) || [, p.estado])[1])}</span><span class="pd">${new Date(p.fecha || 0).toLocaleString("es-EC", { dateStyle: "medium", timeStyle: "short" })}</span></div>
+    <div class="ph2"><b>${esc(p.nombre)}</b> · <a href="https://wa.me/${waNum(p.telefono)}" target="_blank" rel="noopener">${esc(p.telefono)} ↗</a> · ${esc(MARCAS[p.marca] || "Sugar")}<span class="ptot">${money(p.total)}</span></div>
+    <ul class="pit">${(p.items || []).map(it => `<li><b>${it.q > 1 ? it.q + " × " : ""}${esc(it.nombre)}</b> <span>${money((it.precio || 0) * (it.q || 1))}</span>${(it.detalle || []).length ? `<ul>${it.detalle.map(d => `<li>${esc(d)}</li>`).join("")}</ul>` : ""}</li>`).join("")}</ul>
+    <div class="pacts"><label>Estado <select data-pest="${esc(p.id)}">${ESTADOS.map(([k, v]) => `<option value="${k}" ${k === p.estado ? "selected" : ""}>${v}</option>`).join("")}</select></label>
+      <input data-pnota="${esc(p.id)}" placeholder="Nota interna (ej. pagó por transferencia)" value="${esc(p.nota || "")}">
+      <button type="button" class="btn" data-pdel="${esc(p.id)}">Eliminar</button></div>
+  </article>`).join("")}</div>` : `<div class="empty">${(S.data.pedidos || []).length ? "No hay pedidos en esta vista." : "Aún no hay pedidos. Cuando una clienta toque “Hacer mi pedido”, aparece aquí con su código, nombre y número."}</div>`;
+}
+async function editPedido(id, fn) {
+  const p = (S.data.pedidos || []).find(x => x.id === id); if (!p) return;
+  const ord = { ...(S.rawPed[p._uid] || {}) }; fn(ord, id);
+  try { await saving(db.doc("pedidos/" + p._uid).update({ ordenes: ord, actualizado: Date.now() })); } catch (x) {}
+}
+document.addEventListener("change", e => {
+  const st = e.target.closest("[data-pest]"); if (st) return editPedido(st.dataset.pest, (o, id) => o[id] = { ...o[id], estado: st.value });
+  const nt = e.target.closest("[data-pnota]"); if (nt) return editPedido(nt.dataset.pnota, (o, id) => o[id] = { ...o[id], nota: nt.value.trim() });
+});
+document.addEventListener("click", e => {
+  const d = e.target.closest("[data-pdel]"); if (!d) return;
+  if (!d.classList.contains("sure")) { d.classList.add("sure"); d.textContent = "Toca otra vez"; return; }
+  editPedido(d.dataset.pdel, (o, id) => delete o[id]).then(() => toast("Pedido eliminado"));
+});
+
 
 /* ---------- editor sheet ---------- */
 let ed = null;
@@ -869,7 +927,7 @@ $("#main").addEventListener("click", e => {
   openEditor(r.dataset.col, r.dataset.id);
 });
 document.addEventListener("click", e => {
-  const t = e.target.closest(".tabs [data-tab]"); if (t) { S.tab = t.dataset.tab; S.sub = { productos: "todo", categorias: "club", collar: "cordones" }[S.tab] || ""; S.q = ""; render(); return; }
+  const t = e.target.closest(".tabs [data-tab]"); if (t) { S.tab = t.dataset.tab; S.sub = { productos: "todo", categorias: "club", collar: "cordones", pedidos: "activos" }[S.tab] || ""; S.q = ""; render(); return; }
   const s = e.target.closest("#subnav [data-sub]"); if (s) { S.sub = s.dataset.sub; S.cat = ""; S.q = ""; render(); return; }
   const pc = e.target.closest("#subnav [data-pcat]"); if (pc) { S.cat = pc.dataset.pcat; render(); return; }
   const n = e.target.closest("[data-new]"); if (n) openEditor(n.dataset.new, null, n.dataset.new === "productos" && S.cat ? { marca: S.sub, categoria: S.cat } : null);
@@ -896,7 +954,7 @@ function footer() {
 }
 const doggyLogo = () => homeCfgX().doggyLogoId ? blob(homeCfgX().doggyLogoId) : "img/logo-doggy.png";
 const cartBtn = () => `<button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button>`;
-let isEditor = false;
+let isEditor = false, whoUser = null;
 const closeBtn = { toString: () => isEditor ? `<button type="button" class="hp-close" id="hpClose">⚙ Admin</button>` : "" };
 const topBar = (brand, title, back = "hero") => `<div class="top"><button type="button" class="back gl" data-go="${back}" aria-label="Volver">‹ ${back === "hero" ? "Inicio" : "Tienda"}</button><img class="lg" src="${esc(brand === "doggy" ? doggyLogo() : "img/logo-club.png")}" alt="Inicio" data-go="hero"><span class="tt">${esc(title)}</span><span style="display:flex;gap:8px"><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</span></div>`;
 const live = arr => arr.filter(x => x.disponible !== false && (!("marca" in x) || listo(x)));
@@ -985,14 +1043,46 @@ function renderCart() {
   const total = cart.reduce((a, l) => a + l.precio * l.q, 0);
   c.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><h3>Tu canasta</h3><button type="button" class="iconbtn" data-go="closecart" aria-label="Cerrar">✕</button></div>
     <ul>${cart.map((l, i) => `<li>${l.img ? `<img src="${esc(l.img)}" alt="">` : `<span style="font-size:28px;text-align:center">${l.marca === "doggy" ? "🐶" : "✨"}</span>`}<div><b>${esc(l.nombre)}</b>${l.detalle ? `<div style="font-size:12px">${esc(l.detalle)}</div>` : ""}<div style="font:600 12px var(--mono)">${esc(l.precioTexto)}</div></div><div class="q"><button type="button" data-q="${i}" data-d="-1" aria-label="Quitar uno">−</button>${l.q}<button type="button" data-q="${i}" data-d="1" aria-label="Agregar uno">+</button></div></li>`).join("") || `<li style="grid-template-columns:1fr">Tu canasta está vacía.</li>`}</ul>
-    <div style="display:grid;gap:10px"><div class="tot"><span>Total</span><span>${money(total)}</span></div><button type="button" class="btnp wa" data-go="wa" ${cart.length ? "" : "disabled"}>Enviar pedido por WhatsApp</button>
+    <div style="display:grid;gap:10px"><div class="tot"><span>Total</span><span>${money(total)}</span></div><button type="button" class="btnp wa" data-go="wa" ${cart.length ? "" : "disabled"}>Hacer mi pedido</button>
     <div class="cinfo"><b>Información importante</b>${esc(S.ajustes?.infoCompra || "Envíos, tiempos de espera y formas de pago: pronto 💖")}</div></div>`;
+}
+/* checkout: the order is saved with a code; WhatsApp only carries code + name, details live in Admin → Pedidos */
+let pendingOrder = null, pendingFromCart = false;
+const newCode = () => "SG-" + Date.now().toString(36).slice(-3).toUpperCase() + Math.floor(Math.random() * 90 + 10);
+function openCheckout(items, brand, fromCart = false) {
+  pendingOrder = { items, brand }; pendingFromCart = fromCart;
+  const total = items.reduce((a, it) => a + (+it.precio || 0) * (it.q || 1), 0);
+  let o = $("#hpCheckout"); if (!o) { o = document.createElement("div"); o.id = "hpCheckout"; o.className = "srch"; $("#hp").appendChild(o); }
+  o.innerHTML = `<form class="box gl ckf" id="ckForm"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font:400 26px 'Abril Fatface',Georgia,serif">Hacer mi pedido</h3><button type="button" class="iconbtn" data-go="closeck" aria-label="Cerrar" style="background:#fff">✕</button></div>
+    <ul class="lines" style="color:var(--ink);text-shadow:none">${items.map(it => `<li><span>${it.q > 1 ? it.q + " × " : ""}${esc(it.nombre)}</span><span>${money((+it.precio || 0) * (it.q || 1))}</span></li>`).join("")}<li style="font-size:16px"><b>Total</b><b>${money(total)}</b></li></ul>
+    <label class="ckl">Tu nombre<input class="inpt" id="ckName" required autocomplete="name" placeholder="Ej. Ana Torres"></label>
+    <label class="ckl">Tu WhatsApp<input class="inpt" id="ckPhone" required inputmode="tel" autocomplete="tel" placeholder="Ej. 0991234567"></label>
+    <p class="hint2" style="margin:0">Guardamos tu pedido con un código y se abre WhatsApp para confirmarlo. ${FOTO_NOTE}</p>
+    <button type="submit" class="btnp wa">Enviar pedido por WhatsApp</button></form>`;
+  $("#ckName").focus();
+}
+async function submitCheckout() {
+  const nombre = $("#ckName").value.trim(), tel = $("#ckPhone").value.trim();
+  if (!nombre || tel.replace(/\D/g, "").length < 7) return toast("Escribe tu nombre y tu WhatsApp");
+  const { items, brand } = pendingOrder, total = items.reduce((a, it) => a + (+it.precio || 0) * (it.q || 1), 0), codigo = newCode();
+  const doc = { codigo, nombre, telefono: tel, marca: brand || "club", items: items.map(it => ({ nombre: it.nombre, detalle: it.detalle || [], q: it.q || 1, precio: +it.precio || 0 })), total, estado: "nuevo", fecha: Date.now() };
+  let saved = false;
+  try {
+    const uid = await whoUser?.id?.();
+    if (uid) { const ref = db.doc("pedidos/" + uid), snap = await ref.get(), ord = (snap.exists && snap.data().ordenes) || {}; ord[codigo] = doc; await ref.set({ ordenes: ord, actualizado: Date.now() }); saved = true; }
+  } catch (e) {}
+  const lines = [`Quiero hacer mi pedido 💖`, `Pedido: ${codigo}`, `Nombre: ${nombre}`, `Total: ${money(total)}`];
+  if (!saved) lines.push("", ...doc.items.flatMap(it => [`• ${it.q > 1 ? it.q + " × " : ""}${it.nombre} – ${money(it.precio * it.q)}`, ...it.detalle.map(d => "   " + d)]));
+  sendWa(lines, brand);
+  $("#hpCheckout")?.remove(); pendingOrder = null;
+  if (pendingFromCart) { cart = []; pendingFromCart = false; }
+  toast(`Pedido ${codigo} listo ✨`);
 }
 function sendWa(lines, brand = shopBrand) {
   const wa = (S.ajustes?.whatsapp || "").replace(/\D/g, "");
   if (!wa) return toast("Pon tu número de WhatsApp en Ajustes");
   const marca = brand === "doggy" ? "Sugar Doggy Pops 🐶" : brand === "mix" ? "Sugar 💖" : "Sugar Club 🍒";
-  const msg = [`Hola ${marca}, quiero pedir:`, ...lines].join("\n");
+  const msg = [`Hola ${marca}`, ...lines].join("\n");
   const a = document.createElement("a"); a.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(msg); a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
 }
 
@@ -1167,7 +1257,7 @@ function colPanel() {
   return `${gifts.length ? `<h3>🎁 Elige tu regalo de promo</h3><p class="hint" style="text-align:left">Con tu collar te llevas uno de estos gratis:</p><div class="opts">${gifts.map(o => `<button type="button" class="opt2" data-gift="${esc(o.key)}" aria-pressed="${o.key === col.regalo}">${o.img ? `<span class="ph"><img src="${esc(o.img)}" alt="" loading="lazy"></span>` : `<span class="ph" style="font-size:34px">🎁</span>`}<b>${esc(o.nombre)}</b>${o.desc ? `<small>${esc(o.desc)}</small>` : ""}<span class="p">$0 · Gratis</span></button>`).join("")}</div>` : ""}<h3>Tu pedido</h3><ul class="lines" style="font-size:14px">${colLines().map(l => `<li><span>${esc(l.t)}</span><b>${l.gratis ? "Gratis" : l.conf ? "por confirmar" : l.v < 0 ? "−" + money(-l.v) : l.v ? money(l.v) : "Incluido"}</b></li>`).join("")}<li style="font-size:18px"><span>Total</span><b>${money(colTotal())}</b></li></ul>
     <p class="hint" style="text-align:left">Cuerda: ${esc(col.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—")}</p>
     <p class="hint" style="text-align:left">${FOTO_NOTE}</p>
-    <div class="row2"><button type="button" class="btnp" data-go="colAdd">Agregar a la canasta</button><button type="button" class="btnp wa" data-go="colWa">Enviar pedido por WhatsApp</button></div>`;
+    <div class="row2"><button type="button" class="btnp" data-go="colAdd">Agregar a la canasta</button><button type="button" class="btnp wa" data-go="colWa">Hacer mi pedido</button></div>`;
 }
 function colOrder() {
   const e = cEstilo(), k = kindOf(e), pl = S.data.placas.find(x => x.id === col.placa);
@@ -1175,80 +1265,89 @@ function colOrder() {
     `• ${k === "dije" ? "Inicial" : "Nombre"}: ${nombreUsado() || "—"}`, k === "placa" && pl ? `• Placa: ${pl.nombre}` : null,
     `• Colores para letras y cuentitas: ${col.colores.join(", ") || "que combinen con el collar"}`, `• Cuentitas: ${cqList().map(({ c, n }) => `${c.nombre} × ${n * 2}`).join(", ") || "ninguna"}`, `• Colgantes: ${col.charms.map(id => S.data.charms.find(c => c.id === id)?.nombre).filter(Boolean).join(", ") || "ninguno"}`, col.llavero ? `• Llavero match: ${col.palabra.trim()}` : null, col.matchy ? `• 💞 Matchy: collar humano a juego${col.humano.trim() ? ` “${col.humano.trim().toUpperCase()}”` : ""}` : null, regaloSel() ? `• 🎁 Regalo de promo: ${regaloSel().nombre} ($0)` : null].filter(Boolean);
 }
-/* ---------- “Arma tu llavero”: colgador → palabra y colores → cuentitas → charms → resumen ---------- */
-const ll = { step: 1, cordones: [], sub4: "cuenta", colg: null, palabra: "", colores: [], cq: {}, charms: [], grp: "", marca: "doggy" };
+/* ---------- “Arma tu llavero”: 1 hilo doblado → 2 tiras colgando, cada una se puede personalizar ---------- */
+const ll = { step: 1, cordon: null, colg: null, t: [{ palabra: "", cq: {} }, { palabra: "", cq: {} }], colores: [], charms: [], grp: "", acc: 0, marca: "doggy" };
 const LL_STEPS = ["Hilo", "Colgador", "Letras", "Accesorios", "Resumen"];
 const llColgs = () => S.data.colgadores.filter(inStock);
-const llPal = () => ll.palabra.trim().toUpperCase();
-const llCq = () => Object.entries(ll.cq).filter(([, n]) => n > 0).map(([id, n]) => ({ c: S.data.charms.find(x => x.id === id), n })).filter(x => x.c);
-const llPieces = () => llCq().reduce((a, x) => a + x.n * 2, 0);
+const llWord = i => ll.t[i].palabra.trim().toUpperCase();
+const llCq = i => Object.entries(ll.t[i].cq).filter(([, n]) => n > 0).map(([id, n]) => ({ c: S.data.charms.find(x => x.id === id), n })).filter(x => x.c);
+const llPieces = i => llCq(i).reduce((a, x) => a + x.n, 0);
+const llMaxCu = () => S.ajustes?.maxCuentasTira ?? 6;
 const llPrefCols = () => { const c = ll.colores.map(n => PALETA.find(p => p[0] === n)?.[1]).filter(Boolean).flatMap(v => v.startsWith("linear") ? v.match(/#[0-9A-F]{6}/gi) : [v]); return c.length ? c : BEADS; };
+const llCord = () => S.data.cordones.find(c => c.id === ll.cordon);
 function llLines() {
   const A = S.ajustes?.llavero || {}, L = [], g = S.data.colgadores.find(x => x.id === ll.colg);
   L.push({ t: "Llavero base", v: +A.base || 0 });
-  if (nLetras(llPal())) L.push({ t: `${nLetras(llPal())} letras (${llPal()})`, v: (+A.porLetra || 0) * nLetras(llPal()) });
-  if (ll.cordones.length) L.push({ t: `Hilo: ${ll.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ")}`, v: 0 });
+  if (llCord()) L.push({ t: `Hilo: ${llCord().nombre}`, v: 0 });
   if (g) L.push({ t: `Colgador: ${g.nombre}`, v: +g.precio || 0 });
-  llCq().forEach(({ c, n }) => L.push({ t: `Cuentitas ${c.nombre} × ${n * 2}`, v: (+c.precio || 0) * n * 2 }));
+  [0, 1].forEach(i => {
+    const w = llWord(i); if (nLetras(w)) L.push({ t: `Tira ${i + 1}: ${nLetras(w)} letras (${w})`, v: (+A.porLetra || 0) * nLetras(w) });
+    llCq(i).forEach(({ c, n }) => L.push({ t: `Tira ${i + 1}: ${c.nombre} × ${n}`, v: (+c.precio || 0) * n }));
+  });
   ll.charms.forEach(id => { const c = S.data.charms.find(x => x.id === id); if (c) L.push({ t: `Charm: ${c.nombre}`, v: +c.precio || 0 }); });
   return L;
 }
 const llTotal = () => llLines().reduce((a, l) => a + l.v, 0);
 function llPreview() {
-  const g = S.data.colgadores.find(x => x.id === ll.colg), P = (llPal() || "TU NOMBRE").replace(/\s/g, "").split(""), pc = llPrefCols();
-  const cu = llCq().flatMap(({ c, n }) => Array.from({ length: n }, () => c));
-  const bead = (c, j) => `<span class="cu ${c.figura || "bolita"}" style="--c:${pc[j % pc.length]}"></span>`;
-  const top = cu.map(bead).join(""), bottom = cu.map(bead).reverse().join("");
+  const g = S.data.colgadores.find(x => x.id === ll.colg), pc = llPrefCols(), cs = llCord()?.colores || ["#d8dbe2"];
+  const cord = `repeating-linear-gradient(180deg,${cs.map((c, i) => `${c} ${i * 8}px ${(i + 1) * 8}px`).join(",")})`;
+  let k = 0;
+  const tira = i => { const w = llWord(i).replace(/\s/g, ""), cu = llCq(i).flatMap(({ c, n }) => Array.from({ length: n }, () => c));
+    return `<div class="strand" style="--cord:${cord}">${w.split("").filter(Boolean).map(ch => { const col = pc[k++ % pc.length]; return `<span class="lt" style="background:${col};color:${["#FFFFFF", "#F5D738", "#8FE3C2", "#F7A8C9", "#8FD3F5", "#F5E07A"].includes(col) ? "#2a3550" : "#fff"}">${esc(ch)}</span>`; }).join("")}${cu.map((c, j) => `<span class="cu ${c.figura || "bolita"}" style="--c:${pc[j % pc.length]}"></span>`).join("")}<span class="knot"></span></div>`; };
   const chs = ll.charms.map(id => S.data.charms.find(x => x.id === id)).filter(Boolean);
-  return `<h2>${esc(llPal() || "Tu llavero")}</h2>
+  const title = [llWord(0), llWord(1)].filter(Boolean).join(" · ");
+  return `<h2>${esc(title || "Tu llavero")}</h2>
     <div class="llv">
       <div class="lg2">${g && itemImg(g) ? `<img src="${esc(itemImg(g))}" alt="${esc(g.nombre)}">` : `<span class="ring"></span>`}</div>
-      <div class="strand" style="--cord:${(() => { const cs = ll.cordones.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []); return cs.length ? `repeating-linear-gradient(180deg,${cs.map((c, i) => `${c} ${i * 8}px ${(i + 1) * 8}px`).join(",")})` : "#d8dbe2"; })()}">${top}${P.map((ch, i) => `<span class="lt" style="background:${pc[i % pc.length]};color:${["#FFFFFF", "#F5D738", "#8FE3C2", "#F7A8C9", "#8FD3F5", "#F5E07A"].includes(pc[i % pc.length]) ? "#2a3550" : "#fff"}">${esc(ch)}</span>`).join("")}${bottom}</div>
+      <div class="loop" style="--c1:${cs[0]}"></div>
+      <div class="tiras">${tira(0)}${tira(1)}</div>
       ${chs.length ? `<div class="fan">${chs.map(c => `<span>${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="${esc(c.nombre)}">` : iconSvg(c.icono)}</span>`).join("")}</div>` : ""}
     </div>
     <ul class="lines">${llLines().map(l => `<li><span>${esc(l.t)}</span><span>${l.v ? money(l.v) : "Incluido"}</span></li>`).join("")}</ul>
     <div class="tot">Total ${money(llTotal())}</div>`;
 }
-function llPanelOld(os) {
+function llCuentas(i) {
+  const all = cCharms().filter(c => formaDe(c) === "cuenta");
+  return `<p class="hint" style="text-align:left">Van al final de la tira ${i + 1}, después de las letras. El color lo combinamos con tus colores. ${llPieces(i)}/${llMaxCu()}</p>
+    ${all.length ? `<div class="opts">${all.map(c => { const n = ll.t[i].cq[c.id] || 0; return `<div class="opt2 cuq" aria-pressed="${n > 0}"><span class="ph"><img src="${esc(itemImg(c))}" alt="" loading="lazy"></span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)} c/u</span><span class="qty"><button type="button" data-llcq="${esc(c.id)}" data-tira="${i}" data-d="-1" ${n ? "" : "disabled"} aria-label="Quitar una">−</button><b>${n}</b><button type="button" data-llcq="${esc(c.id)}" data-tira="${i}" data-d="1" aria-label="Agregar una">+</button></span></div>`; }).join("")}</div>` : `<div class="emptyg">Pronto ✨</div>`}`;
+}
+function llCharmsPanel() {
+  const all = cCharms().filter(c => formaDe(c) === "colgante"), groups = [...new Set(all.map(c => c.grupo?.trim() || "Clásicos"))], max = S.ajustes?.maxCharmsLlavero || 3;
+  const tabs = [...(all.some(c => c.popular) ? [["__pop", "⭐ Más usados"]] : []), ...groups.map(g => [g, g]), ["__all", "Todos"]], g = tabs.some(([k]) => k === ll.grp) ? ll.grp : tabs[0][0];
+  const list = g === "__all" ? all : g === "__pop" ? all.filter(c => c.popular) : all.filter(c => (c.grupo?.trim() || "Clásicos") === g);
+  return `<p class="hint" style="text-align:left">Cuelgan junto al colgador. Opcional, hasta ${max}.</p><div class="chipsg" ${tabs.length <= 2 ? "hidden" : ""}>${tabs.map(([k, v]) => `<button type="button" data-llgrp="${esc(k)}" aria-pressed="${k === g}">${esc(v)}</button>`).join("")}</div>
+    <div class="opts">${list.map(c => `<button type="button" class="opt2" data-llch="${esc(c.id)}" aria-pressed="${ll.charms.includes(c.id)}"><span class="ph">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy">` : iconSvg(c.icono)}</span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)}</span></button>`).join("")}</div>`;
+}
+function llPanel() {
   const A = S.ajustes || {};
-  if (os === 1) { const G = llColgs().sort(byOrden), tipos = [...new Set(G.map(g => g.grupo || "Colgadores"))]; return `${G.length ? tipos.map(tp => `<h3>${esc(tp)}</h3><div class="opts">${G.filter(g => (g.grupo || "Colgadores") === tp).map(g => `<button type="button" class="opt2" data-llset="colg" data-v="${esc(g.id)}" aria-pressed="${g.id === ll.colg}">${itemImg(g) ? `<span class="ph"><img src="${esc(itemImg(g))}" alt="" loading="lazy"></span>` : ""}<b>${esc(g.nombre)}</b><span class="p">${+g.precio ? "+ " + money(g.precio) : "Incluido"}</span></button>`).join("")}</div>`).join("") : `<div class="emptyg">Pronto ✨ (súbelos en Arma collar → Colgadores)</div>`}`; }
-  if (os === 2) return `<h3>Palabra o nombre</h3><input class="inpt" id="llPal" maxlength="12" autocomplete="off" value="${esc(ll.palabra)}" placeholder="Ej. DOG MOM, tu nombre…" aria-label="Palabra del llavero">
-    <div class="steps2">${["DOG MOM", "CAT MOM", "DOG DAD", "MOM"].map(w => `<button type="button" data-llset="palabra" data-v="${esc(w)}">${esc(w)}</button>`).join("")}</div>
-    <p class="hint" style="text-align:left">Cada letra suma ${money(A.llavero?.porLetra)}.</p>
+  if (ll.step === 1) {
+    const L = cCords(), grid = tp => { const X = L.filter(c => (c.tipo || "Liso") === tp); return X.length ? `<p class="hint" style="text-align:left;margin:0">${tp === "Liso" ? "Colores enteros" : "Jaspeados"} · ${X.length}</p><div class="swg">${X.map(c => `<button type="button" class="swc" data-llcord="${esc(c.id)}" aria-pressed="${ll.cordon === c.id}" title="${esc(c.nombre)}" aria-label="${esc(c.nombre)}" style="background:${swBg(c)}">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy">` : ""}</button>`).join("")}</div>` : ""; };
+    return `<h3>Elige el hilo</h3><p class="hint" style="text-align:left;margin:0">Es un solo hilo que se dobla en el colgador y queda en dos tiras.</p>${grid("Liso")}${grid("Mezclado")}<p class="hint" style="text-align:left">Elegiste: <b>${esc(llCord()?.nombre || "—")}</b></p>`;
+  }
+  if (ll.step === 2) { const G = llColgs().sort(byOrden), tipos = [...new Set(G.map(g => g.grupo || "Colgadores"))]; return G.length ? tipos.map(tp => `<h3>${esc(tp)}</h3><div class="opts">${G.filter(g => (g.grupo || "Colgadores") === tp).map(g => `<button type="button" class="opt2" data-llset="colg" data-v="${esc(g.id)}" aria-pressed="${g.id === ll.colg}">${itemImg(g) ? `<span class="ph"><img src="${esc(itemImg(g))}" alt="" loading="lazy"></span>` : ""}<b>${esc(g.nombre)}</b><span class="p">${+g.precio ? "+ " + money(g.precio) : "Incluido"}</span></button>`).join("")}</div>`).join("") : `<div class="emptyg">Pronto ✨</div>`; }
+  if (ll.step === 3) return `<p class="hint" style="text-align:left;margin:0">Tu llavero tiene dos tiras. Puedes poner una palabra en cada una (la segunda es opcional). Cada letra suma ${money(A.llavero?.porLetra)}.</p>
+    ${[0, 1].map(i => `<h3>Tira ${i + 1}${i ? " · opcional" : ""}</h3><input class="inpt" id="llPal${i}" maxlength="10" autocomplete="off" value="${esc(ll.t[i].palabra)}" placeholder="${i ? "Ej. MOM" : "Ej. DOG"}" aria-label="Palabra de la tira ${i + 1}">`).join("")}
+    <div class="steps2">${[["DOG", "MOM"], ["CAT", "MOM"], ["DOG", "DAD"], ["MI", "AMOR"]].map(([a, b]) => `<button type="button" data-llpair="${a}|${b}">${a} + ${b}</button>`).join("")}</div>
     <h3>Colores que te gustan · hasta 3</h3><p class="hint" style="text-align:left;margin:0">Para las letras y cuentitas. Hacemos lo más parecido con lo que tenemos.</p>
     <div class="palg">${PALETA.map(([n, v]) => `<button type="button" class="palc" data-llcol="${esc(n)}" aria-pressed="${ll.colores.includes(n)}"><i style="background:${v}"></i>${esc(n)}</button>`).join("")}</div>`;
-  if (os === 3) { const all = cCharms().filter(c => formaDe(c) === "cuenta"), max = maxCuent(); return `<h3>Cuentitas · ${llPieces()}/${max}</h3><p class="hint" style="text-align:left">Van en pares: una arriba y otra abajo de la palabra. El color lo combinamos con tus colores.</p>
-    ${all.length ? `<div class="opts">${all.map(c => { const n = ll.cq[c.id] || 0; return `<div class="opt2 cuq" aria-pressed="${n > 0}"><span class="ph"><img src="${esc(itemImg(c))}" alt="" loading="lazy"></span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)} c/u · par ${money(2 * (+c.precio || 0))}</span><span class="qty"><button type="button" data-llcq="${esc(c.id)}" data-d="-1" ${n ? "" : "disabled"} aria-label="Quitar un par">−</button><b>${n} par${n === 1 ? "" : "es"}</b><button type="button" data-llcq="${esc(c.id)}" data-d="1" aria-label="Agregar un par">+</button></span></div>`; }).join("")}</div>` : `<div class="emptyg">Pronto ✨</div>`}`; }
-  if (os === 4) {
-    const all = cCharms().filter(c => formaDe(c) === "colgante"), groups = [...new Set(all.map(c => c.grupo?.trim() || "Clásicos"))];
-    const tabs = [...(all.some(c => c.popular) ? [["__pop", "⭐ Más usados"]] : []), ...groups.map(g => [g, g]), ["__all", "Todos"]], g = tabs.some(([k]) => k === ll.grp) ? ll.grp : tabs[0][0];
-    const list = g === "__all" ? all : g === "__pop" ? all.filter(c => c.popular) : all.filter(c => (c.grupo?.trim() || "Clásicos") === g), max = A.maxCharmsLlavero || 3;
-    return `<h3>Charms · ${ll.charms.length}/${max}</h3><div class="chipsg" ${tabs.length <= 2 ? "hidden" : ""}>${tabs.map(([k, v]) => `<button type="button" data-llgrp="${esc(k)}" aria-pressed="${k === g}">${esc(v)}</button>`).join("")}</div>
-    <div class="opts">${list.map(c => `<button type="button" class="opt2" data-llch="${esc(c.id)}" aria-pressed="${ll.charms.includes(c.id)}"><span class="ph">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy">` : iconSvg(c.icono)}</span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)}</span></button>`).join("")}</div>`;
+  if (ll.step === 4) {
+    const tabs = [["Tira 1", `cuentitas · ${llPieces(0)}`], ["Tira 2", `cuentitas · ${llPieces(1)}`], ["Charms", `${ll.charms.length}/${S.ajustes?.maxCharmsLlavero || 3}`]];
+    return `<div class="seg2" style="grid-template-columns:repeat(3,1fr)" role="tablist">${tabs.map(([a, b], i) => `<button type="button" role="tab" data-llacc="${i}" aria-selected="${ll.acc === i}"><b>${a}</b><small>${b}</small></button>`).join("")}</div>${ll.acc === 2 ? llCharmsPanel() : llCuentas(ll.acc)}`;
   }
   return `<h3>Tu llavero</h3><ul class="lines" style="font-size:14px">${llLines().map(l => `<li><span>${esc(l.t)}</span><b>${l.v ? money(l.v) : "Incluido"}</b></li>`).join("")}<li style="font-size:18px"><span>Total</span><b>${money(llTotal())}</b></li></ul>
     <p class="hint" style="text-align:left">${FOTO_NOTE}</p>
-    <div class="row2"><button type="button" class="btnp" data-go="llAdd">Agregar a la canasta</button><button type="button" class="btnp wa" data-go="llWa">Enviar pedido por WhatsApp</button></div>`;
-}
-function llPanel() {
-  if (ll.step === 1) {
-    const L = cCords(), grid = tp => { const X = L.filter(c => (c.tipo || "Liso") === tp); return X.length ? `<p class="hint" style="text-align:left;margin:0">${tp === "Liso" ? "Colores enteros" : "Jaspeados"} · ${X.length}</p><div class="swg">${X.map(c => `<button type="button" class="swc" data-llcord="${esc(c.id)}" aria-pressed="${ll.cordones.includes(c.id)}" title="${esc(c.nombre)}" aria-label="${esc(c.nombre)}" style="background:${swBg(c)}">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy">` : ""}</button>`).join("")}</div>` : ""; };
-    return `<h3>Elige el hilo · hasta 2</h3>${grid("Liso")}${grid("Mezclado")}<p class="hint" style="text-align:left">Elegiste: <b>${esc(ll.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—")}</b></p>`;
-  }
-  if (ll.step === 4) {
-    const seg = `<div class="seg2" role="tablist"><button type="button" role="tab" data-llsub="cuenta" aria-selected="${ll.sub4 !== "colgante"}"><b>① Cuentitas</b><small>en el hilo · ${llPieces()}/${maxCuent()}</small></button><button type="button" role="tab" data-llsub="colgante" aria-selected="${ll.sub4 === "colgante"}"><b>② Charms</b><small>cuelgan abajo · ${ll.charms.length}/${S.ajustes?.maxCharmsLlavero || 3}</small></button></div>`;
-    return seg + llPanelOld(ll.sub4 === "colgante" ? 4 : 3) + (ll.sub4 !== "colgante" ? `<div class="row2"><button type="button" class="btnp" data-llsub="colgante">Seguir con los charms →</button></div>` : "");
-  }
-  return llPanelOld({ 2: 1, 3: 2, 5: 5 }[ll.step]);
+    <div class="row2"><button type="button" class="btnp" data-go="llAdd">Agregar a la canasta</button><button type="button" class="btnp wa" data-go="llWa">Hacer mi pedido</button></div>`;
 }
 function llOrder() {
   const g = S.data.colgadores.find(x => x.id === ll.colg);
-  return [`• Hilo: ${ll.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—"}`, `• Colgador: ${g?.nombre || "—"}`, `• Palabra: ${llPal() || "—"}`, `• Colores: ${ll.colores.join(", ") || "a tu gusto"}`, `• Cuentitas: ${llCq().map(({ c, n }) => `${c.nombre} × ${n * 2}`).join(", ") || "ninguna"}`, `• Charms: ${ll.charms.map(id => S.data.charms.find(c => c.id === id)?.nombre).filter(Boolean).join(", ") || "ninguno"}`];
+  return [`• Hilo: ${llCord()?.nombre || "—"}`, `• Colgador: ${g?.nombre || "—"}`,
+    ...[0, 1].map(i => `• Tira ${i + 1}: ${llWord(i) || "sin letras"}${llCq(i).length ? " + " + llCq(i).map(({ c, n }) => `${c.nombre} × ${n}`).join(", ") : ""}`),
+    `• Colores: ${ll.colores.join(", ") || "a tu gusto"}`, `• Charms: ${ll.charms.map(id => S.data.charms.find(c => c.id === id)?.nombre).filter(Boolean).join(", ") || "ninguno"}`];
 }
 function renderLlavero() {
   view = "llavero"; shopBrand = ll.marca;
   const G = llColgs(); if (!G.some(g => g.id === ll.colg)) ll.colg = G[0]?.id || null;
-  const CC = cCords(); ll.cordones = ll.cordones.filter(id => CC.some(c => c.id === id)); if (!ll.cordones.length && CC[0]) { ll.cordones = [CC[0].id]; ll.cordAuto = true; }
+  const CC = cCords(); if (!CC.some(c => c.id === ll.cordon)) ll.cordon = CC[0]?.id || null;
   $("#hp").innerHTML = `<section class="shop" ${heroBg()}>${topBar(ll.marca, "Arma tu llavero", ll.marca === "doggy" ? "doggy" : "shop")}${bubbles(ll.marca, "make")}
     <div class="bld">
       <div class="prev gl" id="llPrev" aria-live="polite">${llPreview()}</div>
@@ -1278,20 +1377,21 @@ function renderCollar() {
 const colRefresh = () => { const p = $("#colPrev"); if (p) p.innerHTML = colPreview(); const m = $("#colMini"); if (m) m.textContent = "Total " + money(colTotal()); };
 
 $("#homeBtn").addEventListener("click", openHome);
+$("#hp").addEventListener("submit", e => { if (e.target.id === "ckForm") { e.preventDefault(); submitCheckout(); } });
 $("#hp").addEventListener("input", e => {
   const t = e.target;
   if (t.id === "colName") { t.value = t.value.toUpperCase().replace(/[^A-ZÁÉÍÓÚÑÜ0-9 ]/g, ""); col.nombre = t.value; colRefresh(); }
   if (t.id === "colNum") { col.numero = t.value; colRefresh(); }
   if (t.id === "srchIn") { searchQ = t.value; drawSearch(); return; }
-  if (t.id === "llPal") { t.value = t.value.toUpperCase().replace(/[^A-ZÁÉÍÓÚÑÜ0-9 ♡]/g, ""); ll.palabra = t.value; llRefresh(); return; }
+  if (/^llPal[01]$/.test(t.id)) { t.value = t.value.toUpperCase().replace(/[^A-ZÁÉÍÓÚÑÜ0-9 ♡]/g, ""); ll.t[+t.id.slice(-1)].palabra = t.value; llRefresh(); return; }
   if (t.id === "colHum") { col.humano = t.value; colRefresh(); }
   if (t.id === "colPal") { t.value = t.value.toUpperCase(); col.palabra = t.value; colRefresh(); }
 });
 $("#hp").addEventListener("click", e => {
-  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-hit],[data-pf],[data-sub3],[data-grp],[data-cq],[data-pcol],[data-llst],[data-llset],[data-llcord],[data-llsub],[data-llcol],[data-llcq],[data-llch],[data-llgrp],[data-perso],[data-gift],[data-opt],[data-addopt],[data-waopt],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
+  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-hit],[data-pf],[data-sub3],[data-grp],[data-cq],[data-pcol],[data-llst],[data-llset],[data-llcord],[data-llacc],[data-llpair],[data-llcol],[data-llcq],[data-llch],[data-llgrp],[data-perso],[data-gift],[data-opt],[data-addopt],[data-waopt],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
   if (t.id === "hpClose") return closeHome();
   if (t.dataset.step) { const ps = live(prodsDe(shopCat)), i = ps.findIndex(p => p.id === shopProd?.id); shopProd = ps[(i + +t.dataset.step + ps.length) % ps.length]; const y = $("#hp").scrollTop; renderShop(); $("#hp").scrollTop = y; return; }
-  if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return sendWa([`• 1 × ${p.nombre} – ${p.precioTexto || money(p.precio)}`], p.marca); }
+  if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return openCheckout([{ nombre: p.nombre, detalle: [MARCAS[p.marca] + " · " + (p.categoria || "")], q: 1, precio: +p.precio || 0 }], p.marca); }
   if (t.dataset.cat) { shopCat = S.data.categorias.find(c => c.id === t.dataset.cat); shopProd = null; return renderShop(shopCat.marca); }
   if (t.dataset.prod) { shopProd = S.data.productos.find(p => p.id === t.dataset.prod); const y = $("#hp").scrollTop; renderShop(shopCat?.marca); $("#hp").scrollTop = y; return; }
   if (t.dataset.add) { addToCart(prodLine(S.data.productos.find(p => p.id === t.dataset.add))); return renderShop(); }
@@ -1300,13 +1400,14 @@ $("#hp").addEventListener("click", e => {
   if (t.dataset.perso) { const pp = S.data.productos.find(x => x.id === t.dataset.perso); if (pp?.estilo) col.estilo = pp.estilo; col.matchy = pp?.matchy ? { nombre: pp.nombre, precioHumano: pp.precioHumano } : null; col.step = 1; renderCollar(); $("#hp").scrollTo({ top: 0 }); return; }
   if (t.dataset.opt) { const p = S.data.productos.find(x => x.id === t.dataset.opt), sel = optSel[p.id] || (optSel[p.id] = []); if (t.dataset.i === "all") optSel[p.id] = sel.length === p.opciones.length ? [] : p.opciones.map((_, i) => i); else { const i = +t.dataset.i, k = sel.indexOf(i); k >= 0 ? sel.splice(k, 1) : sel.push(i); } const y = $("#hp").scrollTop; renderShop(); $("#hp").scrollTop = y; return; }
   if (t.dataset.addopt) { const p = S.data.productos.find(x => x.id === t.dataset.addopt), names = optNames(p); addToCart({ key: p.id + ":" + names.join("+"), nombre: `${p.nombre} (${names.length} par${names.length > 1 ? "es" : ""})`, detalle: names.join(", "), precio: names.length * (+p.precio || 0), precioTexto: money(names.length * (+p.precio || 0)), img: prodImg(p), marca: p.marca }); optSel[p.id] = []; return renderShop(); }
-  if (t.dataset.waopt) { const p = S.data.productos.find(x => x.id === t.dataset.waopt), names = optNames(p); return sendWa([`• ${p.nombre}: ${names.join(", ")}`, `Total: ${money(names.length * (+p.precio || 0))} (${names.length} × ${money(p.precio)})`], p.marca); }
+  if (t.dataset.waopt) { const p = S.data.productos.find(x => x.id === t.dataset.waopt), names = optNames(p); return openCheckout([{ nombre: p.nombre, detalle: [`${names.length} × ${money(p.precio)}: ${names.join(", ")}`], q: 1, precio: names.length * (+p.precio || 0) }], p.marca); }
   if (t.dataset.llst) { ll.step = +t.dataset.llst; renderLlavero(); $("#hp").scrollTo({ top: 0, behavior: "smooth" }); return; }
-  if (t.dataset.llcord) { if (ll.cordAuto) { ll.cordAuto = false; ll.cordones = []; } const id = t.dataset.llcord, i = ll.cordones.indexOf(id); if (i >= 0) ll.cordones.splice(i, 1); else if (ll.cordones.length < 2) ll.cordones.push(id); else return toast("Hasta 2 hilos"); return keepY(renderLlavero); }
-  if (t.dataset.llsub) { ll.sub4 = t.dataset.llsub; return keepY(renderLlavero); }
+  if (t.dataset.llcord) { ll.cordon = t.dataset.llcord; return keepY(renderLlavero); }
+  if (t.dataset.llacc) { ll.acc = +t.dataset.llacc; return keepY(renderLlavero); }
+  if (t.dataset.llpair) { const [a, b] = t.dataset.llpair.split("|"); ll.t[0].palabra = a; ll.t[1].palabra = b; return keepY(renderLlavero); }
   if (t.dataset.llset) { ll[t.dataset.llset] = t.dataset.v; return keepY(renderLlavero); }
   if (t.dataset.llcol) { const n = t.dataset.llcol, i = ll.colores.indexOf(n); if (i >= 0) ll.colores.splice(i, 1); else if (ll.colores.length < 3) ll.colores.push(n); else return toast("Hasta 3 colores"); return keepY(renderLlavero); }
-  if (t.dataset.llcq) { const id = t.dataset.llcq, d = +t.dataset.d; if (d > 0 && llPieces() + 2 > maxCuent()) return toast(`Máximo ${maxCuent()} cuentitas`); ll.cq[id] = Math.max(0, (ll.cq[id] || 0) + d); return keepY(renderLlavero); }
+  if (t.dataset.llcq) { const id = t.dataset.llcq, ti = +t.dataset.tira, d = +t.dataset.d, q = ll.t[ti].cq; if (d > 0 && llPieces(ti) + 1 > llMaxCu()) return toast(`Máximo ${llMaxCu()} por tira`); q[id] = Math.max(0, (q[id] || 0) + d); return keepY(renderLlavero); }
   if (t.dataset.llch) { const id = t.dataset.llch, i = ll.charms.indexOf(id), max = S.ajustes?.maxCharmsLlavero || 3; if (i >= 0) ll.charms.splice(i, 1); else if (ll.charms.length < max) ll.charms.push(id); else return toast(`Máximo ${max} charms`); return keepY(renderLlavero); }
   if (t.dataset.llgrp) { ll.grp = t.dataset.llgrp; return keepY(renderLlavero); }
   if (t.dataset.cq) { const id = t.dataset.cq, d = +t.dataset.d, cur = col.cq[id] || 0; if (d > 0 && cqPieces() + 2 > maxCuent()) { toast(`Máximo ${maxCuent()} cuentitas`); return; } col.cq[id] = Math.max(0, cur + d); const y = $("#hp").scrollTop; renderCollar(); $("#hp").scrollTop = y; return; }
@@ -1336,20 +1437,19 @@ $("#hp").addEventListener("click", e => {
   if (g === "llavero") { ll.marca = "doggy"; ll.step = 1; renderLlavero(); $("#hp").scrollTo({ top: 0 }); return; }
   if (g === "collar") { col.matchy = null; return renderCollar(); }
   if (g === "creaAdd") { addToCart({ key: "crea-" + crea.sel.join("+"), nombre: "Bag charm armado", detalle: creaSummary(), precio: creaTotal(), precioTexto: money(creaTotal()) + (S.ajustes?.creaBase == null ? " + gancho" : ""), img: prodImg(creaCharms().find(c => c.id === crea.sel[0])), marca: "club" }); crea.sel = []; return renderCrea(); }
-  if (g === "creaWa") return sendWa([`• Bag charm armado: ${creaSummary()}`, `Total: ${money(creaTotal())}${S.ajustes?.creaBase == null ? " + gancho y cadena (me confirmas)" : ""}`], "club");
-  if (g === "llAdd") { addToCart({ key: "ll-" + Date.now(), nombre: `Llavero ${llPal() || ""}`.trim(), detalle: llOrder().map(x => x.slice(2)).join(" · "), precio: llTotal(), precioTexto: money(llTotal()), img: itemImg(S.data.colgadores.find(x => x.id === ll.colg)), marca: ll.marca }); return keepY(renderLlavero); }
-  if (g === "llWa") return sendWa(["Este llavero 🔑", ...llOrder(), `Total: ${money(llTotal())}`, "(Espero la foto del armado real 📸)"], ll.marca);
+  if (g === "creaWa") return openCheckout([{ nombre: "Bag charm armado", detalle: [creaSummary(), S.ajustes?.creaBase == null ? "Gancho y cadena: por confirmar" : ""].filter(Boolean), q: 1, precio: creaTotal() }], "club");
+  if (g === "llAdd") { addToCart({ key: "ll-" + Date.now(), nombre: `Llavero ${[llWord(0), llWord(1)].filter(Boolean).join(" ")}`.trim(), detalle: llOrder().map(x => x.slice(2)).join(" · "), precio: llTotal(), precioTexto: money(llTotal()), img: itemImg(S.data.colgadores.find(x => x.id === ll.colg)), marca: ll.marca }); return keepY(renderLlavero); }
+  if (g === "llWa") return openCheckout([{ nombre: `Llavero ${[llWord(0), llWord(1)].filter(Boolean).join(" ")}`.trim(), detalle: llOrder().map(x => x.slice(2)), q: 1, precio: llTotal() }], ll.marca);
   if (g === "colLlv") { col.llavero = !col.llavero; return renderCollar(); }
   if (g === "colAdd") { addToCart({ key: "col-" + Date.now(), nombre: `${col.matchy ? "Matchy" : "Collar"} ${cEstilo()?.nombre || ""} · ${nombreUsado() || "sin nombre"}`, detalle: colOrder().map(x => x.slice(2)).join(" · "), precio: colTotal(), precioTexto: money(colTotal()), img: itemImg(cEstilo()), marca: "doggy" }); return renderCollar(); }
-  if (g === "colWa") return sendWa(["Este collar 🐾", ...colOrder(), `Total: ${money(colTotal())}`, "(Espero la foto del armado real 📸)"], "doggy");
+  if (g === "colWa") return openCheckout([{ nombre: `${col.matchy ? "Matchy" : "Collar"} ${cEstilo()?.nombre || ""} · ${nombreUsado() || "sin nombre"}`, detalle: colOrder().map(x => x.slice(2)), q: 1, precio: colTotal() }], "doggy");
   if (g === "search") return openSearch();
   if (g === "closesearch") return $("#hpSearch")?.remove();
   if (g === "cart") return renderCart();
   if (g === "closecart") return $("#hpCart")?.remove();
-  if (g === "wa") {
-    const total = cart.reduce((a, l) => a + l.precio * l.q, 0), brands = new Set(cart.map(l => l.marca));
-    return sendWa([...cart.map(l => `• ${l.q} × ${l.nombre}${l.detalle ? ` (${l.detalle})` : ""} – ${l.precioTexto}`), `Total: ${money(total)}`], brands.size > 1 ? "mix" : [...brands][0]);
-  }
+  if (g === "wa") { const brands = new Set(cart.map(l => l.marca)); $("#hpCart")?.remove(); return openCheckout(cart.map(l => ({ nombre: l.nombre, detalle: l.detalle ? String(l.detalle).split(" · ") : [], q: l.q, precio: l.precio })), brands.size > 1 ? "mix" : [...brands][0], true); }
+  if (g === "closeck") { $("#hpCheckout")?.remove(); return; }
+
 });
 
 /* ---------- boot ---------- */
@@ -1360,7 +1460,7 @@ $("#hp").addEventListener("click", e => {
   clearTimeout(timer);
   if (!db) { $("#main").innerHTML = `<div class="gate"><b>Abre este panel con tu cuenta de Claude.</b><p class="note">Desde aquí no se pueden ver ni guardar los productos.</p></div>`; status("err", "Sin acceso"); return; }
   status("", "Conectado");
-  const who = await window.claude?.use?.("user");
+  const who = await window.claude?.use?.("user"); whoUser = who;
   isEditor = (await who?.canEdit?.()) ?? false;
   if (!isEditor) { document.querySelector("body > .wrap")?.setAttribute("hidden", ""); openHome(); }
   for (const col of ["productos", "categorias", "cordones", "charms", "placas", "estilos", "promos", "colgadores"]) {
@@ -1369,6 +1469,12 @@ $("#hp").addEventListener("click", e => {
       S.loaded.add(col); if (!ed && viewCols().includes(col) && !document.activeElement?.closest("form")) renderMain();
     }, () => status("err", "Error al cargar"));
   }
+  if (isEditor) db.collection("pedidos").onSnapshot(snap => {
+    S.rawPed = {}; snap.docs.forEach(d => S.rawPed[d.id] = { ...(d.data().ordenes || {}) });
+    S.data.pedidos = Object.entries(S.rawPed).flatMap(([uid, o]) => Object.entries(o).map(([k, v]) => ({ ...v, id: k, _uid: uid }))); S.loaded.add("pedidos");
+    const n = S.data.pedidos.filter(p => p.estado === "nuevo").length, b = $("#pBadge"); if (b) { b.hidden = !n; b.textContent = n; }
+    if (S.tab === "pedidos") { renderHeader(); if (!document.activeElement?.closest("[data-pnota]")) renderMain(); }
+  }, () => {});
   db.doc("ajustes/general").onSnapshot(snap => { S.ajustes = snap.exists ? snap.data() : {}; if (!ed && viewCols().includes("ajustes") && !document.activeElement?.closest("form")) renderMain(); }, () => {});
   assets = await window.claude?.use?.("assets");
 })();
