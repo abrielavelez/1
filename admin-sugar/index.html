@@ -1065,7 +1065,7 @@ function renderHero() {
   $("#hp").innerHTML = `<section class="hero" aria-label="Sugar Club" ${heroBg()}>
     <div class="logo gl"><img src="img/logo-club.png" alt="Sugar Club"></div>
     <nav class="nav"><button type="button" class="pill gl" data-go="shop">Ver productos</button><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</nav>
-    <div class="ctas"><button type="button" class="pill w gl" data-go="crea">Crea el tuyo</button><button type="button" class="pill w gl" data-go="shop">Compra ahora</button></div>
+    <div class="ctas"><button type="button" class="pill w gl" data-go="collar">Arma tu collar 🐾</button><button type="button" class="pill w gl" data-go="shop">Compra ahora</button></div>
     <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, arma tu collar"><img src="${esc(doggyLogo())}" alt=""><span class="dcap">Arma tu collar 🐾</span></button>
   </section>${footer()}${closeBtn}`;
 }
@@ -1077,7 +1077,7 @@ function bubbles(brand, active) {
   const cats = shopCats(brand), isMake = active === "make";
   const make = brand === "doggy"
     ? `<button type="button" class="bub2 make" data-go="collar" aria-pressed="${isMake && view === "collar"}"><span class="ring"><span>${mkPic("collarFotoId", "🎨")}</span></span>Arma su collar</button><button type="button" class="bub2 make" data-go="llavero" aria-pressed="${isMake && view === "llavero"}"><span class="ring"><span>${mkPic("llaveroFotoId", "🔑")}</span></span>Arma tu llavero</button>`
-    : `<button type="button" class="bub2 make" data-go="crea" aria-pressed="${isMake}"><span class="ring"><span>${mkPic("creaFotoId", "✨")}</span></span>Crea el tuyo${S.ajustes?.creaActivo ? "" : `<small style="display:block;font:600 10px var(--mono)">pronto</small>`}</button>`;
+    : ``;
   const other = brand === "doggy"
     ? `<button type="button" class="brandsw gl" data-go="shop" aria-label="Ir a Sugar Club"><img src="img/logo-club.png" alt=""><span>Sugar Club 🍒<br>para ti</span></button>`
     : `<button type="button" class="brandsw gl" data-go="doggy" aria-label="Ir a Sugar Doggy Pops"><img src="${esc(doggyLogo())}" alt=""><span>Arma tu<br>collar 🐾</span></button>`;
@@ -1621,7 +1621,7 @@ $("#hp").addEventListener("click", e => {
   if (g === "noInspo") { col.inspo = null; return colRefresh(); }
   if (g === "posReset") { col.pos = {}; return colRefresh(); }
   if (g === "llavero") { ll.matchy = false; ll.marca = "doggy"; ll.step = 1; renderLlavero(); $("#hp").scrollTo({ top: 0 }); return; }
-  if (g === "collar") { col.matchy = false; col.inspo = null; return renderCollar(); }
+  if (g === "collar") { col.matchy = false; col.inspo = null; shopCat = null; renderCollar(); $("#hp").scrollTo({ top: 0 }); return; }
   if (g === "creaAdd") { addToCart({ key: "crea-" + crea.sel.join("+"), nombre: "Bag charm armado", detalle: creaSummary(), precio: creaTotal(), precioTexto: money(creaTotal()) + (S.ajustes?.creaBase == null ? " + gancho" : ""), img: prodImg(creaCharms().find(c => c.id === crea.sel[0])), marca: "club" }); crea.sel = []; return renderCrea(); }
   if (g === "creaWa") return openCheckout([{ nombre: "Bag charm armado", detalle: [creaSummary(), S.ajustes?.creaBase == null ? "Gancho y cadena: por confirmar" : ""].filter(Boolean), q: 1, precio: creaTotal() }], "club");
   if (g === "llAdd") { if (ll.matchy) addToCart({ key: "col-" + Date.now(), nombre: `Matchy · collar ${cEstilo()?.nombre || ""} · ${nombreUsado() || ""}`, detalle: colOrder().map(x => x.slice(2)).join(" · "), precio: colTotal(), precioTexto: money(colTotal()), img: itemImg(cEstilo()), marca: "doggy" });
