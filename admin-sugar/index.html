@@ -413,6 +413,11 @@ header{border-bottom:1px solid var(--line);margin-bottom:6px}
 .gi .ga{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;background:rgba(0,0,0,.45)}
 .gi .ga button{flex:1;border:0;background:none;color:#fff;font-size:13px;padding:3px 0;cursor:pointer}
 .gi.add small{font-size:10px}
+.lks{display:grid;gap:6px}
+.lkr{display:grid;grid-template-columns:minmax(120px,190px) 1fr auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff}
+.lkr code{font:12px var(--mono, monospace);color:#3B4252;overflow-wrap:anywhere}
+.field .lkr{grid-template-columns:1fr auto}
+@media (max-width:600px){.lkr{grid-template-columns:1fr auto}.lkr span{grid-column:1/-1;font-weight:600}}
 .pbadge{margin-left:6px;background:#E11D48;color:#fff;border-radius:999px;padding:0 6px;font:700 11px/18px var(--body)}
 .pedl{display:grid;gap:10px}
 .ped{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;display:grid;gap:8px}
@@ -761,6 +766,10 @@ function renderPrecios(m) {
 function renderAjustes(m) {
   const A = S.ajustes || {}, ig = A.instagram || {}, h = A.home || {};
   m.innerHTML = `<form class="panel" id="ajForm">
+    <h2>Links directos para publicidad</h2><p>Cada link abre la tienda directo en esa parte. Pon la dirección de tu tienda pública y copia el que necesites para el anuncio.</p>
+    <label class="field">Dirección de tu tienda pública<input id="tiendaUrl" placeholder="https://… (la pondremos al publicar la tienda)" value="${esc(A.tiendaUrl || "")}"></label>
+    <div class="lks">${linksHtml()}</div>
+    <p class="note">Para un producto puntual: ábrelo en Productos y usa “Copiar link del producto”.</p>
     <h2>WhatsApp e Instagram</h2>
     <label class="field">Número de WhatsApp (el mismo para las dos marcas)<input id="wa" inputmode="tel" placeholder="593991234567" value="${esc(A.whatsapp || "")}"><small>Formato: 593 + tu número sin el 0. Ej.: 0991234567 → 593991234567</small></label>
     <div class="grid3" style="grid-template-columns:1fr 1fr"><label class="field">Instagram Sugar Club<input id="igClub" value="${esc(ig.club || "")}"></label><label class="field">Instagram Doggy Pops<input id="igDoggy" value="${esc(ig.doggy || "")}"></label></div>
@@ -787,7 +796,7 @@ function renderAjustes(m) {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, pos: { ...(h.pos || {}), ...ajPos }, creaFotoId: up.creaFoto, collarFotoId: up.collarFoto, llaveroFotoId: up.llaveroFoto, heroId: up.hero, headerId: up.header, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), tiendaUrl: $("#tiendaUrl").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, pos: { ...(h.pos || {}), ...ajPos }, creaFotoId: up.creaFoto, collarFotoId: up.collarFoto, llaveroFotoId: up.llaveroFoto, heroId: up.hero, headerId: up.header, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 let ajPos = {};
@@ -900,6 +909,7 @@ function fieldHtml(f, d) {
 function drawEditor() {
   const sch = SCHEMAS[ed.col], d = ed.data;
   let extra = "";
+  if (ed.col === "productos" && !ed.isNew) extra = `<div class="field">Link directo a este producto<div class="lkr"><code>${esc(linkOf("p/" + ed.id))}</code><button type="button" class="btn" data-copy="${esc(linkOf("p/" + ed.id))}">Copiar link del producto</button></div></div>`;
   if (ed.col === "categorias" && !ed.isNew) {
     const ps = prodsDe({ ...d, nombre: ed.oldName });
     const pics = ps.map(p => ({ p, u: p.fotoId ? blob(p.fotoId) : p.fotoSrc })).filter(x => x.u), curIcon = d.iconoSrc || "";
@@ -1641,6 +1651,35 @@ $("#hp").addEventListener("click", e => {
 
 });
 
+/* ---------- direct links for ads: #inspiracion, #collar, #llavero, #matchy, #doggy, #club, #cat/<nombre>, #p/<id> ---------- */
+const ROUTES = [["inicio", "Inicio", ""], ["club", "Tienda Sugar Club", "club"], ["doggy", "Tienda Doggy Pops", "doggy"], ["collar", "Arma su collar", "collar"], ["llavero", "Arma tu llavero", "llavero"], ["matchy", "Matchy (collar + llavero)", "matchy"], ["inspiracion", "Inspiración (galería)", "inspiracion"]];
+const catSlug = c => slug(c.nombre);
+let routed = false;
+function routeTo(h) {
+  h = decodeURIComponent((h || "").replace(/^#\/?/, "")); if (!h) return false;
+  const [a, b] = h.split("/"); openHome();
+  if (a === "club") { shopCat = null; renderShop("club"); }
+  else if (a === "doggy") { shopCat = null; renderShop("doggy"); }
+  else if (a === "collar") { col.matchy = false; col.inspo = null; col.step = 1; renderCollar(); }
+  else if (a === "matchy") { col.matchy = true; col.inspo = null; col.step = 1; renderCollar(); }
+  else if (a === "llavero") { ll.matchy = false; ll.marca = "doggy"; ll.step = 1; renderLlavero(); }
+  else if (a === "inspiracion") { const c = S.data.categorias.find(c => c.galeria); if (c) { shopCat = c; renderShop(c.marca); } else { renderShop("doggy"); openInspPop(); } }
+  else if (a === "cat" && b) { const c = S.data.categorias.find(c => catSlug(c) === b || c.id === b); if (c) { shopCat = c; shopProd = null; renderShop(c.marca); } else renderHero(); }
+  else if (a === "p" && b) { const p = S.data.productos.find(p => p.id === b); if (p) { shopCat = S.data.categorias.find(c => c.marca === p.marca && c.nombre === p.categoria) || null; shopProd = p; renderShop(p.marca); } else renderHero(); }
+  else return false;
+  return true;
+}
+function tryRoute() { if (routed || !location.hash) return; if (!["productos", "categorias", "estilos", "inspiracion"].every(c => S.loaded.has(c))) return; routed = true; routeTo(location.hash); }
+window.addEventListener("hashchange", () => routeTo(location.hash));
+const baseUrl = () => (S.ajustes?.tiendaUrl || "").trim().replace(/#.*$/, "");
+const linkOf = h => (baseUrl() || "https://TU-TIENDA") + (h ? "#" + h : "");
+function linksHtml() {
+  const row = (n, h) => `<div class="lkr"><span>${esc(n)}</span><code>${esc(linkOf(h))}</code><button type="button" class="btn" data-copy="${esc(linkOf(h))}">Copiar</button></div>`;
+  const cats = ["club", "doggy"].flatMap(m => catsDe(m).filter(c => c.disponible !== false).map(c => row(`${MARCAS[m]} · ${c.nombre}`, "cat/" + catSlug(c))));
+  return `${ROUTES.map(([h, n]) => row(n, h === "inicio" ? "" : h)).join("")}<p class="group">Secciones</p>${cats.join("")}`;
+}
+document.addEventListener("click", async e => { const b = e.target.closest("[data-copy]"); if (!b) return; try { await navigator.clipboard.writeText(b.dataset.copy); toast("Link copiado ✓"); } catch (x) { prompt("Copia el link:", b.dataset.copy); } });
+
 /* ---------- boot ---------- */
 (async () => {
   render();
@@ -1655,7 +1694,7 @@ $("#hp").addEventListener("click", e => {
   for (const col of ["productos", "categorias", "cordones", "charms", "placas", "estilos", "promos", "colgadores", "inspiracion"]) {
     db.collection(col).onSnapshot(snap => {
       S.data[col] = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      S.loaded.add(col); if (!ed && viewCols().includes(col) && !document.activeElement?.closest("form")) renderMain();
+      S.loaded.add(col); tryRoute(); if (!ed && viewCols().includes(col) && !document.activeElement?.closest("form")) renderMain();
     }, () => status("err", "Error al cargar"));
   }
   if (isEditor) db.collection("pedidos").onSnapshot(snap => {
