@@ -458,7 +458,7 @@ const ICON = {
 const iconSvg = id => `<svg viewBox="-20 -20 40 40" aria-hidden="true">${ICON[id] || ICON.estrella}</svg>`;
 const blob = id => "/_blob/" + id;
 const slug = s => (s || "item").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "item";
-const catPos = c => { if (c?.iconoId || c?.iconoSrc) return c.iconoIdPos || "50% 50%"; const p = (S.data.productos || []).find(p => p.marca === c?.marca && p.categoria === c?.nombre && (p.fotoId || p.fotoSrc)); return p?.fotoIdPos || "50% 50%"; };
+const catPos = c => { if (c?.iconoIdPos) return c.iconoIdPos; if (c?.iconoId || c?.iconoSrc) return "50% 50%"; const p = (S.data.productos || []).find(p => p.marca === c?.marca && p.categoria === c?.nombre && (p.fotoId || p.fotoSrc)); return p?.fotoIdPos || "50% 50%"; };
 const posOf = (x, k = "fotoId") => (x && x[k + "Pos"]) || "50% 50%";
 const catIcon = c => {
   if (c?.iconoId) return blob(c.iconoId);
