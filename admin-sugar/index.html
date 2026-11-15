@@ -1237,7 +1237,7 @@ function relax(items) {
   for (let n = 0; n < 80; n++) {
     let moved = false; items.sort((x, y) => x.a - y.a);
     for (let i = 0; i < items.length - 1; i++) {
-      const A = items[i], B = items[i + 1], need = (wa(A) + wa(B)) / 2 + .6, gap = B.a - A.a;
+      const A = items[i], B = items[i + 1], need = (wa(A) + wa(B)) / 2 + .3, gap = B.a - A.a;
       if (gap < need - .01) { const d = need - gap; moved = true;
         if (A.fixed && !B.fixed) B.a += d; else if (B.fixed && !A.fixed) A.a -= d; else if (!A.fixed) { A.a -= d / 2; B.a += d / 2; } }
     }
@@ -1273,7 +1273,7 @@ function collarParts(k, name, pl) {
   const cw = k === "letras" ? L.length * LW : k === "placa" ? 22 * Math.max(sc, .8) : LW;
   items.push({ a: 90, w: cw, fixed: true });
   cu.forEach((c, i) => { const key = "u:" + c.id + ":" + (seen[c.id] = (seen[c.id] ?? -1) + 1); const fig = c.figura || "bolita", w = fig === "tallarin" ? CW * 1.35 : CW; items.push({ key, w, a: place(w, i % 2 ? -1 : 1, key), fixed: key === col.lastDrag, draw: a => { const p = ell(a); return `<span class="on cu ${fig}" data-dk="${esc(key)}" style="${pos(a)};width:${cqw(w)};height:${cqw(fig === "ruedita" ? CW * 1.15 : CW)};--c:${pc[Math.floor(i / 2) % pc.length]};transform:translate(-50%,-50%) rotate(${p.rot.toFixed(1)}deg)"></span>`; } }); });
-  cg.forEach((c, i) => { const key = "c:" + c.id; items.push({ key, w: PW * .82, a: place(PW, i % 2 ? 1 : -1, key), fixed: key === col.lastDrag, draw: a => `<span class="hang pend" data-dk="${esc(key)}" style="${pos(a, 1.2)};width:${cqw(PW)}">${pic(c)}</span>` }); });
+  cg.forEach((c, i) => { const key = "c:" + c.id; items.push({ key, w: PW * .41, a: place(PW, i % 2 ? 1 : -1, key), fixed: key === col.lastDrag, draw: a => `<span class="hang pend" data-dk="${esc(key)}" style="${pos(a, 1.2)};width:${cqw(PW)}">${pic(c)}</span>` }); });
   relax(items);
   items.forEach(it => { if (it.draw) h += it.draw(it.a); });
   return h;
