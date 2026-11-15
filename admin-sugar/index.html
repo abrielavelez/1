@@ -466,7 +466,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const money = n => n == null || n === "" ? "Consultar" : "$" + (Number.isInteger(+n) ? +n : (+n).toFixed(2));
 const LOW = 3;
-const MARCAS = { club: "Sugar Club", doggy: "Doggy Pops", match: "Match" };
+const MARCAS = { club: "Sugar Club", doggy: "Doggy Pops" };
 const ICONS = ["estrella","corazon","cereza","hueso","nube","helado","sapo","florCristal","brillo"];
 const INK = "#2A1638";
 const ICON = {
@@ -507,7 +507,6 @@ const SCHEMAS = {
       { k: "precio", t: "number", label: "Precio ($) *", help: "Obligatorio: sin precio el producto no sale en la tienda." },
       { k: "precioTexto", t: "text", label: "Cómo se muestra el precio (opcional)", help: "Ej.: $6 + $1 por letra" },
       { k: "opciones", t: "list", label: "Set: pares u opciones a elegir (opcional)", help: "Separa con comas, en orden de izquierda a derecha como en la foto. La clienta elige cuáles quiere y paga el Precio por cada uno. Ej.: Gota café, Carey, Negro" },
-      { k: "incluye", t: "list", label: "Incluye", help: "Separa con comas. Ej.: Lazo humano, Lazo perrito", when: d => d.marca === "match" },
       { k: "stock", t: "number", label: "Stock", help: "Empieza en 1. En 0 se muestra Agotado. Vacío = hecho a pedido." },
       { k: "disponible", t: "toggle", label: "Visible en la web" },
       { k: "configurable", t: "toggle", label: "Es personalizable (abre un armador)", when: d => d.marca !== "match" },
@@ -515,7 +514,7 @@ const SCHEMAS = {
       { k: "matchy", t: "toggle", label: "Matchy: su collar + tu llavero a juego", when: d => d.configurable && d.armador !== "llavero" },
       { k: "estilo", t: "select", label: "Tipo de collar que abre", opts: () => [["", "— elegir —"], ...S.data.estilos.map(e => [e.id, e.nombre])], when: d => d.marca === "doggy" && d.configurable, help: "Al tocarlo en la tienda, se abre el armador con este tipo ya elegido." },
     ],
-    nuevo: (tab, preset) => ({ nombre: "", marca: preset?.marca || (["club", "doggy", "match"].includes(tab) ? tab : "club"), categoria: preset?.categoria || "", descripcion: "", precio: null, stock: 1, disponible: true, ejemplo: false })
+    nuevo: (tab, preset) => ({ nombre: "", marca: preset?.marca || (["club", "doggy"].includes(tab) ? tab : "club"), categoria: preset?.categoria || "", descripcion: "", precio: null, stock: 1, disponible: true, ejemplo: false })
   },
   categorias: {
     title: "categoría", empty: "Aún no hay categorías.",
