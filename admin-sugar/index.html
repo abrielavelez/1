@@ -1407,8 +1407,8 @@ function colPanel() {
     <div class="opts">${f === "cuenta" ? list.map(c => { const n = col.cq[c.id] || 0; return `<div class="opt2 cuq" aria-pressed="${n > 0}"><span class="ph"><img src="${esc(itemImg(c))}" alt="" loading="lazy"></span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)} c/u · par ${money(2 * (+c.precio || 0))}</span><span class="qty"><button type="button" data-cq="${esc(c.id)}" data-d="-1" ${n ? "" : "disabled"} aria-label="Quitar un par">−</button><b>${n} par${n === 1 ? "" : "es"}</b><button type="button" data-cq="${esc(c.id)}" data-d="1" aria-label="Agregar un par">+</button></span></div>`; }).join("") : list.map(c => `<button type="button" class="opt2" data-ctog="${f === "cuenta" ? "cuentas" : "charms"}" data-v="${esc(c.id)}" aria-pressed="${sel.includes(c.id)}"><span class="ph${f === "cuenta" ? " sm" : ""}">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy">` : iconSvg(c.icono)}</span><b>${esc(c.nombre)}</b><span class="p">${money(c.precio)}</span></button>`).join("")}</div>` : `<div class="emptyg">${f === "cuenta" ? "Pronto habrá cuentitas ✨" : "Pronto ✨"}</div>`}
     ${f === "cuenta" ? `<div class="row2"><button type="button" class="btnp" data-sub3="colgante">Seguir con los colgantes →</button></div>` : ""}`;
   }
-  if (col.step === 4) { return `<h3>💞 Matchy</h3><div class="opts"><button type="button" class="opt2" data-go="colMx" aria-pressed="${!!col.matchy}"><b>${col.matchy ? "✓ Quiero mi llavero a juego" : "Agregar mi llavero a juego"}</b><small>Al terminar su collar armas tu llavero con los mismos colores, paso a paso.</small></button></div>
-    <p class="hint" style="text-align:left">El cierre lo elegimos nosotras para que combine con tus colores.</p>`; }
+  if (col.step === 4) { return `${col.matchy ? `<div class="warnbox" style="background:#FDE2EE;border-color:#F7B6D2;color:#8A1C4E">💞 Es un Matchy: al terminar su collar armas tu llavero a juego.</div>` : ""}
+    <p class="hint" style="text-align:left">El cierre lo elegimos nosotras para que combine con tus colores.</p>${col.matchy ? "" : `<p class="hint" style="text-align:left">💞 ¿Quieres tu llavero a juego? Ármalo como <button type="button" class="linkb" data-go="matchy">Matchy</button>.</p>`}`; }
   const gifts = giftOpts();
   return `${gifts.length ? `<h3>🎁 Elige tu regalo de promo</h3><p class="hint" style="text-align:left">Con tu collar te llevas uno de estos gratis:</p><div class="opts">${gifts.map(o => `<button type="button" class="opt2" data-gift="${esc(o.key)}" aria-pressed="${o.key === col.regalo}">${o.img ? `<span class="ph"><img src="${esc(o.img)}" alt="" loading="lazy"></span>` : `<span class="ph" style="font-size:34px">🎁</span>`}<b>${esc(o.nombre)}</b>${o.desc ? `<small>${esc(o.desc)}</small>` : ""}<span class="p">$0 · Gratis</span></button>`).join("")}</div>` : ""}${colFaltan().length ? `<div class="warnbox">Para este collar falta: <b>${esc(colFaltan().join(" · "))}</b></div>` : ""}<h3>Tu pedido</h3>${orderCard(colLines(), colTotal())}
     <p class="hint" style="text-align:left">Cuerda: ${esc(col.cordones.map(id => S.data.cordones.find(c => c.id === id)?.nombre).filter(Boolean).join(" + ") || "—")}</p>
@@ -1627,6 +1627,7 @@ $("#hp").addEventListener("click", e => {
   if (g === "hero") return renderHero();
   if (g === "top") return $("#hp").scrollTo({ top: 0, behavior: "smooth" });
   if (g === "crea") return renderCrea();
+  if (g === "matchy") { col.matchy = true; return keepY(renderCollar); }
   if (g === "inspall") return openInspPop();
   if (g === "closeinsp") return $("#hpInsp")?.remove();
   if (g === "noInspo") { col.inspo = null; return colRefresh(); }
