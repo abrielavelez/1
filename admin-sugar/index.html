@@ -266,6 +266,10 @@ h1 span{color:var(--pink)}
 .llv .lch.l{right:calc(100% - 22px);flex-direction:row-reverse}.llv .lch.r{left:calc(100% - 22px)}
 .llv .lch::before{content:"";width:10px;height:2px;margin-top:10px;background:#b9c0cc;flex:none}
 .llv .lch.dragging{cursor:grabbing;filter:drop-shadow(0 0 6px #fff)}
+.opts.sm{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+.opts.sm .ph img{width:56%;height:56%;margin:auto}
+.opts.sm .opt2{padding:8px;font-size:12px}.opts.sm .opt2 b{font-size:12.5px}
+.llv .lg2 img{width:58px!important;height:58px!important}
 .morebtn{justify-self:start;border:1.5px solid rgba(255,255,255,.9);border-radius:999px;background:rgba(255,255,255,.55);padding:6px 14px;font:700 13px var(--body);color:var(--ink);cursor:pointer}
 .llv .loop{width:44px;height:28px;border:6px solid var(--c1,#d8dbe2);border-top:0;border-radius:0 0 22px 22px;margin-top:-14px}
 .llv .tiras{display:flex;gap:18px;align-items:flex-start;margin-top:-4px}
@@ -364,6 +368,10 @@ header{border-bottom:1px solid var(--line);margin-bottom:6px}
 .subrow{display:flex;gap:6px;align-items:center;overflow-x:auto;scrollbar-width:none;min-width:0}
 .subrow .lbl{flex:none;width:76px;font:600 11px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--soft)}
 .gal{display:flex;flex-wrap:wrap;gap:8px}
+.crop{position:relative;width:240px;max-width:100%;border-radius:10px;overflow:hidden;touch-action:none;cursor:grab;background:#ddd;line-height:0;user-select:none}
+.crop img{width:100%;height:auto;display:block;pointer-events:none}
+.crop .win{position:absolute;border:3px solid #fff;border-radius:6px;box-shadow:0 0 0 9999px rgba(255,255,255,.62),0 0 0 4px rgba(0,0,0,.25);pointer-events:none}
+.crop.moving{cursor:grabbing}
 .pv.fpick{width:150px;height:150px;position:relative;cursor:crosshair;touch-action:none}
 .pv.fpick img{object-fit:cover;pointer-events:none;user-select:none}
 .fdot{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #6D28D9,0 2px 6px rgba(0,0,0,.4);pointer-events:none}
@@ -734,7 +742,7 @@ function renderAjustes(m) {
   const up = { creaFoto: h.creaFotoId || null, collarFoto: h.collarFotoId || null, llaveroFoto: h.llaveroFotoId || null, hero: h.heroId || null, dogFoto: h.doggyFotoId || null, dogLogo: h.doggyLogoId || null, header: h.headerId || null };
   m.querySelectorAll("[data-ajup]").forEach(inp => inp.onchange = async () => {
     const f = inp.files[0]; if (!f) return; const k = inp.dataset.ajup;
-    try { const r = await saving(assets.upload(f)); up[k] = r.id; const pv = m.querySelector(`[data-ajpv="${k}"]`); if (pv) pv.innerHTML = `<img src="${esc(blob(r.id))}" alt="" draggable="false"><i class="fdot" style="left:50%;top:50%"></i>`; ajPos[k] = "50% 50%"; toast("Foto lista, toca Guardar ajustes"); } catch (e) {}
+    try { const r = await saving(assets.upload(f)); up[k] = r.id; const pv = m.querySelector(`[data-ajpv="${k}"]`); if (pv) pv.innerHTML = cropHtml(blob(r.id), "50% 50%", `data-afk="${k}"`, k === "hero" ? 16 / 9 : 1); ajPos[k] = "50% 50%"; toast("Foto lista, toca Guardar ajustes"); } catch (e) {}
   });
   m.querySelectorAll("[data-ajclear]").forEach(b => b.onclick = () => { up[b.dataset.ajclear] = null; const pv = m.querySelector(`[data-ajpv="${b.dataset.ajclear}"]`); if (pv) pv.textContent = "Sin foto"; });
   $("#ajForm").onsubmit = async ev => {
@@ -745,15 +753,30 @@ function renderAjustes(m) {
   };
 }
 let ajPos = {};
-function focalFrom(e, el) { const r = el.getBoundingClientRect(); const x = Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * 100), y = Math.round(Math.max(0, Math.min(1, (e.clientY - r.top) / r.height)) * 100); const v = `${x}% ${y}%`; const im = el.querySelector("img"), dot = el.querySelector(".fdot"); if (im) im.style.objectPosition = v; if (dot) { dot.style.left = x + "%"; dot.style.top = y + "%"; } return v; }
+function focalFromOld(e, el) { const r = el.getBoundingClientRect(); const x = Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * 100), y = Math.round(Math.max(0, Math.min(1, (e.clientY - r.top) / r.height)) * 100); const v = `${x}% ${y}%`; const im = el.querySelector("img"), dot = el.querySelector(".fdot"); if (im) im.style.objectPosition = v; if (dot) { dot.style.left = x + "%"; dot.style.top = y + "%"; } return v; }
+/* crop frame: the whole photo is shown, a white frame marks what will be visible; drag to move it */
+const cropHtml = (src, pos, attr, ratio = 1) => `<div class="crop" ${attr} data-ratio="${ratio}" data-pos="${esc(pos)}"><img src="${esc(src)}" alt="" draggable="false" onload="layoutCrop(this.parentNode)"><i class="win"></i></div>`;
+function cropGeo(el) {
+  const im = el.querySelector("img"), nw = im.naturalWidth, nh = im.naturalHeight; if (!nw) return null;
+  const r = +el.dataset.ratio || 1, cw = nw / nh > r ? nh * r : nw, ch = nw / nh > r ? nh : nw / r, sc = el.clientWidth / nw;
+  return { nw, nh, cw, ch, sc };
+}
+function layoutCrop(el) {
+  const g = cropGeo(el); if (!g) return; const [x, y] = (el.dataset.pos || "50% 50%").split(" ").map(parseFloat), w = el.querySelector(".win");
+  w.style.width = g.cw * g.sc + "px"; w.style.height = g.ch * g.sc + "px"; w.style.left = (g.nw - g.cw) * x / 100 * g.sc + "px"; w.style.top = (g.nh - g.ch) * y / 100 * g.sc + "px";
+}
 let fdrag = null;
-document.addEventListener("pointerdown", e => { const el = e.target.closest("[data-fk],[data-afk]"); if (!el || !el.querySelector("img")) return; e.preventDefault(); fdrag = el; el.setPointerCapture?.(e.pointerId); applyFocal(e); });
-document.addEventListener("pointermove", e => { if (fdrag) applyFocal(e); });
-document.addEventListener("pointerup", () => { fdrag = null; });
-function applyFocal(e) { const v = focalFrom(e, fdrag); if (fdrag.dataset.fk && ed) ed.data[fdrag.dataset.fk + "Pos"] = v; if (fdrag.dataset.afk) ajPos[fdrag.dataset.afk] = v; }
+document.addEventListener("pointerdown", e => { const el = e.target.closest(".crop"); if (!el) return; const g = cropGeo(el); if (!g) return; e.preventDefault(); el.setPointerCapture?.(e.pointerId); const [x, y] = (el.dataset.pos || "50% 50%").split(" ").map(parseFloat); fdrag = { el, g, x0: e.clientX, y0: e.clientY, x, y }; el.classList.add("moving"); });
+document.addEventListener("pointermove", e => {
+  if (!fdrag) return; const { el, g } = fdrag, mx = (g.nw - g.cw) * g.sc, my = (g.nh - g.ch) * g.sc;
+  const x = mx ? Math.max(0, Math.min(100, fdrag.x + (e.clientX - fdrag.x0) / mx * 100)) : 50, y = my ? Math.max(0, Math.min(100, fdrag.y + (e.clientY - fdrag.y0) / my * 100)) : 50;
+  const v = `${Math.round(x)}% ${Math.round(y)}%`; el.dataset.pos = v; layoutCrop(el);
+  if (el.dataset.fk && ed) ed.data[el.dataset.fk + "Pos"] = v; if (el.dataset.afk) ajPos[el.dataset.afk] = v;
+});
+document.addEventListener("pointerup", () => { if (fdrag) fdrag.el.classList.remove("moving"); fdrag = null; });
 function ajPhoto(label, k, id, fallback) {
   const src = id ? blob(id) : (fallback || ""), ps = (S.ajustes?.home?.pos || {})[k] || "50% 50%";
-  return `<div class="field">${label}${src ? `<small>👆 Toca la parte que quieres que se vea</small>` : ""}<div class="photo"><div class="pv fpick" data-ajpv="${k}" data-afk="${k}">${src ? `<img src="${esc(src)}" alt="" style="object-position:${ps}" draggable="false"><i class="fdot" style="left:${ps.split(" ")[0]};top:${ps.split(" ")[1]}"></i>` : "Sin foto"}</div>
+  return `<div class="field">${label}${src ? `<small>✋ Mueve el recuadro blanco</small>` : ""}<div class="photo"><div data-ajpv="${k}">${src ? cropHtml(src, ps, `data-afk="${k}"`, k === "hero" ? 16 / 9 : 1) : `<div class="pv">Sin foto</div>`}</div>
     ${assets ? `<div style="display:grid;gap:6px"><label class="btn" for="aj_${k}">Subir foto</label><input type="file" id="aj_${k}" data-ajup="${k}" accept="image/png,image/jpeg,image/webp"><button type="button" class="btn" data-ajclear="${k}">Quitar</button></div>` : ""}</div></div>`;
 }
 function viewCols() {
@@ -829,8 +852,8 @@ function fieldHtml(f, d) {
       const pid = f.k in ed.newPhotos ? ed.newPhotos[f.k] : v;
       const fb = !pid && f.fallback && d[f.fallback] ? d[f.fallback] : "";
       const src = pid ? blob(pid) : fb;
-      const fp = ed.col !== "productos" && src, ps = d[f.k + "Pos"] || "50% 50%";
-      return `<div class="field">${f.label}${f.help ? `<small>${esc(f.help)}</small>` : ""}${fp ? `<small>👆 Toca o arrastra sobre la foto la parte que quieres que se vea.</small>` : ""}<div class="photo"><div class="pv ${f.round ? "round" : ""} ${fp ? "fpick" : ""}" ${fp ? `data-fk="${f.k}"` : ""} style="${f.round ? `background:${esc(d.color || "#eee")}` : ""}">${src ? `<img src="${esc(src)}" alt="" style="object-position:${esc(ps)}" draggable="false">${fp ? `<i class="fdot" style="left:${ps.split(" ")[0]};top:${ps.split(" ")[1]}"></i>` : ""}` : "Sin foto"}</div>
+      const ps = d[f.k + "Pos"] || "50% 50%", catFb = !src && ed.col === "categorias" ? catIcon({ ...d, iconoId: null }) : "", shown = src || catFb, fp = ed.col !== "productos" && shown;
+      return `<div class="field">${f.label}${f.help ? `<small>${esc(f.help)}</small>` : ""}${fp ? `<small>✋ Mueve el recuadro blanco: lo que queda adentro es lo que se ve en la tienda.</small>` : ""}<div class="photo">${fp ? cropHtml(shown, ps, `data-fk="${f.k}"`) : `<div class="pv ${f.round ? "round" : ""}" style="${f.round ? `background:${esc(d.color || "#eee")}` : ""}">${src ? `<img src="${esc(src)}" alt="">` : "Sin foto"}</div>`}
       ${assets ? `<div style="display:grid;gap:6px"><label class="btn" for="up_${f.k}">${src ? "Cambiar foto" : "Subir foto"}</label><input type="file" id="up_${f.k}" data-up="${f.k}" accept="image/jpeg,image/png,image/webp">${src ? `<button type="button" class="btn" data-nophoto="${f.k}">Quitar foto</button>` : ""}</div>` : `<small>Las fotos solo se pueden subir con tu cuenta.</small>`}</div></div>`;
     }
   }
@@ -1350,7 +1373,7 @@ const llCord = () => S.data.cordones.find(c => c.id === ll.cordon);
 function llLines() {
   const A = S.ajustes?.llavero || {}, L = [], g = S.data.colgadores.find(x => x.id === ll.colg);
   L.push({ t: "Llavero base", v: +A.base || 0 });
-  if (llCord()) L.push({ t: `Hilo: ${llCord().nombre}`, v: 0 });
+  if (llCord()) L.push({ t: `Hilo: ${llCord().nombre}`, v: S.ajustes?.llavero?.hilo ?? 2 });
   if (g) L.push({ t: `Colgador: ${g.nombre}`, v: +g.precio || 0, img: itemImg(g) });
   [0, 1].forEach(i => {
     const w = llWord(i); if (nLetras(w)) L.push({ t: `Tira ${i + 1}: ${nLetras(w)} letras (${w})`, v: (+A.porLetra || 0) * nLetras(w) });
@@ -1396,7 +1419,7 @@ function llPanel() {
     const L = cCords(), grid = tp => { const X = L.filter(c => (c.tipo || "Liso") === tp); return X.length ? `<p class="hint" style="text-align:left;margin:0">${tp === "Liso" ? "Colores enteros" : "Jaspeados"} · ${X.length}</p><div class="swg">${X.map(c => `<button type="button" class="swc" data-llcord="${esc(c.id)}" aria-pressed="${ll.cordon === c.id}" title="${esc(c.nombre)}" aria-label="${esc(c.nombre)}" style="background:${swBg(c)}">${itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="" loading="lazy" style="object-position:${posOf(c)}">` : ""}</button>`).join("")}</div>` : ""; };
     return `<h3>Elige el hilo</h3><p class="hint" style="text-align:left;margin:0">Es un solo hilo que se dobla en el colgador y queda en dos tiras.</p>${grid("Liso")}${grid("Mezclado")}<p class="hint" style="text-align:left">Elegiste: <b>${esc(llCord()?.nombre || "—")}</b></p>`;
   }
-  if (ll.step === 2) { const G = llColgs().sort(byOrden), tipos = [...new Set(G.map(g => g.grupo || "Colgadores"))]; return G.length ? tipos.map(tp => { const all = G.filter(g => (g.grupo || "Colgadores") === tp), open = ll.more[tp], sel = all.findIndex(g => g.id === ll.colg), shown = open ? all : all.slice(0, 3).concat(sel >= 3 ? [all[sel]] : []); return `<h3>${esc(tp)} · ${all.length}</h3><div class="opts">${shown.map(g => `<button type="button" class="opt2" data-llset="colg" data-v="${esc(g.id)}" aria-pressed="${g.id === ll.colg}">${itemImg(g) ? `<span class="ph"><img src="${esc(itemImg(g))}" alt="" loading="lazy"></span>` : ""}<b>${esc(g.nombre)}</b><span class="p">${+g.precio ? "+ " + money(g.precio) : "Incluido"}</span></button>`).join("")}</div>${all.length > 3 ? `<button type="button" class="morebtn" data-llmore="${esc(tp)}">${open ? "Ver menos ▲" : `Ver ${all.length - 3} más ▼`}</button>` : ""}`; }).join("") : `<div class="emptyg">Pronto ✨</div>`; }
+  if (ll.step === 2) { const G = llColgs().sort(byOrden), tipos = [...new Set(G.map(g => g.grupo || "Colgadores"))]; return G.length ? tipos.map(tp => { const all = G.filter(g => (g.grupo || "Colgadores") === tp), open = ll.more[tp], sel = all.findIndex(g => g.id === ll.colg), shown = open ? all : all.slice(0, 3).concat(sel >= 3 ? [all[sel]] : []); return `<h3>${esc(tp)} · ${all.length}</h3><div class="opts sm">${shown.map(g => `<button type="button" class="opt2" data-llset="colg" data-v="${esc(g.id)}" aria-pressed="${g.id === ll.colg}">${itemImg(g) ? `<span class="ph"><img src="${esc(itemImg(g))}" alt="" loading="lazy"></span>` : ""}<b>${esc(g.nombre)}</b><span class="p">${+g.precio ? "+ " + money(g.precio) : "Incluido"}</span></button>`).join("")}</div>${all.length > 3 ? `<button type="button" class="morebtn" data-llmore="${esc(tp)}">${open ? "Ver menos ▲" : `Ver ${all.length - 3} más ▼`}</button>` : ""}`; }).join("") : `<div class="emptyg">Pronto ✨</div>`; }
   if (ll.step === 3) return `<p class="hint" style="text-align:left;margin:0">Tu llavero tiene dos tiras del mismo largo. Escribe lo que quieras en cada una: un nombre, iniciales, una palabra… La segunda es opcional. Cada letra suma ${money(A.llavero?.porLetra)}.</p>
     ${[0, 1].map(i => `<h3>Tira ${i + 1}${i ? " · opcional" : ""}</h3><input class="inpt" id="llPal${i}" maxlength="10" autocomplete="off" value="${esc(ll.t[i].palabra)}" placeholder="${i ? "Opcional: otra palabra, apellido, iniciales…" : "Ej. un nombre, iniciales, una palabra…"}" aria-label="Palabra de la tira ${i + 1}">`).join("")}
     <h3>Colores que te gustan · hasta 3</h3><p class="hint" style="text-align:left;margin:0">Para las letras y cuentitas. Hacemos lo más parecido con lo que tenemos.</p>
