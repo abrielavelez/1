@@ -195,6 +195,13 @@ h1 span{color:var(--pink)}
 .inspo img{width:42px;height:42px;border-radius:10px;object-fit:cover}.inspo span{flex:1}.inspo b{font-size:13px}
 .mxc{width:100%;display:grid;justify-items:center;gap:2px;color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,30,80,.6)}
 .collar2.mini{max-width:260px;margin-bottom:22px;pointer-events:none}
+.igal{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.ig{position:relative;border:0;padding:0;border-radius:16px;overflow:hidden;aspect-ratio:3/4;cursor:pointer;background:#fff;box-shadow:0 4px 12px rgba(10,40,100,.2)}
+.ig img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}.ig:hover img{transform:scale(1.04)}
+.ig span{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,.9);border-radius:999px;padding:3px 10px;font:700 12px var(--body);color:#2a3550}
+.ione{max-width:560px}.ibig{position:relative;display:grid;place-items:center}.ibig img{max-width:100%;max-height:62svh;border-radius:14px;object-fit:contain}
+.inspfab{position:fixed;right:18px;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:30;border:0;border-radius:999px;padding:12px 18px;font:800 14px var(--body);color:#fff;background:linear-gradient(135deg,#FF4F9A,#B57BFF);box-shadow:0 8px 20px rgba(120,40,160,.4);cursor:pointer}
+@media (max-width:860px){.inspfab{bottom:calc(120px + env(safe-area-inset-bottom,0px));right:12px;padding:10px 14px}}
 .warnbox{background:#FFF4E5;color:#7A4300;border:1.5px solid #FAD7A0;border-radius:14px;padding:10px 12px;font:600 13px var(--body)}
 .ocard{width:100%;box-sizing:border-box;background:rgba(255,255,255,.92);border-radius:16px;padding:6px 10px;display:grid;color:#2a3550;box-shadow:0 6px 16px rgba(10,40,100,.15)}
 .ocard .ol{display:grid;grid-template-columns:30px 1fr auto 26px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #e3e6ee;font:600 13px var(--body)}
@@ -560,6 +567,18 @@ const SCHEMAS = {
     ],
     nuevo: () => ({ nombre: "", detalle: "", base: 10, porLetra: 0, tallaL: null, maxLetras: 10, orden: 9, disponible: true })
   },
+  inspiracion: {
+    title: "foto de inspiración", empty: "Aún no hay fotos. Sube fotos de collares reales que ya hiciste.",
+    fields: [
+      { k: "fotoId", t: "photo", label: "Foto", fallback: "fotoSrc" },
+      { k: "nombre", t: "text", label: "Nombre del peludito", req: true },
+      { k: "estilo", t: "select", label: "Tipo de collar", opts: () => S.data.estilos.map(e => [e.id, e.nombre]), help: "Al tocar “Quiero uno así”, abre el armador con este tipo." },
+      { k: "nota", t: "text", label: "Detalle (opcional)", help: "Ej.: hilo arcoíris, cuentitas flor" },
+      { k: "orden", t: "number", label: "Orden" },
+      { k: "disponible", t: "toggle", label: "Visible en la galería" }
+    ],
+    nuevo: () => ({ nombre: "", estilo: "letras", nota: "", orden: 99, disponible: true })
+  },
   colgadores: {
     title: "colgador", empty: "Aún no hay colgadores. Sube cada argolla, mosquetón o colgador con su foto.",
     fields: [
@@ -596,7 +615,7 @@ const SCHEMAS = {
 };
 
 /* ---------- state ---------- */
-const S = { tab: "productos", sub: "todo", cat: "", q: "", data: { productos: [], categorias: [], cordones: [], charms: [], placas: [], estilos: [], promos: [], colgadores: [] }, ajustes: null, loaded: new Set() };
+const S = { tab: "productos", sub: "todo", cat: "", q: "", data: { productos: [], categorias: [], cordones: [], charms: [], placas: [], estilos: [], promos: [], colgadores: [], inspiracion: [] }, ajustes: null, loaded: new Set() };
 let db = null, assets = null;
 const catsDe = m => S.data.categorias.filter(c => c.marca === m).sort((a, b) => (a.orden ?? 99) - (b.orden ?? 99) || (a.nombre || "").localeCompare(b.nombre || ""));
 const prodsDe = c => S.data.productos.filter(p => p.marca === c.marca && p.categoria === c.nombre).sort((a, b) => (a.orden ?? 999) - (b.orden ?? 999) || (a.nombre || "").localeCompare(b.nombre || ""));
@@ -673,7 +692,7 @@ function renderHeader() {
     sub.innerHTML = [["club", "Sugar Club"], ["doggy", "Doggy Pops"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
     tools.innerHTML = `<p class="note" style="flex:1;margin:0">${S.sub === "club" ? "Cada categoría de Sugar Club es un ícono del escritorio: imagen + texto." : "Doggy Pops es el botón grande del escritorio; estas son sus categorías por dentro."} Toca una para editarla y ver sus productos.</p><button type="button" class="btn pri" data-new="categorias">+ Nueva</button>`;
   } else if (S.tab === "collar") {
-    sub.innerHTML = [["estilos", "Tipos"], ["cordones", "Cordones"], ["charms", "Charms"], ["placas", "Placas"], ["colgadores", "Colgadores 🔑"], ["promos", "Promos 🎁"], ["precios", "Precios"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
+    sub.innerHTML = [["estilos", "Tipos"], ["cordones", "Cordones"], ["charms", "Charms"], ["placas", "Placas"], ["inspiracion", "Inspiración 📸"], ["colgadores", "Colgadores 🔑"], ["promos", "Promos 🎁"], ["precios", "Precios"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v}</button>`).join("");
     tools.innerHTML = S.sub !== "precios" ? `<input type="search" id="q" placeholder="Buscar…" value="${esc(S.q)}" aria-label="Buscar"><button type="button" class="btn pri" data-new="${S.sub}">+ Nuevo</button>` : "";
   } else if (S.tab === "pedidos") {
     sub.innerHTML = [["activos", "Por atender"], ...ESTADOS.map(([k, v]) => [k, v]), ["todos", "Todos"]].map(([k, v]) => `<button type="button" class="chip" data-sub="${k}" aria-pressed="${S.sub === k}">${v} <span style="opacity:.6">${pedidosDe(k).length}</span></button>`).join("");
@@ -1071,10 +1090,27 @@ function optPicker(p, out) {
     <div class="row2"><button type="button" class="btnp" data-addopt="${esc(p.id)}" ${out || !n ? "disabled" : ""}>Agregar ${n ? `${n} par${n > 1 ? "es" : ""} · ${money(n * (+p.precio || 0))}` : "a la canasta"}</button><button type="button" class="btnp wa" data-waopt="${esc(p.id)}" ${out || !n ? "disabled" : ""}>Pedir por WhatsApp</button></div></div>`;
 }
 const optNames = p => (optSel[p.id] || []).slice().sort((a, b) => a - b).map(i => p.opciones[i]);
+const inspList = () => S.data.inspiracion.filter(x => x.disponible !== false && (x.fotoId || x.fotoSrc)).sort(byOrden);
+const inspImg = x => x.fotoId ? blob(x.fotoId) : x.fotoSrc;
+const inspGrid = () => `<div class="igal">${inspList().map(x => `<button type="button" class="ig" data-insp="${esc(x.id)}" aria-label="${esc(x.nombre)}"><img src="${esc(inspImg(x))}" alt="" loading="lazy"><span>${esc(x.nombre)}</span></button>`).join("") || `<div class="emptyg">Pronto ✨</div>`}</div>`;
+function openInspPop() {
+  let o = $("#hpInsp"); if (!o) { o = document.createElement("div"); o.id = "hpInsp"; o.className = "srch"; $("#hp").appendChild(o); }
+  o.innerHTML = `<div class="box gl"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font:400 26px 'Abril Fatface',Georgia,serif;color:#2a3550">📸 Inspiración</h3><button type="button" class="iconbtn" data-go="closeinsp" aria-label="Cerrar" style="background:#fff">✕</button></div><p class="hint2" style="margin:0">Collares reales que ya hicimos. Toca uno para verlo grande.</p>${inspGrid()}</div>`;
+}
+function openInspOne(id) {
+  const x = S.data.inspiracion.find(i => i.id === id); if (!x) return; const L = inspList(), k = L.indexOf(x);
+  let o = $("#hpInsp"); if (!o) { o = document.createElement("div"); o.id = "hpInsp"; o.className = "srch"; $("#hp").appendChild(o); }
+  o.innerHTML = `<div class="box gl ione"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font:400 24px 'Abril Fatface',Georgia,serif;color:#2a3550">${esc(x.nombre)}</b><button type="button" class="iconbtn" data-go="closeinsp" aria-label="Cerrar" style="background:#fff">✕</button></div>
+    <div class="ibig">${L.length > 1 ? `<button type="button" class="arr l" data-insp="${esc(L[(k - 1 + L.length) % L.length].id)}" aria-label="Anterior">‹</button>` : ""}<img src="${esc(inspImg(x))}" alt="${esc(x.nombre)}">${L.length > 1 ? `<button type="button" class="arr r" data-insp="${esc(L[(k + 1) % L.length].id)}" aria-label="Siguiente">›</button>` : ""}</div>
+    ${x.nota ? `<p class="hint2" style="margin:0">${esc(x.nota)}</p>` : ""}
+    <div class="row2"><button type="button" class="btnp" data-inspgo="${esc(x.id)}">Quiero uno así 🎨</button><button type="button" class="btnp" style="background:#fff;color:#2a3550" data-go="inspall">Ver todas</button></div></div>`;
+}
+const inspBtn = () => inspList().length ? `<button type="button" class="inspfab" data-go="inspall">📸 Inspiración</button>` : "";
 function renderShop(brand = shopBrand) {
   view = "shop"; shopBrand = brand;
   const cats = shopCats(brand);
   if (!shopCat || !cats.some(c => c.id === shopCat.id)) shopCat = cats[0] || null;
+  if (shopCat?.galeria) { $("#hp").innerHTML = `<section class="shop" ${heroBg()}>${topBar(brand, "Inspiración")}${bubbles(brand)}<div class="bld" style="grid-template-columns:1fr"><div class="pick gl"><h3>📸 Collares reales que ya hicimos</h3><p class="hint" style="text-align:left;margin:0">Toca una foto para verla grande y armar uno parecido.</p>${inspGrid()}</div></div>${footer()}</section>${closeBtn}`; return; }
   const ps = shopCat ? live(prodsDe(shopCat)) : [];
   if (!shopProd || !ps.some(p => p.id === shopProd.id)) shopProd = ps[0] || null;
   const p = shopProd, out = p && p.stock === 0;
@@ -1476,7 +1512,7 @@ function renderLlavero() {
         <div style="display:grid;gap:12px">${llPanel()}</div>
         ${ll.step < 5 ? `<div class="row2"><button type="button" class="btnp" data-llst="${ll.step + 1}">Siguiente →</button></div>` : ""}
       </div>
-    </div><div class="minibar gl"><span id="llMini">Total ${money(llTotal())}</span><button type="button" data-go="top">Ver tu llavero ↑</button></div>${footer()}</section>${closeBtn}`;
+    </div>${inspBtn()}<div class="minibar gl"><span id="llMini">Total ${money(llTotal())}</span><button type="button" data-go="top">Ver tu llavero ↑</button></div>${footer()}</section>${closeBtn}`;
 }
 const llRefresh = () => { const p = $("#llPrev"); if (p) p.innerHTML = llPreview(); const m = $("#llMini"); if (m) m.textContent = "Total " + money(llTotal()); };
 const keepY = fn => { const y = $("#hp").scrollTop; fn(); $("#hp").scrollTop = y; };
@@ -1493,7 +1529,7 @@ function renderCollar() {
         <div id="colPanel" style="display:grid;gap:12px">${colPanel()}</div>
         ${col.step < 5 ? `<div class="row2"><button type="button" class="btnp" data-cst="${col.step + 1}">Siguiente →</button></div>` : ""}
       </div>
-    </div><div class="minibar gl"><span id="colMini">Total ${money(colTotal())}</span><button type="button" data-go="top">Ver su collar ↑</button></div>${footer()}</section>${closeBtn}`;
+    </div>${inspBtn()}<div class="minibar gl"><span id="colMini">Total ${money(colTotal())}</span><button type="button" data-go="top">Ver su collar ↑</button></div>${footer()}</section>${closeBtn}`;
 }
 const colRefresh = () => { const p = $("#colPrev"); if (p) p.innerHTML = colPreview(); const m = $("#colMini"); if (m) m.textContent = "Total " + money(colTotal()); };
 
@@ -1524,7 +1560,7 @@ $("#hp").addEventListener("input", e => {
   if (t.id === "colPal") { t.value = t.value.toUpperCase(); col.palabra = t.value; colRefresh(); }
 });
 $("#hp").addEventListener("click", e => {
-  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-hit],[data-pf],[data-sub3],[data-grp],[data-rmline],[data-cq],[data-pcol],[data-llst],[data-llset],[data-llmore],[data-llcord],[data-llacc],[data-llpair],[data-llcol],[data-llcq],[data-llch],[data-llgrp],[data-perso],[data-gift],[data-opt],[data-addopt],[data-waopt],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
+  const t = e.target.closest("[data-go],[data-cat],[data-prod],[data-add],[data-q],[data-step],[data-wa1],[data-hit],[data-pf],[data-sub3],[data-grp],[data-insp],[data-inspgo],[data-rmline],[data-cq],[data-pcol],[data-llst],[data-llset],[data-llmore],[data-llcord],[data-llacc],[data-llpair],[data-llcol],[data-llcq],[data-llch],[data-llgrp],[data-perso],[data-gift],[data-opt],[data-addopt],[data-waopt],[data-ch],[data-rm],[data-cst],[data-cset],[data-ctog],#hpClose"); if (!t || t.disabled) return;
   if (t.id === "hpClose") return closeHome();
   if (t.dataset.step) { const ps = live(prodsDe(shopCat)), i = ps.findIndex(p => p.id === shopProd?.id); shopProd = ps[(i + +t.dataset.step + ps.length) % ps.length]; const y = $("#hp").scrollTop; renderShop(); $("#hp").scrollTop = y; return; }
   if (t.dataset.wa1) { const p = S.data.productos.find(x => x.id === t.dataset.wa1); return openCheckout([{ nombre: p.nombre, detalle: [MARCAS[p.marca] + " · " + (p.categoria || "")], q: 1, precio: +p.precio || 0 }], p.marca); }
@@ -1553,6 +1589,8 @@ $("#hp").addEventListener("click", e => {
     if (k === "cq") delete col.cq[a]; if (k === "ch") col.charms = col.charms.filter(x => x !== a);
     if (k === "llcq") delete ll.t[+a].cq[b]; if (k === "llch") ll.charms = ll.charms.filter(x => x !== a);
     return keepY(k.startsWith("ll") ? renderLlavero : renderCollar); }
+  if (t.dataset.insp) return openInspOne(t.dataset.insp);
+  if (t.dataset.inspgo) { const x = S.data.inspiracion.find(i => i.id === t.dataset.inspgo); $("#hpInsp")?.remove(); if (view === "llavero") { toast("Tómalo de referencia para tu llavero ✨"); return; } if (x?.estilo && S.data.estilos.some(e => e.id === x.estilo)) col.estilo = x.estilo; col.inspo = { nombre: x.nombre, img: inspImg(x) }; if (view !== "collar") { col.matchy = false; col.step = 1; } renderCollar(); $("#hp").scrollTo({ top: 0 }); return; }
   if (t.dataset.sub3) { col.sub3 = t.dataset.sub3; return renderCollar(); }
   if (t.dataset.grp) { col.grp[col.sub3] = t.dataset.grp; return renderCollar(); }
   if (t.dataset.pf) { shopFoto = +t.dataset.pf; const im = $("#hp .stage .big img"), u = t.querySelector("img")?.getAttribute("src"); if (im && u) im.src = u; $("#hp").querySelectorAll("[data-pf]").forEach(x => x.setAttribute("aria-selected", x === t)); return; }
@@ -1576,6 +1614,8 @@ $("#hp").addEventListener("click", e => {
   if (g === "hero") return renderHero();
   if (g === "top") return $("#hp").scrollTo({ top: 0, behavior: "smooth" });
   if (g === "crea") return renderCrea();
+  if (g === "inspall") return openInspPop();
+  if (g === "closeinsp") return $("#hpInsp")?.remove();
   if (g === "noInspo") { col.inspo = null; return colRefresh(); }
   if (g === "posReset") { col.pos = {}; return colRefresh(); }
   if (g === "llavero") { ll.matchy = false; ll.marca = "doggy"; ll.step = 1; renderLlavero(); $("#hp").scrollTo({ top: 0 }); return; }
@@ -1610,7 +1650,7 @@ $("#hp").addEventListener("click", e => {
   const who = await window.claude?.use?.("user"); whoUser = who;
   isEditor = (await who?.canEdit?.()) ?? false;
   if (!isEditor) { document.querySelector("body > .wrap")?.setAttribute("hidden", ""); openHome(); }
-  for (const col of ["productos", "categorias", "cordones", "charms", "placas", "estilos", "promos", "colgadores"]) {
+  for (const col of ["productos", "categorias", "cordones", "charms", "placas", "estilos", "promos", "colgadores", "inspiracion"]) {
     db.collection(col).onSnapshot(snap => {
       S.data[col] = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       S.loaded.add(col); if (!ed && viewCols().includes(col) && !document.activeElement?.closest("form")) renderMain();
