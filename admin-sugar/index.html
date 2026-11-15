@@ -204,6 +204,7 @@ h1 span{color:var(--pink)}
 .ione{max-width:560px}.ibig{position:relative;display:grid;place-items:center}.ibig img{max-width:100%;max-height:62svh;border-radius:14px;object-fit:contain}
 .inspfab{position:fixed;right:18px;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:30;border:0;border-radius:999px;padding:12px 18px;font:800 14px var(--body);color:#fff;background:linear-gradient(135deg,#FF4F9A,#B57BFF);box-shadow:0 8px 20px rgba(120,40,160,.4);cursor:pointer}
 @media (max-width:860px){.inspfab{bottom:calc(120px + env(safe-area-inset-bottom,0px));right:12px;padding:10px 14px}}
+@media (max-width:860px){.bldv .bubbles,.bldv .minibar,.bldv .prev .ocard{display:none!important}.bldv .inspfab{bottom:calc(64px + env(safe-area-inset-bottom,0px))}.bldv .bld{padding-top:4px}.bldv .prev{min-height:0!important;padding:10px 12px}.bldv .prev h2{font-size:24px}}
 .warnbox{background:#FFF4E5;color:#7A4300;border:1.5px solid #FAD7A0;border-radius:14px;padding:10px 12px;font:600 13px var(--body)}
 .ocard{width:100%;box-sizing:border-box;background:rgba(255,255,255,.92);border-radius:16px;padding:6px 10px;display:grid;color:#2a3550;box-shadow:0 6px 16px rgba(10,40,100,.15)}
 .ocard .ol{display:grid;grid-template-columns:30px 1fr auto 26px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #e3e6ee;font:600 13px var(--body)}
@@ -1517,7 +1518,7 @@ function renderLlavero() {
   view = "llavero"; shopBrand = ll.marca;
   const G = llColgs(); if (!G.some(g => g.id === ll.colg)) ll.colg = G[0]?.id || null;
   const CC = cCords(); if (!CC.some(c => c.id === ll.cordon)) ll.cordon = CC[0]?.id || null;
-  $("#hp").innerHTML = `<section class="shop" ${heroBg()}>${topBar(ll.marca, ll.matchy ? "Matchy 💞 · 2. tu llavero" : "Arma tu llavero", ll.marca === "doggy" ? "doggy" : "shop")}${bubbles(ll.marca, "make")}
+  $("#hp").innerHTML = `<section class="shop bldv" ${heroBg()}>${topBar(ll.marca, ll.matchy ? "Matchy 💞 · 2. tu llavero" : "Arma tu llavero", ll.marca === "doggy" ? "doggy" : "shop")}${bubbles(ll.marca, "make")}
     <div class="bld">
       <div class="prev gl" id="llPrev" aria-live="polite">${llPreview()}</div>
       <div class="pick gl"><ol class="stepper">${LL_STEPS.map((t, i) => `<li class="${ll.step === i + 1 ? "now" : ll.step > i + 1 ? "done" : ""}"><button type="button" data-llst="${i + 1}" ${ll.step === i + 1 ? 'aria-current="step"' : ""}><span class="dot">${ll.step > i + 1 ? "✓" : i + 1}</span><span class="lb">${t}</span></button></li>`).join("")}</ol>
@@ -1534,7 +1535,7 @@ function renderCollar() {
   if (!col.estilo || !E.some(e => e.id === col.estilo)) col.estilo = E[0]?.id || null;
   const cords = cCords(); col.cordones = col.cordones.filter(id => cords.some(c => c.id === id)); if (!col.cordones.length && cords[0]) col.cordones = [cords[0].id];
   const pls = cPlacas(); if (!pls.some(p => p.id === col.placa)) col.placa = pls[0]?.id || null;
-  $("#hp").innerHTML = `<section class="shop" ${heroBg()}>${topBar("doggy", col.matchy ? "Matchy 💞 · 1. su collar" : "Arma su collar", "doggy")}${bubbles("doggy", "make")}
+  $("#hp").innerHTML = `<section class="shop bldv" ${heroBg()}>${topBar("doggy", col.matchy ? "Matchy 💞 · 1. su collar" : "Arma su collar", "doggy")}${bubbles("doggy", "make")}
     <div class="bld">
       <div class="prev gl" id="colPrev" aria-live="polite">${colPreview()}</div>
       <div class="pick gl"><ol class="stepper">${COL_STEPS.map((t, i) => `<li class="${col.step === i + 1 ? "now" : col.step > i + 1 ? "done" : ""}"><button type="button" data-cst="${i + 1}" ${col.step === i + 1 ? 'aria-current="step"' : ""}><span class="dot">${col.step > i + 1 ? "✓" : i + 1}</span><span class="lb">${t}</span></button></li>`).join("")}</ol>
