@@ -1279,6 +1279,17 @@ const colTotal = () => colLines().reduce((a, l) => a + l.v, 0);
 const cordBg = ids => { const cs = ids.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []); const c = cs.length ? cs : ["#F5A3C7"]; return `conic-gradient(${c.map((x, i) => `${x} ${i * 100 / c.length}% ${(i + 1) * 100 / c.length}%`).join(",")})`; };
 const swBg = c => { const cs = c.colores?.length ? c.colores : ["#ddd"]; return `linear-gradient(135deg,${cs.map((x, i) => `${x} ${i * 100 / cs.length}% ${(i + 1) * 100 / cs.length}%`).join(",")})`; };
 const PALETA = [["Rosa", "#F7A8C9"], ["Fucsia", "#E6407F"], ["Lila", "#C3A6F2"], ["Morado", "#7B3AF5"], ["Celeste", "#8FD3F5"], ["Azul", "#3E6FD6"], ["Menta", "#8FE3C2"], ["Verde", "#34A96A"], ["Amarillo", "#F5D738"], ["Naranja", "#F28A2E"], ["Rojo", "#E63B2E"], ["Blanco", "#FFFFFF"], ["Negro", "#2E2A33"], ["Pastel", "linear-gradient(135deg,#F7A8C9,#C3A6F2,#8FD3F5,#8FE3C2,#F5E07A)"], ["Arcoíris", "linear-gradient(135deg,#E63B2E,#F28A2E,#F5D738,#34A96A,#3E6FD6,#7B3AF5)"]];
+/* beads must stand out from the cord: keep colours that combine but are not the same as the thread */
+const hexRgb = h => { h = (h || "#000").replace("#", ""); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) || 0); };
+const cdist = (a, b) => { const [r1, g1, b1] = hexRgb(a), [r2, g2, b2] = hexRgb(b), rm = (r1 + r2) / 2; return Math.sqrt((2 + rm / 256) * (r1 - r2) ** 2 + 4 * (g1 - g2) ** 2 + (2 + (255 - rm) / 256) * (b1 - b2) ** 2); };
+const tint = (h, k) => "#" + hexRgb(h).map(v => Math.round(v + (255 - v) * k).toString(16).padStart(2, "0")).join("");
+const COMBO = ["#FFFFFF", "#F7A8C9", "#F5D738", "#8FD3F5", "#8FE3C2", "#C3A6F2", "#FFB86B", "#E66A92", "#3E9AD6", "#34A96A", "#7B3AF5", "#2E2A33"];
+function beadCols(cord, pref) {
+  const far = c => cord.every(k => cdist(c, k) > 160);
+  const p = (pref || []).filter(far); if (p.length) return p;
+  const out = [...cord.map(k => tint(k, .62)).filter(far), ...COMBO.filter(far)];
+  return out.length ? out.slice(0, 5) : ["#FFFFFF", "#2E2A33"];
+}
 const prefCols = () => { const c = col.colores.map(n => PALETA.find(p => p[0] === n)?.[1]).filter(Boolean).flatMap(v => v.startsWith("linear") ? v.match(/#[0-9A-F]{6}/gi) : [v]); return c.length ? c : null; };
 const BEADS = ["#E63B2E", "#3E9AD6", "#F5D738", "#34A96A", "#7B3AF5", "#E66A92", "#F28A2E"];
 /* front half of the collar, drawn big: the name in the middle, threaded beads next to it, then charms hanging beside, alternating sides */
@@ -1303,7 +1314,7 @@ function relax(items) {
 }
 function collarParts(k, name, pl) {
   const cu = cqList().flatMap(({ c, n }) => Array.from({ length: n * 2 }, () => c));
-  const pc = prefCols() || col.cordones.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []).concat(BEADS);
+  const pc = beadCols(col.cordones.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []), prefCols());
   const cg = col.charms.map(id => S.data.charms.find(x => x.id === id)).filter(Boolean);
   const pic = c => itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="${esc(c.nombre)}">` : iconSvg(c.icono);
   const L = k === "letras" ? (name || "NOMBRE").replace(/\s/g, "").split("") : [];
@@ -1456,12 +1467,12 @@ function llLines() {
 }
 const llTotal = () => llLines().reduce((a, l) => a + l.v, 0);
 function llPreview() {
-  const g = S.data.colgadores.find(x => x.id === ll.colg), pc = llPrefCols(), cs = llCord()?.colores || ["#d8dbe2"];
+  const g = S.data.colgadores.find(x => x.id === ll.colg), pc = llPrefCols(), cs = llCord()?.colores || ["#d8dbe2"], bc = beadCols(cs, ll.colores.length ? pc : null);
   const cord = `repeating-linear-gradient(180deg,${cs.map((c, i) => `${c} ${i * 8}px ${(i + 1) * 8}px`).join(",")})`;
   let k = 0;
   const need = Math.max(...[0, 1].map(i => llWord(i).replace(/\s/g, "").length * 43 + llPieces(i) * 25 + 40)), len = Math.max(300, need);
   const tira = i => { const w = llWord(i).replace(/\s/g, ""), cu = llCq(i).flatMap(({ c, n }) => Array.from({ length: n }, () => c));
-    return `<div class="strand" style="--cord:${cord};--len:${len}px">${w.split("").filter(Boolean).map(ch => { const col = pc[k++ % pc.length]; return `<span class="lt" style="background:${col};color:${["#FFFFFF", "#F5D738", "#8FE3C2", "#F7A8C9", "#8FD3F5", "#F5E07A"].includes(col) ? "#2a3550" : "#fff"}">${esc(ch)}</span>`; }).join("")}${cu.map((c, j) => `<span class="cu ${c.figura || "bolita"}" style="--c:${pc[j % pc.length]}"></span>`).join("")}<span class="knot"></span></div>`; };
+    return `<div class="strand" style="--cord:${cord};--len:${len}px">${w.split("").filter(Boolean).map(ch => { const col = pc[k++ % pc.length]; return `<span class="lt" style="background:${col};color:${["#FFFFFF", "#F5D738", "#8FE3C2", "#F7A8C9", "#8FD3F5", "#F5E07A"].includes(col) ? "#2a3550" : "#fff"}">${esc(ch)}</span>`; }).join("")}${cu.map((c, j) => `<span class="cu ${c.figura || "bolita"}" style="--c:${bc[j % bc.length]}"></span>`).join("")}<span class="knot"></span></div>`; };
   const chs = ll.charms.map(id => S.data.charms.find(x => x.id === id)).filter(Boolean);
   const title = [llWord(0), llWord(1)].filter(Boolean).join(" · ");
   const mx = ll.matchy ? `<div class="mxc"><small>Su collar</small><div class="collar2 mini">${cordSvg(kindOf(cEstilo()))}${collarParts(kindOf(cEstilo()), nombreUsado(), S.data.placas.find(x => x.id === col.placa))}</div></div>` : "";
