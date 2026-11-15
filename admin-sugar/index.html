@@ -150,7 +150,7 @@ h1 span{color:var(--pink)}
 .brandsw{flex:none;align-self:center;display:flex;align-items:center;gap:8px;border-radius:20px;padding:8px 14px 8px 8px;cursor:pointer;color:#fff;font:700 13px/1.15 var(--mono);text-align:left;text-shadow:0 1px 3px rgba(0,30,80,.6);background:linear-gradient(135deg,rgba(255,225,77,.45),rgba(255,141,192,.45))}
 .brandsw img{height:52px;width:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
 @media (max-width:860px){.brandsw{order:-2}.bsep{order:-1}.brandsw img{height:44px}}
-@media (max-width:480px){.shop .top .tt{visibility:hidden}.collar .pend img,.collar .pend svg{width:38px;height:38px}.shop .top .lg{height:46px}}
+@media (max-width:480px){.shop .top .tt{visibility:hidden}.shop .top .lg{height:46px}}
 .back{border-radius:999px;padding:9px 14px;font:600 13px var(--mono);color:#10223f;cursor:pointer;flex:none}
 .bub2.make .ring span{background:linear-gradient(140deg,#FFE14D,#FF8DC0);font-size:30px}
 .shopgrid{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 clamp(14px,3vw,40px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
@@ -224,21 +224,18 @@ h1 span{color:var(--pink)}
 .opt2.off{opacity:.45;cursor:not-allowed}
 .sw2{width:100%;height:28px;border-radius:999px;border:2px solid #fff}
 .inpt{width:100%;border:2px solid rgba(255,255,255,.9);border-radius:14px;padding:12px 14px;font:700 20px var(--body);letter-spacing:.06em;background:rgba(255,255,255,.75);color:var(--ink)}
-.collar{width:min(300px,74%);aspect-ratio:1;border-radius:50%;position:relative;margin:4px auto 70px}
-.collar .cord{position:absolute;inset:0;border-radius:50%;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 22px),#000 calc(100% - 21px));mask:radial-gradient(farthest-side,transparent calc(100% - 22px),#000 calc(100% - 21px));box-shadow:inset 0 0 0 2px rgba(0,0,0,.08)}
-.collar .on,.collar .hang{position:absolute;z-index:2}
-.collar .on{transform:translate(-50%,-50%)}
-.collar .bead{min-width:26px;height:28px;padding:0 3px;border-radius:8px;display:grid;place-items:center;font:800 15px var(--body);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);box-shadow:inset 0 2px 1px rgba(255,255,255,.5),0 2px 4px rgba(0,0,0,.25)}
-.collar .cu{width:22px;height:22px;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.3);display:grid;place-items:center}
-.collar .cu img,.collar .cu svg{width:100%;height:100%;object-fit:cover}
-.collar .hang{transform:translate(-50%,0);display:grid;justify-items:center}
-.collar .hang::before{content:"";width:2px;height:8px;background:#c9ced8}
-.collar .pend img,.collar .pend svg{width:46px;height:46px;object-fit:contain;border-radius:10px;background:rgba(255,255,255,.75);padding:2px;box-shadow:0 3px 6px rgba(0,0,0,.2)}
-.collar .hang.bead::before{display:none}
-.collar .tag2{z-index:3;border-radius:14px;background:rgba(255,255,255,.92);padding:0 0 6px;box-shadow:0 6px 14px rgba(0,0,0,.2);overflow:hidden;min-width:70px}
-.collar .tag2::before{display:none}
-.collar .tag2 img{width:100%;height:26px;object-fit:cover}
-.collar .tag2 b{padding:4px 12px 0;font:400 18px "Abril Fatface",Georgia,serif}
+.collar2{width:100%;max-width:600px;aspect-ratio:100/58;position:relative;container-type:inline-size;margin:0 auto 8%}
+.collar2 .cord2{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.collar2 .on,.collar2 .hang{position:absolute;z-index:2}
+.collar2 .bead{border-radius:1.6cqw;display:grid;place-items:center;font-family:var(--body);font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35);box-shadow:inset 0 .4cqw .2cqw rgba(255,255,255,.55),0 .5cqw 1cqw rgba(0,0,0,.25)}
+.collar2 .cu{border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 .4cqw .8cqw rgba(0,0,0,.3);display:grid;place-items:center}
+.collar2 .cu img,.collar2 .cu svg{width:100%;height:100%;object-fit:cover}
+.collar2 .hang{transform:translate(-50%,0);display:grid;justify-items:center}
+.collar2 .pend::before{content:"";width:.5cqw;height:1.6cqw;background:#b9c0cc;border-radius:1cqw}
+.collar2 .pend img,.collar2 .pend svg{width:100%;aspect-ratio:1;object-fit:contain;border-radius:2cqw;background:rgba(255,255,255,.8);padding:.4cqw;box-shadow:0 .6cqw 1.2cqw rgba(0,0,0,.2)}
+.collar2 .tag2{z-index:3;border-radius:2.6cqw;background:rgba(255,255,255,.94);padding:0 0 1cqw;box-shadow:0 1cqw 2.4cqw rgba(0,0,0,.2);overflow:hidden;min-width:16cqw;margin-top:1cqw}
+.collar2 .tag2 img{width:100%;height:5cqw;object-fit:cover}
+.collar2 .tag2 b{padding:.8cqw 2.4cqw 0;font-family:"Abril Fatface",Georgia,serif;font-weight:400}
 .stepper{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);position:relative}
 .stepper li{position:relative;display:grid;justify-items:center}
 .stepper li:not(:last-child)::after{content:"";position:absolute;top:17px;left:calc(50% + 20px);right:calc(-50% + 20px);height:3px;border-radius:3px;background:rgba(255,255,255,.55)}
@@ -1011,27 +1008,43 @@ const colTotal = () => colLines().reduce((a, l) => a + l.v, 0);
 const cordBg = ids => { const cs = ids.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []); const c = cs.length ? cs : ["#F5A3C7"]; return `conic-gradient(${c.map((x, i) => `${x} ${i * 100 / c.length}% ${(i + 1) * 100 / c.length}%`).join(",")})`; };
 const swBg = c => { const cs = c.colores?.length ? c.colores : ["#ddd"]; return `linear-gradient(135deg,${cs.map((x, i) => `${x} ${i * 100 / cs.length}% ${(i + 1) * 100 / cs.length}%`).join(",")})`; };
 const BEADS = ["#E63B2E", "#3E9AD6", "#F5D738", "#34A96A", "#7B3AF5", "#E66A92", "#F28A2E"];
-/* everything sits on the lower half of the cord: name, threaded beads, then hanging charms */
-const R = 46.5, at = (a, r = R) => `left:${(50 + r * Math.cos(a * Math.PI / 180)).toFixed(2)}%;top:${(50 + r * Math.sin(a * Math.PI / 180)).toFixed(2)}%`;
+/* front half of the collar, drawn big: the name in the middle, threaded beads next to it, then charms hanging beside, alternating sides */
+const RX = 40, RY = 34, TOP = 3, H = 58; // units: % of width; box is 100 × 52
+const ell = a => { const r = a * Math.PI / 180; return { x: 50 + RX * Math.cos(r), y: TOP + RY * Math.sin(r), rot: Math.atan2(-RY * Math.cos(r), RX * Math.sin(r)) * 180 / Math.PI }; };
+const dsda = a => { const r = a * Math.PI / 180; return Math.hypot(RX * Math.sin(r), RY * Math.cos(r)) * Math.PI / 180; };
+function walk(a0, dist, dir) { let a = a0, d = 0; while (d < dist && a > 6 && a < 174) { d += dsda(a) * 0.25; a += 0.25 * dir; } return a; }
+const pos = (a, y0 = 0) => { const p = ell(a); return `left:${p.x.toFixed(2)}%;top:${((p.y + y0) / H * 100).toFixed(2)}%`; };
 function collarParts(k, name, pl) {
   const cu = col.cuentas.map(id => S.data.charms.find(x => x.id === id)).filter(Boolean);
   const cg = col.charms.map(id => S.data.charms.find(x => x.id === id)).filter(Boolean);
   const pic = c => itemImg(c) ? `<img src="${esc(itemImg(c))}" alt="${esc(c.nombre)}">` : iconSvg(c.icono);
-  let h = "", span = 0;
+  const L = k === "letras" ? (name || "NOMBRE").replace(/\s/g, "").split("") : [];
+  // sizes (units = % of width), shrunk together if everything would not fit on the front half
+  let LW = 8.4, CW = 5.2, PW = 13, GAP = 0.3;
+  const centerW = k === "letras" ? L.length * LW : 10;
+  const sideNeed = (centerW / 2) + Math.ceil(cu.length / 2) * (CW + GAP) + Math.ceil(cg.length / 2) * (PW + GAP);
+  let sc = 1; { let a = 90, d = 0; while (a > 26) { d += dsda(a) * 0.25; a -= 0.25; } if (sideNeed > d) sc = d / sideNeed; }
+  LW *= sc; CW *= sc; PW *= sc; GAP *= sc;
+  let h = "";
+  const cqw = v => `${v.toFixed(2)}cqw`;
   if (k === "letras") {
-    const L = (name || "NOMBRE").replace(/\s/g, "").split(""), st = 9.5; span = L.length * st;
-    L.forEach((ch, i) => { const a = 90 + (L.length - 1) / 2 * st - i * st; h += `<span class="on bead" style="${at(a)};background:${BEADS[i % BEADS.length]};transform:translate(-50%,-50%) rotate(${a - 90}deg)">${esc(ch)}</span>`; });
+    // place letters from right to left so they read left→right
+    const start = walk(90, (L.length * LW) / 2, 1);
+    let cur = start;
+    L.forEach((ch, i) => { const c = walk(cur, LW / 2, -1); const p = ell(c); h += `<span class="on bead" style="${pos(c)};width:${cqw(LW - 0.4)};height:${cqw(LW * 1.1)};font-size:${cqw(LW * 0.62)};background:${BEADS[i % BEADS.length]};transform:translate(-50%,-50%) rotate(${p.rot.toFixed(1)}deg)">${esc(ch)}</span>`; cur = walk(c, LW / 2, -1); });
   } else if (k === "placa") {
-    h += `<span class="hang tag2" style="${at(90, R + 3)}" ${pl && itemImg(pl) ? `data-bg` : ""}>${pl && itemImg(pl) ? `<img src="${esc(itemImg(pl))}" alt="">` : ""}<b>${esc(name || "NOMBRE")}</b></span>`; span = 8;
-  } else { h += `<span class="hang bead" style="${at(90, R + 4)};background:${BEADS[0]}">${esc((name || "R").charAt(0))}</span>`; span = 8; }
-  // threaded beads: alternate right / left of the name, each 6.5°
-  cu.forEach((c, i) => { const side = i % 2 ? -1 : 1, n = Math.floor(i / 2); const a = 90 + side * (span / 2 + 4 + n * 6.5); h += `<span class="on cu" style="${at(a)}">${pic(c)}</span>`; });
-  // hanging charms: spread over 28°–152°, never above the middle of the cord
-  const n = cg.length;
-  const spread = (cnt, from, to) => cnt === 1 ? [(from + to) / 2] : Array.from({ length: cnt }, (_, i) => from - i * (from - to) / (cnt - 1));
-  const angs = k === "letras" ? spread(n, 152, 28) : [...spread(Math.ceil(n / 2), 154, 120), ...spread(Math.floor(n / 2), 60, 26)];
-  cg.forEach((c, i) => { h += `<span class="hang pend" style="${at(angs[i], R + (k === "letras" ? 6 : 3))}">${pic(c)}</span>`; });
+    h += `<span class="hang tag2" style="${pos(90)};font-size:${cqw(4.2 * sc + 1)}">${pl && itemImg(pl) ? `<img src="${esc(itemImg(pl))}" alt="">` : ""}<b>${esc(name || "NOMBRE")}</b></span>`;
+  } else { h += `<span class="hang bead" style="${pos(90)};width:${cqw(LW)};height:${cqw(LW * 1.1)};font-size:${cqw(LW * 0.62)};background:${BEADS[0]}">${esc((name || "R").charAt(0))}</span>`; }
+  const edge = { 1: walk(90, centerW / 2, -1), [-1]: walk(90, centerW / 2, 1) }; // 1 = right side (angles < 90)
+  const place = (w, side) => { const dir = side === 1 ? -1 : 1; const c = walk(edge[side], GAP + w / 2, dir); edge[side] = walk(c, w / 2, dir); return c; };
+  cu.forEach((c, i) => { const a = place(CW, i % 2 ? -1 : 1); const p = ell(a); h += `<span class="on cu" style="${pos(a)};width:${cqw(CW)};height:${cqw(CW)};transform:translate(-50%,-50%) rotate(${p.rot.toFixed(1)}deg)">${pic(c)}</span>`; });
+  cg.forEach((c, i) => { const a = place(PW, i % 2 ? 1 : -1); h += `<span class="hang pend" style="${pos(a, 1.2)};width:${cqw(PW)}">${pic(c)}</span>`; });
   return h;
+}
+function cordSvg() {
+  const cs = col.cordones.flatMap(id => S.data.cordones.find(c => c.id === id)?.colores || []), c = cs.length ? cs : ["#F5A3C7"];
+  const d = `M${50 - RX} ${TOP} A${RX} ${RY} 0 0 0 ${50 + RX} ${TOP}`;
+  return `<svg class="cord2" viewBox="0 0 100 ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="4.6" stroke-linecap="round"/>${c.map((col2, i) => `<path d="${d}" fill="none" stroke="${col2}" stroke-width="3.8" stroke-linecap="round" ${c.length > 1 ? `stroke-dasharray="2.4 ${(2.4 * (c.length - 1)).toFixed(1)}" stroke-dashoffset="${(-2.4 * i).toFixed(1)}"` : ""}/>`).join("")}<path d="${d}" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="0.8" transform="translate(0 -0.9)"/></svg>`;
 }
 function colPreview() {
   const e = cEstilo(), k = kindOf(e), name = nombreUsado();
@@ -1040,7 +1053,7 @@ function colPreview() {
   const pl = S.data.placas.find(x => x.id === col.placa);
   return `<h2>${esc(name || "Su collar")}</h2>
     ${photo ? `<img src="${esc(photo)}" alt="${esc(e.nombre)}" style="max-width:100%;max-height:34svh;width:auto;object-fit:contain;border-radius:16px">` : ""}
-    <div class="collar"><div class="cord" style="background:${cordBg(col.cordones)}"></div>${collarParts(k, name, pl)}
+    <div class="collar2">${cordSvg()}${collarParts(k, name, pl)}
     </div>
     <ul class="lines">${colLines().map(l => `<li><span>${esc(l.t)}</span><span>${l.gratis ? "Gratis" : l.conf ? "por confirmar" : l.v < 0 ? "−" + money(-l.v) : l.v ? money(l.v) : "Incluido"}</span></li>`).join("")}</ul>
     <div class="tot">Total ${money(colTotal())}</div>`;
