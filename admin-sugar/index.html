@@ -490,6 +490,7 @@ const SCHEMAS = {
     fields: [
       { k: "fotoId", t: "photo", label: "Foto del colgador" },
       { k: "nombre", t: "text", label: "Nombre", req: true },
+      { k: "grupo", t: "text", label: "Tipo", help: "Ej.: Argolla redonda, Ovalado con corazón. Los del mismo tipo salen juntos." },
       { k: "precio", t: "number", label: "Precio extra ($)", help: "Se suma al precio base del llavero. 0 = incluido." },
       { k: "stock", t: "number", label: "Stock" },
       { k: "disponible", t: "toggle", label: "Visible en “Arma tu llavero”" }
@@ -1206,7 +1207,7 @@ function llPreview() {
 }
 function llPanel() {
   const A = S.ajustes || {};
-  if (ll.step === 1) { const G = llColgs(); return `<h3>Elige el colgador</h3>${G.length ? `<div class="opts">${G.map(g => `<button type="button" class="opt2" data-llset="colg" data-v="${esc(g.id)}" aria-pressed="${g.id === ll.colg}">${itemImg(g) ? `<span class="ph"><img src="${esc(itemImg(g))}" alt="" loading="lazy"></span>` : ""}<b>${esc(g.nombre)}</b><span class="p">${+g.precio ? "+ " + money(g.precio) : "Incluido"}</span></button>`).join("")}</div>` : `<div class="emptyg">Pronto ✨ (súbelos en Arma collar → Colgadores)</div>`}`; }
+  if (ll.step === 1) { const G = llColgs().sort(byOrden), tipos = [...new Set(G.map(g => g.grupo || "Colgadores"))]; return `${G.length ? tipos.map(tp => `<h3>${esc(tp)}</h3><div class="opts">${G.filter(g => (g.grupo || "Colgadores") === tp).map(g => `<button type="button" class="opt2" data-llset="colg" data-v="${esc(g.id)}" aria-pressed="${g.id === ll.colg}">${itemImg(g) ? `<span class="ph"><img src="${esc(itemImg(g))}" alt="" loading="lazy"></span>` : ""}<b>${esc(g.nombre)}</b><span class="p">${+g.precio ? "+ " + money(g.precio) : "Incluido"}</span></button>`).join("")}</div>`).join("") : `<div class="emptyg">Pronto ✨ (súbelos en Arma collar → Colgadores)</div>`}`; }
   if (ll.step === 2) return `<h3>Palabra o nombre</h3><input class="inpt" id="llPal" maxlength="12" autocomplete="off" value="${esc(ll.palabra)}" placeholder="Ej. DOG MOM, tu nombre…" aria-label="Palabra del llavero">
     <div class="steps2">${["DOG MOM", "CAT MOM", "DOG DAD", "MOM"].map(w => `<button type="button" data-llset="palabra" data-v="${esc(w)}">${esc(w)}</button>`).join("")}</div>
     <p class="hint" style="text-align:left">Cada letra suma ${money(A.llavero?.porLetra)}.</p>
