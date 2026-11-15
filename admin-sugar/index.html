@@ -139,6 +139,8 @@ h1 span{color:var(--pink)}
 .shop::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,.12);pointer-events:none}
 .shop .top{position:sticky;top:0;z-index:5;background:linear-gradient(rgba(40,120,210,.55),rgba(40,120,210,0));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(14px,3vw,40px)}
 .shop .top .lg{height:58px;width:auto;cursor:pointer;filter:drop-shadow(0 3px 6px rgba(10,40,100,.35))}
+.shop .top .lg.dg{background:rgba(255,248,214,.9);border-radius:16px;padding:4px 10px;filter:drop-shadow(0 3px 6px rgba(10,40,100,.25))}
+.hero .doggy{background:rgba(255,248,214,.55)}
 .shop .top .tt{flex:1;min-width:0;text-align:center;font:400 clamp(22px,3vw,36px)/1 "Abril Fatface",Georgia,serif;color:#fff;text-shadow:0 2px 10px rgba(10,40,100,.45)}
 .bubbles{position:relative;z-index:1;display:flex;gap:clamp(10px,1.6vw,22px);overflow-x:auto;padding:6px clamp(14px,3vw,40px) 14px;scrollbar-width:none;max-width:1280px;margin:0 auto}
 .bub2{--s:clamp(70px,8vw,104px);flex:none;display:grid;justify-items:center;align-content:start;gap:6px;background:none;border:0;cursor:pointer;width:var(--s);color:#fff;font:700 13px/1.15 var(--body);text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
@@ -1054,7 +1056,7 @@ const doggyLogo = () => homeCfgX().doggyLogoId ? blob(homeCfgX().doggyLogoId) : 
 const cartBtn = () => `<button type="button" class="iconbtn gl" data-go="cart" aria-label="Carrito">🛒${cartCount() ? `<span class="n">${cartCount()}</span>` : ""}</button>`;
 let isEditor = false, whoUser = null;
 const closeBtn = { toString: () => isEditor ? `<button type="button" class="hp-close" id="hpClose">⚙ Admin</button>` : "" };
-const topBar = (brand, title, back = "hero") => `<div class="top"><button type="button" class="back gl" data-go="${back}" aria-label="Volver">‹ ${back === "hero" ? "Inicio" : "Tienda"}</button><img class="lg" src="${esc(brand === "doggy" ? doggyLogo() : "img/logo-club.png")}" alt="Inicio" data-go="hero"><span class="tt">${esc(title)}</span><span style="display:flex;gap:8px"><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</span></div>`;
+const topBar = (brand, title, back = "hero") => `<div class="top"><button type="button" class="back gl" data-go="${back}" aria-label="Volver">‹ ${back === "hero" ? "Inicio" : "Tienda"}</button><img class="lg ${brand === "doggy" ? "dg" : ""}" src="${esc(brand === "doggy" ? doggyLogo() : "img/logo-club.png")}" alt="Inicio" data-go="hero"><span class="tt">${esc(title)}</span><span style="display:flex;gap:8px"><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</span></div>`;
 const live = arr => arr.filter(x => x.disponible !== false && (!("marca" in x) || listo(x)));
 const inStock = x => x.disponible !== false && x.stock !== 0;
 
@@ -1064,7 +1066,7 @@ function renderHero() {
     <div class="logo gl"><img src="img/logo-club.png" alt="Sugar Club"></div>
     <nav class="nav"><button type="button" class="pill gl" data-go="shop">Ver productos</button><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</nav>
     <div class="ctas"><button type="button" class="pill w gl" data-go="crea">Crea el tuyo</button><button type="button" class="pill w gl" data-go="shop">Compra ahora</button></div>
-    <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, para tu mascota"><img src="${esc(doggyLogo())}" alt=""><span class="dcap">para tu mascota 🐾</span></button>
+    <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, arma tu collar"><img src="${esc(doggyLogo())}" alt=""><span class="dcap">Arma tu collar 🐾</span></button>
   </section>${footer()}${closeBtn}`;
 }
 
@@ -1078,7 +1080,7 @@ function bubbles(brand, active) {
     : `<button type="button" class="bub2 make" data-go="crea" aria-pressed="${isMake}"><span class="ring"><span>${mkPic("creaFotoId", "✨")}</span></span>Crea el tuyo${S.ajustes?.creaActivo ? "" : `<small style="display:block;font:600 10px var(--mono)">pronto</small>`}</button>`;
   const other = brand === "doggy"
     ? `<button type="button" class="brandsw gl" data-go="shop" aria-label="Ir a Sugar Club"><img src="img/logo-club.png" alt=""><span>Sugar Club 🍒<br>para ti</span></button>`
-    : `<button type="button" class="brandsw gl" data-go="doggy" aria-label="Ir a Sugar Doggy Pops"><img src="${esc(doggyLogo())}" alt=""><span>para tu<br>mascota 🐾</span></button>`;
+    : `<button type="button" class="brandsw gl" data-go="doggy" aria-label="Ir a Sugar Doggy Pops"><img src="${esc(doggyLogo())}" alt=""><span>Arma tu<br>collar 🐾</span></button>`;
   return `<nav class="bubbles" aria-label="Secciones">${make}${cats.map(c => { const ic = catIcon(c); return `<button type="button" class="bub2" data-cat="${esc(c.id)}" aria-pressed="${!isMake && c === shopCat}"><span class="ring"><span>${ic ? `<img src="${esc(ic)}" alt="" style="object-position:${catPos(c)}">` : esc(c.nombre.charAt(0))}</span></span>${esc(c.nombre)}</button>`; }).join("")}<span class="bsep" aria-hidden="true"></span>${other}</nav>`;
 }
 /* sets: the client picks which pairs she wants, each at the product price */
