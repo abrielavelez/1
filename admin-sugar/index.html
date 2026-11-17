@@ -133,7 +133,7 @@ h1 span{color:var(--pink)}
 .hero .doggy img{width:100%;display:block}
 .hero .doggy .dcap{display:block;margin-top:6px;font:600 12px/1.1 var(--mono);color:#fff;text-shadow:0 1px 3px rgba(0,30,80,.6);text-align:center}
 @media (max-width:760px){.hero{background-image:url("img/hero-m.jpg")} .hero .ctas{left:50%;transform:translateX(-50%);justify-content:center;width:calc(100% - 32px);bottom:70px}
-  .hero .ctas .pill{flex:1;padding:14px 10px;text-align:center;font-size:15px} .hero .nav .pill{display:none} .hero .doggy{top:auto;bottom:150px;left:50%;right:auto;transform:translateX(-50%);width:120px;padding:8px;border-radius:18px}}
+  .hero .ctas .pill{flex:1;padding:14px 10px;text-align:center;font-size:15px} .hero .nav .pill{padding:9px 14px;font-size:13px} .hero .doggy{top:auto;bottom:150px;left:50%;right:auto;transform:translateX(-50%);width:120px;padding:8px;border-radius:18px}}
 /* shop */
 .shop{min-height:100svh;background:url("img/hero.jpg") center/cover fixed;position:relative;padding-bottom:70px}
 .shop::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,.12);pointer-events:none}
@@ -205,6 +205,8 @@ h1 span{color:var(--pink)}
 .inspfab{position:fixed;right:18px;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:30;border:0;border-radius:999px;padding:12px 18px;font:800 14px var(--body);color:#fff;background:linear-gradient(135deg,#FF4F9A,#B57BFF);box-shadow:0 8px 20px rgba(120,40,160,.4);cursor:pointer}
 @media (max-width:860px){.inspfab{bottom:calc(120px + env(safe-area-inset-bottom,0px));right:12px;padding:10px 14px}}
 @media (max-width:860px){.bldv .bubbles,.bldv .minibar,.bldv .prev .ocard{display:none!important}.bldv .inspfab{bottom:calc(64px + env(safe-area-inset-bottom,0px))}.bldv .bld{padding-top:4px}.bldv .prev{min-height:0!important;padding:10px 12px}.bldv .prev h2{font-size:24px}.bldv .opts{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.bldv .opt2{padding:6px;font-size:11px;gap:2px}.bldv .opt2 b{font-size:12px;line-height:1.15}.bldv .opt2 small{font-size:10px}.bldv .opt2 .p{font-size:10.5px}.bldv .cuq .qty button{width:24px;height:24px;font-size:13px}.bldv .cuq .qty b{font-size:11px}.bldv .opts.sm{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pill.promo{position:relative;overflow:visible}
+.pill.promo .hat{position:absolute;left:-14px;top:-26px;width:52px;height:46px;transform:rotate(-18deg);filter:drop-shadow(0 2px 3px rgba(0,0,0,.3));pointer-events:none}
 .warnbox{background:#FFF4E5;color:#7A4300;border:1.5px solid #FAD7A0;border-radius:14px;padding:10px 12px;font:600 13px var(--body)}
 .ocard{width:100%;box-sizing:border-box;background:rgba(255,255,255,.92);border-radius:16px;padding:6px 10px;display:grid;color:#2a3550;box-shadow:0 6px 16px rgba(10,40,100,.15)}
 .ocard .ol{display:grid;grid-template-columns:30px 1fr auto 26px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #e3e6ee;font:600 13px var(--body)}
@@ -766,6 +768,10 @@ function renderPrecios(m) {
 function renderAjustes(m) {
   const A = S.ajustes || {}, ig = A.instagram || {}, h = A.home || {};
   m.innerHTML = `<form class="panel" id="ajForm">
+    <h2>🎅 Botón de temporada (inicio)</h2><p>El segundo botón grande del inicio. Cámbialo según la temporada: texto, gorrito y a dónde lleva. Su link para anuncios termina en <b>#temporada</b>.</p>
+    <div class="grid3"><label class="field">Texto del botón<input id="prTexto" value="${esc(promoCfg().texto)}" placeholder="Ej. Regalos navideños"></label>
+    <label class="field">Lleva a<select id="prDestino">${[["club", "Tienda Sugar Club"], ["doggy", "Tienda Doggy Pops"], ["collar", "Arma su collar"], ["llavero", "Arma tu llavero"], ["matchy", "Matchy"], ["inspiracion", "Inspiración"], ...["club", "doggy"].flatMap(m => catsDe(m).map(c => ["cat/" + catSlug(c), MARCAS[m] + " · " + c.nombre]))].map(([v, n]) => `<option value="${esc(v)}" ${promoCfg().destino === v ? "selected" : ""}>${esc(n)}</option>`).join("")}</select></label>
+    <div class="field"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="prGorro" ${promoCfg().gorro ? "checked" : ""} style="width:auto"> Mostrar gorro navideño 🎅</label><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="prActivo" ${promoCfg().activo !== false ? "checked" : ""} style="width:auto"> Botón de temporada activo (apagado = “Compra ahora”)</label></div></div>
     <h2>Links directos para publicidad</h2><p>Cada link abre la tienda directo en esa parte. Pon la dirección de tu tienda pública y copia el que necesites para el anuncio.</p>
     <label class="field">Dirección de tu tienda pública<input id="tiendaUrl" placeholder="https://… (la pondremos al publicar la tienda)" value="${esc(A.tiendaUrl || "")}"></label>
     <div class="lks">${linksHtml()}</div>
@@ -796,7 +802,7 @@ function renderAjustes(m) {
     ev.preventDefault();
     const wa = $("#wa").value.replace(/\D/g, "");
     if (wa && !/^593\d{8,9}$/.test(wa)) { toast("Revisa el número: debe empezar con 593"); return; }
-    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), tiendaUrl: $("#tiendaUrl").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, pos: { ...(h.pos || {}), ...ajPos }, creaFotoId: up.creaFoto, collarFotoId: up.collarFoto, llaveroFotoId: up.llaveroFoto, heroId: up.hero, headerId: up.header, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
+    try { await saving(db.doc("ajustes/general").update({ whatsapp: wa, infoCompra: $("#infoCompra").value.trim(), tiendaUrl: $("#tiendaUrl").value.trim(), creaActivo: $("#creaActivo").checked, creaBase: $("#creaBase").value === "" ? null : +$("#creaBase").value, instagram: { club: $("#igClub").value.trim().replace(/^@/, ""), doggy: $("#igDoggy").value.trim().replace(/^@/, "") }, home: { ...h, promo: { texto: $("#prTexto").value.trim() || "Regalos navideños", destino: $("#prDestino").value, gorro: $("#prGorro").checked, activo: $("#prActivo").checked }, pos: { ...(h.pos || {}), ...ajPos }, creaFotoId: up.creaFoto, collarFotoId: up.collarFoto, llaveroFotoId: up.llaveroFoto, heroId: up.hero, headerId: up.header, doggyFotoId: up.dogFoto, doggyLogoId: up.dogLogo, } })); toast("Ajustes guardados"); } catch (e) {}
   };
 }
 let ajPos = {};
@@ -1054,6 +1060,9 @@ function openHome() { const hp = $("#hp"); hp.hidden = false; document.body.styl
 function closeHome() { $("#hp").hidden = true; document.body.style.overflow = ""; }
 function cartCount() { return cart.reduce((a, c) => a + c.q, 0); }
 const homeCfgX = () => S.ajustes?.home || {};
+const promoCfg = () => ({ texto: "Regalos navideños", gorro: true, destino: "cat/minifiguras", activo: true, ...(homeCfgX().promo || {}) });
+const HAT = `<svg class="hat" viewBox="0 0 64 56" aria-hidden="true"><path d="M8 42 C14 22 30 6 52 10 C46 16 44 26 46 40 Z" fill="#E1262D" stroke="#7a0f14" stroke-width="2"/><rect x="3" y="38" width="48" height="13" rx="6.5" fill="#fff" stroke="#d9d9d9" stroke-width="1.5"/><circle cx="54" cy="12" r="7" fill="#fff" stroke="#d9d9d9" stroke-width="1.5"/></svg>`;
+const promoBtn = () => { const p = promoCfg(); return p.activo === false ? `<button type="button" class="pill w gl" data-go="shop">Compra ahora</button>` : `<button type="button" class="pill w gl promo" data-go="temporada">${p.gorro ? HAT : ""}${esc(p.texto)}</button>`; };
 const heroBg = () => homeCfgX().heroId ? `style="background-image:url('${blob(homeCfgX().heroId)}');background-position:${(homeCfgX().pos || {}).hero || "50% 50%"}"` : "";
 function footer() {
   const ig = S.ajustes?.instagram || {}, wa = (S.ajustes?.whatsapp || "").replace(/\D/g, "");
@@ -1075,7 +1084,7 @@ function renderHero() {
   $("#hp").innerHTML = `<section class="hero" aria-label="Sugar Club" ${heroBg()}>
     <div class="logo gl"><img src="img/logo-club.png" alt="Sugar Club"></div>
     <nav class="nav"><button type="button" class="pill gl" data-go="shop">Ver productos</button><button type="button" class="iconbtn gl" data-go="search" aria-label="Buscar">🔍</button>${cartBtn()}</nav>
-    <div class="ctas"><button type="button" class="pill w gl" data-go="collar">Arma tu collar 🐾</button><button type="button" class="pill w gl" data-go="shop">Compra ahora</button></div>
+    <div class="ctas"><button type="button" class="pill w gl" data-go="collar">Arma tu collar 🐾</button>${promoBtn()}</div>
     <button type="button" class="doggy gl" data-go="doggy" aria-label="Sugar Doggy Pops, arma tu collar"><img src="${esc(doggyLogo())}" alt=""></button>
   </section>${footer()}${closeBtn}`;
 }
@@ -1638,6 +1647,7 @@ $("#hp").addEventListener("click", e => {
   if (g === "top") return $("#hp").scrollTo({ top: 0, behavior: "smooth" });
   if (g === "crea") return renderCrea();
   if (g === "matchy") { col.matchy = true; return keepY(renderCollar); }
+  if (g === "temporada") { routeTo("#temporada"); $("#hp").scrollTo({ top: 0 }); return; }
   if (g === "inspall") return openInspPop();
   if (g === "closeinsp") return $("#hpInsp")?.remove();
   if (g === "noInspo") { col.inspo = null; return colRefresh(); }
@@ -1664,7 +1674,7 @@ $("#hp").addEventListener("click", e => {
 });
 
 /* ---------- direct links for ads: #inspiracion, #collar, #llavero, #matchy, #doggy, #club, #cat/<nombre>, #p/<id> ---------- */
-const ROUTES = [["inicio", "Inicio", ""], ["club", "Tienda Sugar Club", "club"], ["doggy", "Tienda Doggy Pops", "doggy"], ["collar", "Arma su collar", "collar"], ["llavero", "Arma tu llavero", "llavero"], ["matchy", "Matchy (collar + llavero)", "matchy"], ["inspiracion", "Inspiración (galería)", "inspiracion"]];
+const ROUTES = [["inicio", "Inicio", ""], ["temporada", "Botón de temporada 🎅", "temporada"], ["club", "Tienda Sugar Club", "club"], ["doggy", "Tienda Doggy Pops", "doggy"], ["collar", "Arma su collar", "collar"], ["llavero", "Arma tu llavero", "llavero"], ["matchy", "Matchy (collar + llavero)", "matchy"], ["inspiracion", "Inspiración (galería)", "inspiracion"]];
 const catSlug = c => slug(c.nombre);
 let routed = false;
 function routeTo(h) {
@@ -1675,6 +1685,7 @@ function routeTo(h) {
   else if (a === "collar") { col.matchy = false; col.inspo = null; col.step = 1; renderCollar(); }
   else if (a === "matchy") { col.matchy = true; col.inspo = null; col.step = 1; renderCollar(); }
   else if (a === "llavero") { ll.matchy = false; ll.marca = "doggy"; ll.step = 1; renderLlavero(); }
+  else if (a === "temporada") { const d = promoCfg().destino || "club"; if (d.startsWith("temporada")) renderShop("club"); else return routeTo("#" + d); }
   else if (a === "inspiracion") { const c = S.data.categorias.find(c => c.galeria); if (c) { shopCat = c; renderShop(c.marca); } else { renderShop("doggy"); openInspPop(); } }
   else if (a === "cat" && b) { const c = S.data.categorias.find(c => catSlug(c) === b || c.id === b); if (c) { shopCat = c; shopProd = null; renderShop(c.marca); } else renderHero(); }
   else if (a === "p" && b) { const p = S.data.productos.find(p => p.id === b); if (p) { shopCat = S.data.categorias.find(c => c.marca === p.marca && c.nombre === p.categoria) || null; shopProd = p; renderShop(p.marca); } else renderHero(); }
